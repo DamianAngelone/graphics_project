@@ -17,7 +17,7 @@ else
 	endif
 endif
 
-PROJECT = Project
+PROJECT = Project.x
 
 all: project
 
