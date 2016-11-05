@@ -12,9 +12,9 @@
 #include <cmath>
 using namespace std;
 
-float rot = 0;
-float Interactivity::eye[] = {-5, 5, 0};
-float Interactivity::center[] = {0, 0, 0};
+float theta = 0;								// The angle of rotation
+float Interactivity::eye[] = {5, 5, 0};		// The first 3 paramters of gluLookAt
+float Interactivity::center[] = {0, 0, 0};		// The first 4-6 paramters of gluLookAt
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {
 	switch (key) {
@@ -33,9 +33,9 @@ void Interactivity::special(int key, int x, int y) {
  		case GLUT_KEY_RIGHT:
 			r = sqrt(pow(eye[0] - center[0], 2) + pow(eye[2] - center[2], 2));
 			change = key == GLUT_KEY_LEFT ? 0.1 : -0.1;	// postive or negative
-			rot = rot < 360 ? rot + change : 0;				// increment or reset to 0
-			eye[0] = r * cos(rot);						// circular motion
-			eye[2] = r * sin(rot);
+			theta = theta < 360 ? theta + change : 0;		// increment or reset to 0
+			eye[0] = r * cos(theta);						// circular motion
+			eye[2] = r * sin(theta);
  			break;
  		case GLUT_KEY_UP:			// Move camera strictly upwards
 			++eye[1];

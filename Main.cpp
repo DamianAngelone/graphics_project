@@ -18,11 +18,11 @@ using namespace std;
 
 // Include project files
 #include "Interactivity.h"
+#include "Player.h"
 
 const int WIDTH = 960;
 const int HEIGHT = 540;
 
-bool startupFix = false;	 	// stops the second tick from happening to fast
 bool pause = false;				// if the game is paused
 
 void display(void) {
@@ -33,17 +33,15 @@ void display(void) {
 	gluLookAt(Interactivity::eye[0], Interactivity::eye[1], Interactivity::eye[2],
 	          Interactivity::center[0], Interactivity::center[1], Interactivity::center[2], 
 	          0, 1, 0);
-	glColor3f(1, 0, 0);
-	glutSolidTeapot(1);
+
+	Player::drawPlayer();
 	glFlush();
 }
 
+// Constantly redraw the screen every 17 ms for 60 fps
 void Redraw(int i) {
 	if (!pause) {
-		if (startupFix) {
-			glutPostRedisplay();
-		}
-		startupFix = true;
+		glutPostRedisplay();
 		glutTimerFunc(17, Redraw, 0);
 	}
 }
