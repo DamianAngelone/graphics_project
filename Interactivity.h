@@ -3,6 +3,9 @@
 
 class Interactivity {
 public:	
+	static float eye[];			// The first 3 paramters of gluLookAt
+	static float center[];		// The 4-6 parameters of gluLookAt
+
 	/**
 		Callback function for glut's keyboard func
 		@param key -> ASCII character that was press

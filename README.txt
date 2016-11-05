@@ -1,1 +1,1 @@
-Overall function comments can be found in the header files
+Overall comments can be found in the header files
