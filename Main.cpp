@@ -43,19 +43,21 @@ void Redraw(int i) {
 	}
 }
 
+void init() {
+	glutDisplayFunc(display);
+	glutKeyboardFunc(Interactivity::keyboard);
+	glutSpecialFunc(interactivity::special);
+	// Graphics start
+	Redraw(0);
+}
+
 int main(int argc, char** argv) {
 	Interactivity::printInstructions();
 	glutInit(&argc, argv);
 	glutInitWindowSize(WIDTH, HEIGHT);
 	glutInitWindowPosition(200, 200);
 	glutCreateWindow("Conway");
-
-	glutDisplayFunc(display);
-	glutKeyboardFunc(Interactivity::keyboard);
-	//glutSpecialFunc(interactivity::special);
-	// Graphics start
-	Redraw(0);
+	init();
 	glutMainLoop();
-
 	return(0);
 }
