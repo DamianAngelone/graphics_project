@@ -39,7 +39,7 @@ void display(void) {
 }
 
 // Constantly redraw the screen every 17 ms for 60 fps
-void Redraw(int i) {
+void redraw(int i) {
 	if (!pause) {
 		glutPostRedisplay();
 		glutTimerFunc(17, Redraw, 0);
@@ -54,7 +54,7 @@ void init() {
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(90, 1, 1, 400);
 
-	Redraw(0);
+	redraw(0);
 }
 
 int main(int argc, char** argv) {
