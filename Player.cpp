@@ -15,9 +15,9 @@
 #include <iostream>
 using namespace std;
 
-int x = 0;		// x positon of the player
-int y = 0;		// y positon of the player
-int z = 0;		// z positon of the player
+float x = 0.0;		// x positon of the player
+float y = 0.0;		// y positon of the player
+float z = 0.0;		// z positon of the player
 
 Player::point3D Player::getCoor() {
 	point3D position;

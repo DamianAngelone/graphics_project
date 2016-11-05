@@ -30,9 +30,9 @@ void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
-	gluLookAt(Interactivity::eye[0], Interactivity::eye[1], Interactivity::eye[2],
-	          Interactivity::center[0], Interactivity::center[1], Interactivity::center[2], 
-	          0, 1, 0);
+	Interactivity::point3D eye = Interactivity::getEye();
+	Interactivity::point3D center = Interactivity::getCenter();
+	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, 0, 1, 0);
 
 	Player::drawPlayer();
 	glFlush();

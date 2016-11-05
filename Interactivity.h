@@ -2,10 +2,12 @@
 #define INTERACTIVITY_H
 
 class Interactivity {
-public:	
-	static float eye[];			// The first 3 paramters of gluLookAt
-	static float center[];		// The 4-6 parameters of gluLookAt
-
+public:
+	struct point3D {
+		float x, y, z;
+	};
+	static Interactivity::point3D getEye();		// The first 3 paramters of gluLookAt
+	static point3D getCenter();					// The 4-6 parameters of gluLookAt
 	/**
 		Callback function for glut's keyboard func
 		@param key -> ASCII character that was press

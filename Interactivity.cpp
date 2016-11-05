@@ -12,9 +12,26 @@
 #include <cmath>
 using namespace std;
 
-float theta = 0;								// The angle of rotation
-float Interactivity::eye[] = {5, 5, 0};		// The first 3 paramters of gluLookAt
-float Interactivity::center[] = {0, 0, 0};		// The first 4-6 paramters of gluLookAt
+float theta = 0;				// The angle of rotation
+
+float eye[] = {5.0, 5.0, 0.0};		// The first 3 paramters of gluLookAt
+float center[] = {0.0, 0.0, 0.0};		// The first 4-6 paramters of gluLookAt
+
+Interactivity::point3D Interactivity::getEye() {
+	Interactivity::point3D point;
+	point.x = eye[0];
+	point.y = eye[1];
+	point.z = eye[2];
+	return point;
+}
+
+Interactivity::point3D Interactivity::getCenter() {
+	Interactivity::point3D point;
+	point.x = center[0];
+	point.y = center[1];
+	point.z = center[2];
+	return point;
+}
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {
 	switch (key) {
@@ -54,5 +71,9 @@ void Interactivity::printInstructions() {
 	cout << "KEY        ACTION" << endl;
 	cout << "Q          Quit"   << endl;
 	cout << "ESC"            << endl;
+	cout << "LEFT       Rotate camera left" << endl;
+	cout << "RIGHT      Rotate camera right" << endl;
+	cout << "UP         Move camera upwards" << endl;
+	cout << "DOWN       Move camera downwards" << endl;
 	cout << "-----------------------------------"  << endl;
 }
