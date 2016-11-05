@@ -14,7 +14,6 @@
 
 #include <iostream>
 #include <ctime>
-
 using namespace std;
 
 // Include project files
@@ -23,13 +22,20 @@ using namespace std;
 const int WIDTH = 960;
 const int HEIGHT = 540;
 
-bool fast = true;
-bool startupFix = false; // stops the second tick from happening to fast
-bool pause = false;
+bool startupFix = false;	 	// stops the second tick from happening to fast
+bool pause = false;				// if the game is paused
+
+float eye[] = {-5, -5, -5};		// The first 3 paramters of gluLookAt
+float center[] = {0, 0, 0};		// The 4-6 parameters of gluLookAt
 
 void display(void) {
 	glClearColor(95.0/255, 195.0/255, 240.0/255, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW); 
+	glLoadIdentity();
+	gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], 0, 1, 0);
+	glColor3f(1, 0, 0);
+	glutSolidTeapot(1);
 	glFlush();
 }
 
@@ -46,8 +52,11 @@ void Redraw(int i) {
 void init() {
 	glutDisplayFunc(display);
 	glutKeyboardFunc(Interactivity::keyboard);
-	glutSpecialFunc(interactivity::special);
-	// Graphics start
+	glutSpecialFunc(Interactivity::special);
+
+	glMatrixMode(GL_PROJECTION);
+	gluPerspective(90, 1, 1, 400);
+
 	Redraw(0);
 }
 
