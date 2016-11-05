@@ -24,7 +24,7 @@ all: project
 project: $(PROJECT)
 	./$(PROJECT)$(EXEEXT)
 
-$(PROJECT): main.o
+$(PROJECT): Main.o Interactivity.o
 	$(CC) -Wno-deprecated -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 clean:

@@ -14,17 +14,21 @@
 
 #include <iostream>
 #include <ctime>
+
 using namespace std;
 
-const int WIDTH = 700;
-const int HEIGHT = 700;
+// Include project files
+#include "Interactivity.h"
+
+const int WIDTH = 960;
+const int HEIGHT = 540;
 
 bool fast = true;
 bool startupFix = false; // stops the second tick from happening to fast
 bool pause = false;
 
 void display(void) {
-	glClearColor(230.0/255, 230.0/255, 230.0/255, 0);
+	glClearColor(95.0/255, 195.0/255, 240.0/255, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glFlush();
 }
@@ -39,35 +43,16 @@ void Redraw(int i) {
 	}
 }
 
-void mouse(int btn, int state, int x, int y) {
-	x = (x - 15) / 13.4;
-	y = -1 * (y - 685) / 13.4;
-}
-
-void keyboard(unsigned char key, int xIn, int yIn) {
-	switch (key) {
-		case 'q':
-		case 'Q':
-		case 27:
-			exit(0);
-			break;
-	}
-}
-
-void printInstructions() {
-	cout << "INSTRUCITONS: " << endl;
-}
-
 int main(int argc, char** argv) {
 	printInstructions();
 	glutInit(&argc, argv);
 	glutInitWindowSize(WIDTH, HEIGHT);
 	glutInitWindowPosition(200, 200);
 	glutCreateWindow("Conway");
-	// Interactivity
+
 	glutDisplayFunc(display);
-	glutMouseFunc(mouse);
-	glutKeyboardFunc(keyboard);
+	glutKeyboardFunc(Interactivity::keyboard);
+	//glutSpecialFunc(interactivity::special);
 	// Graphics start
 	Redraw(0);
 	glutMainLoop();
