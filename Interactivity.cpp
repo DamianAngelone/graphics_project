@@ -11,6 +11,7 @@
 #include <iostream>
 using namespace std;
 
+float rot = 0;
 float Interactivity::eye[] = {-5, -5, -5};
 float Interactivity::center[] = {0, 0, 0};
 
@@ -27,17 +28,12 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 void Interactivity::special(int key, int x, int y) {
 	switch (key) {
 		case GLUT_KEY_LEFT:
-			--eye[0];
-			--center[0];
-			++eye[2];
-			++center[2];
-			glutPostRedisplay();
- 			break;
  		case GLUT_KEY_RIGHT:
-			++eye[0];
-			++center[0];
-			--eye[2];
-			--center[2];
+	 		r = sqrt(pow(eye[0] - center[0], 2) + pow(eye[2] - center[2], 2));
+			change = key == 'GLUT_KEY_LEFT' ? 0.1 : -0.1;	// postive or negative
+			rot = rot < 360 ? rot + change : 0;	// increment or reset to 0
+			center[0] = r * cos(rot);					// circular motion
+			center[2] = r * sin(rot);
  			break;
  		case GLUT_KEY_UP:
 			++eye[1];
