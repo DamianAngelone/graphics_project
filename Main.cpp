@@ -42,7 +42,7 @@ void display(void) {
 void redraw(int i) {
 	if (!pause) {
 		glutPostRedisplay();
-		glutTimerFunc(17, Redraw, 0);
+		glutTimerFunc(17, redraw, 0);
 	}
 }
 
