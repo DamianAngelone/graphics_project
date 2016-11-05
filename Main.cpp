@@ -19,6 +19,7 @@ using namespace std;
 // Include project files
 #include "Interactivity.h"
 #include "Player.h"
+#include "Environment.h"
 
 const int WIDTH = 960;
 const int HEIGHT = 540;
@@ -34,6 +35,7 @@ void display(void) {
 	Interactivity::point3D center = Interactivity::getCenter();
 	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, 0, 1, 0);
 
+	Environment::drawEnvironment();
 	Player::drawPlayer();
 	glFlush();
 }

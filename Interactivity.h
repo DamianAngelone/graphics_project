@@ -22,10 +22,7 @@ public:
 		@param y   -> Where the cursor was when the key was pressed
 	**/
 	static void special(int key, int x, int y);
-	/**
-		Prints the instructions to the console
-	**/
-	static void printInstructions();
+	static void printInstructions();	// Prints the instructions to the console
 };
 
 #endif
