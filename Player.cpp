@@ -28,6 +28,9 @@ Player::point3D Player::getCoor() {
 }
 
 void Player::drawPlayer() {
-	glColor3f(1, 0, 0); 
-	glutSolidTeapot(1);
+	glPushMatrix();
+		glTranslatef(0, 1.5, 0);
+		glColor3f(1, 0, 0); 
+		glutSolidTeapot(0.5);
+	glPopMatrix();
 }

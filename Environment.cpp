@@ -15,29 +15,28 @@
 #include <iostream>
 using namespace std;
 
-float Environment::block[8][3] = {{-1,-1,1}, {-1,1,1}, {1,1,1}, {1,-1,1},
-                                  {-1,-1,-1}, {-1,1,-1}, {1,1,-1}, {1,-1,-1}};
+unsigned char colours[6][3] = {{244, 67,  54},		// Red
+		                   	   {33,  150, 243},		// Blue
+		                   	   {0,   150, 36},		// Teal
+		                   	   {1,   193, 7},		// Amber
+		                   	   {158, 158, 158},		// Gray
+		                       {205, 220, 57}};		// Lime
+int blocks[2] = {3, 4};
 
-void Environment::drawBlock(int a, int b, int c, int d) {
-	glColor3ub(175, 180, 43);
-	glBegin(GL_POLYGON);
-		glVertex3fv(block[a]);
-		glVertex3fv(block[b]);
-		glVertex3fv(block[c]);
-		glVertex3fv(block[d]);
-	glEnd();
-}
-
-void Environment::drawBlocks() {
-	drawBlock(0, 3, 2, 1);
-	drawBlock(1, 0, 4, 5);
-	drawBlock(5, 1, 2, 6);
-	drawBlock(2, 3, 7, 6);	
-	drawBlock(6, 5, 4, 7);
-	drawBlock(4, 0, 3, 7);
-}
-
-void Environment::drawEnvironment() {
-	drawBlocks();
+void Environment::drawEnvironment(int level) {
+	int len = blocks[level - 1];
+	int max = sizeof(colours)/sizeof(colours[0]) - 1,
+	    colour = max;
+	for (int i=0; i<len; i++) {
+		for (int j=0; j<len - i; j++) {
+			glPushMatrix();
+				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
+				glColor3ubv(colours[colour]);
+				glutSolidCube(2);
+				--colour;
+				if (colour == -1) colour = max;
+			glPopMatrix();
+		}
+	}
 	//water
 }

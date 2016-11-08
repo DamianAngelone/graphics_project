@@ -24,7 +24,9 @@ using namespace std;
 const int WIDTH = 960;
 const int HEIGHT = 540;
 
-bool pause = false;				// if the game is paused
+bool pause = false;			// if the game is paused
+
+int level = 1;				// the level the game is on
 
 void display(void) {
 	glClearColor(95.0/255, 195.0/255, 240.0/255, 0);
@@ -34,10 +36,13 @@ void display(void) {
 	Interactivity::point3D eye = Interactivity::getEye();
 	Interactivity::point3D center = Interactivity::getCenter();
 	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, 0, 1, 0);
-
-	Environment::drawEnvironment();
-	Player::drawPlayer();
-	glFlush();
+	glPushMatrix();
+		// Rotation of the camera affects the whole game world
+		glRotatef(Interactivity::theta, 0, 1, 0);
+		Environment::drawEnvironment(level);
+		Player::drawPlayer();
+	glPopMatrix();
+	glutSwapBuffers();
 }
 
 // Constantly redraw the screen every 17 ms for 60 fps
@@ -49,22 +54,24 @@ void redraw(int i) {
 }
 
 void init() {
+	// Callbacks
 	glutDisplayFunc(display);
 	glutKeyboardFunc(Interactivity::keyboard);
 	glutSpecialFunc(Interactivity::special);
 
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(90, 1, 1, 400);
-
+	srand(time(0));
 	redraw(0);
 }
 
 int main(int argc, char** argv) {
 	Interactivity::printInstructions();
 	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(WIDTH, HEIGHT);
 	glutInitWindowPosition(200, 200);
-	glutCreateWindow("Conway");
+	glutCreateWindow("Project");
 	init();
 	glutMainLoop();
 	return(0);

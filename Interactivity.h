@@ -6,6 +6,7 @@ public:
 	struct point3D {
 		float x, y, z;
 	};
+	static float theta;	// The angle of rotation
 	static Interactivity::point3D getEye();		// The first 3 paramters of gluLookAt
 	static point3D getCenter();					// The 4-6 parameters of gluLookAt
 	/**
