@@ -21,7 +21,7 @@ unsigned char colours[6][3] = {{244, 67,  54},		// Red
 		                   	   {1,   193, 7},		// Amber
 		                   	   {158, 158, 158},		// Gray
 		                       {205, 220, 57}};		// Lime
-int blocks[2] = {3, 4};
+int blocks[2] = {3, 4};		// Number of blocks for each level
 
 void Environment::drawEnvironment(int level) {
 	int len = blocks[level - 1];
