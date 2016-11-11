@@ -12,7 +12,7 @@
 #include <cmath>
 using namespace std;
 
-float Interactivity::theta = 0;						// The angle of rotation
+float Interactivity::theta = 0;			// The angle of rotation
 float eye[] = {10.0, 10.0, 0.0};		// The first 3 paramters of gluLookAt
 float center[] = {0.0, 0.0, 0.0};		// The first 4-6 paramters of gluLookAt
 
@@ -34,7 +34,7 @@ Interactivity::point3D Interactivity::getCenter() {
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {
 	switch (key) {
-		case 'q':			// Quit the program
+		case 'q':		// Quit the program
 		case 'Q':
 		case 27:
 			exit(0);

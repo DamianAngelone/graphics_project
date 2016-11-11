@@ -27,8 +27,9 @@ Player::point3D Player::getCoor() {
 	return position;
 }
 
-void Player::drawPlayer() {
+void Player::drawPlayer(bool step) {
 	glPushMatrix();
+		glRotatef(270, 0, 1, 0);
 		glTranslatef(0, 1.5, 0);
 		glColor3f(1, 0, 0); 
 		glutSolidTeapot(0.5);
