@@ -37,10 +37,16 @@ void display(void) {
 	glCullFace(GL_BACK);
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
+
+	// Camera
 	Interactivity::point3D eye = Interactivity::getEye();
 	Interactivity::point3D center = Interactivity::getCenter();
 	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, 0, 1, 0);
-	glShadeModel(GL_FLAT);
+	glShadeModel(GL_SMOOTH);
+
+	// Scene
+	float lightPos[] = {eye.x, eye.y, eye.z, 1};
+ 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glPushMatrix();
 		// Rotation of the camera affects the whole game world
 		glRotatef(Interactivity::theta, 0, 1, 0);
@@ -64,6 +70,14 @@ void init() {
 	// No transparency
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
+
+	// Lighting
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	float lightColour[] = {1.0, 0.9215686275, 0.2509803922, 1};	// #FFEB3B
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
+	glShadeModel(GL_FLAT);
+
 	// Callbacks
 	glutDisplayFunc(display);
 	glutKeyboardFunc(Interactivity::keyboard);

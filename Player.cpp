@@ -62,7 +62,6 @@ void Player::drawPlayer(bool step) {
 	glPushMatrix();
 		glTranslatef(translate[0], translate[1], translate[2]);
 		glRotatef(rot, 0, 1, 0);
-		glColor3f(0, 0, 0); 
 		glutSolidTeapot(0.5);
 	glPopMatrix();
 }
