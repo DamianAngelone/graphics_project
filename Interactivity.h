@@ -7,6 +7,7 @@ public:
 		float x, y, z;
 	};
 	static float theta;	// The angle of rotation
+	static int getLevel();	// Get the level
 	static Interactivity::point3D getEye();		// The first 3 paramters of gluLookAt
 	static point3D getCenter();					// The 4-6 parameters of gluLookAt
 	/**

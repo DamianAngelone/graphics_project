@@ -27,7 +27,6 @@ const int HEIGHT = 540;
 bool pause = false;		// if the game is paused
 
 const int STEPSPEED = 3000;
-int level = 1;			// the level the game is on
 int step = 0;			// When to make the game step
 
 void display(void) {
@@ -50,7 +49,7 @@ void display(void) {
 	glPushMatrix();
 		// Rotation of the camera affects the whole game world
 		glRotatef(Interactivity::theta, 0, 1, 0);
-		Environment::drawEnvironment(level);
+		Environment::drawEnvironment();
 		Player::drawPlayer(step > STEPSPEED);
 	glPopMatrix();
 	if (step > STEPSPEED) step = 0;

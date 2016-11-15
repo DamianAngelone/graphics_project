@@ -15,6 +15,9 @@
 #include <iostream>
 using namespace std;
 
+// Include project files
+#include "Interactivity.h"
+
 unsigned char colours[6][3] = {{244, 67,  54},		// Red
 		                   	   {33,  150, 243},		// Blue
 		                   	   {0,   150, 36},		// Teal
@@ -41,8 +44,8 @@ void drawReflection(){
 }
 
 
-void Environment::drawEnvironment(int level) {
-	int len = blocks[level - 1];
+void Environment::drawEnvironment() {
+	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1,
 	    colour = max;
 	for (int i=0; i<len; i++) {

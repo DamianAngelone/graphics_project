@@ -3,7 +3,7 @@
 
 class Environment {
 public:	
-	static void drawEnvironment(int level);	// Get x, y, z of where the player is
+	static void drawEnvironment();	// Get x, y, z of where the player is
 };
 
 #endif

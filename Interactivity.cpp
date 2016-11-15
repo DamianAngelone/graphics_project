@@ -14,10 +14,15 @@ using namespace std;
 
 // Include project files
 #include "Player.h"
+int level = 1;			// the level the game is on
 
 float Interactivity::theta = 0;			// The angle of rotation
 float eye[] = {8.0, 15.0, 0.0};			// The first 3 paramters of gluLookAt
 float center[] = {-6, 0.0, 0.0};		// The first 4-6 paramters of gluLookAt
+
+int Interactivity::getLevel() {
+	return level;
+}
 
 Interactivity::point3D Interactivity::getEye() {
 	Interactivity::point3D point;
