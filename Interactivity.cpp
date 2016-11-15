@@ -16,8 +16,8 @@ using namespace std;
 #include "Player.h"
 
 float Interactivity::theta = 0;			// The angle of rotation
-float eye[] = {10.0, 10.0, 0.0};		// The first 3 paramters of gluLookAt
-float center[] = {0.0, 0.0, 0.0};		// The first 4-6 paramters of gluLookAt
+float eye[] = {8.0, 15.0, 0.0};			// The first 3 paramters of gluLookAt
+float center[] = {-6, 0.0, 0.0};		// The first 4-6 paramters of gluLookAt
 
 Interactivity::point3D Interactivity::getEye() {
 	Interactivity::point3D point;
@@ -83,16 +83,16 @@ void Interactivity::special(int key, int x, int y) {
 void Interactivity::printInstructions() {
 	cout << "-----------------------------------"  << endl;
 	cout << "INSTRUCITONS: " << endl;
-	cout << "KEY        ACTION" << endl;
-	cout << "Q          Quit"   << endl;
+	cout << "KEY             ACTION" << endl;
+	cout << "Q               Quit"   << endl;
 	cout << "ESC"            << endl;
-	cout << "LEFT       Rotate camera left" << endl;
-	cout << "RIGHT      Rotate camera right" << endl;
-	cout << "UP         Move camera upwards" << endl;
-	cout << "DOWN       Move camera downwards" << endl;
-	cout << "W          Turn the character forwards" << endl;
-	cout << "A          Turn the character left" << endl;
-	cout << "S          Turn the character backwards" << endl;
-	cout << "D          Turn the character right" << endl;
+	cout << "LEFT            Rotate camera left" << endl;
+	cout << "RIGHT           Rotate camera right" << endl;
+	cout << "UP              Move camera upwards" << endl;
+	cout << "DOWN            Move camera downwards" << endl;
+	cout << "W               Turn the character forwards" << endl;
+	cout << "A               Turn the character left" << endl;
+	cout << "S               Turn the character backwards" << endl;
+	cout << "D               Turn the character right" << endl;
 	cout << "-----------------------------------"  << endl;
 }
