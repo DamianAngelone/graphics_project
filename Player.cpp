@@ -43,7 +43,6 @@ void Player::setRotation(int change) {
 void physics() {
 	velocity[0] = acceleration[0] + velocity[0];
 	velocity[1] = acceleration[1] + velocity[1];
-	cout << velocity[1] << endl;
 	velocity[2] = acceleration[2] + velocity[2];
 }
 
