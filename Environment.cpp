@@ -37,7 +37,7 @@ void drawWater(){
 	int len = 2*(Interactivity::getLevel() + 3);
 	
 	float diffuse[] = {0,0.1,2,0.5};
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, diffuse);
 
 	for(int i = -4; i < len; i++){
 		for(int j = -4; j < len; j++){
@@ -61,7 +61,12 @@ void Environment::drawEnvironment() {
 		for (int j=0; j<len - i; j++) {
 			glPushMatrix();
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
-				glColor3ubv(colours[colour]);
+
+				float diffuse2[] = {colours[colour][0], colours[colour][1], colours[colour][2], 1};
+				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, diffuse2);
+				
+				//glColor3ubv(colours[colour]);
+
 				glutSolidCube(2);
 				--colour;
 				if (colour == -1)
