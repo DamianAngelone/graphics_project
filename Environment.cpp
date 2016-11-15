@@ -33,14 +33,13 @@ int Environment::getLength() {
 }
 
 void drawWater(){
-
-	int len = 2*(Interactivity::getLevel() + 3);
+	int len = 2*(Environment::getLength() + 4);
 	
 	float diffuse[] = {0,0.1,2,0.5};
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, diffuse);
 
-	for(int i = -4; i < len; i++){
-		for(int j = -4; j < len; j++){
+	for(int i = -8; i < len; i++){
+		for(int j = -8; j < len; j++){
 
 			glBegin(GL_QUAD_STRIP);
 			glVertex3f(i    , -0.5, j + 1);
