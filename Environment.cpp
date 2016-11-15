@@ -34,6 +34,23 @@ int Environment::getLength() {
 
 void drawWater(){
 	
+	int len = 2*(Interactivity::getLevel() + 3);
+	
+	glColor4ub(0, 0, 255, 1);
+	float specular[] = {0,0,1,1};
+	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+
+	for(int i = -4; i < len; i++){
+		for(int j = -4; j < len; j++){
+
+			glBegin(GL_QUAD_STRIP);
+			glVertex3f(i    , -0.5, j + 1);
+			glVertex3f(i + 1, -0.5, j + 1);
+			glVertex3f(i    , -0.5, j    );
+			glVertex3f(i + 1, -0.5, j    );
+			glEnd();	
+		}
+	}
 }
 
 void drawReflection(){
