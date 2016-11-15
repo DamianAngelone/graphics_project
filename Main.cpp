@@ -26,7 +26,7 @@ const int HEIGHT = 540;
 
 bool pause = false;		// if the game is paused
 
-const int STEPSPEED = 3000;
+const int STEPSPEED = 2000;
 int step = 0;			// When to make the game step
 
 void display(void) {

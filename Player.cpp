@@ -50,8 +50,8 @@ void physics() {
 
 // Checks if the player is on a block
 void offBlock() {
-	if (displacement[0] > Environment::getLength() + 1 ||	// far edges
-		displacement[2] > Environment::getLength() + 1 ||
+	if (displacement[0] == 2 * Environment::getLength() ||	// far edges
+		displacement[2] == 2 * Environment::getLength() ||
 		displacement[0] < 0 || displacement[2] < 0 ||		// close edges
 		// going left/down "into" the board with no block
 		displacement[0] == displacement[2] + 2) {

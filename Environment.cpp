@@ -25,7 +25,7 @@ unsigned char colours[6][3] = {{244, 67,  54},		// Red
 		                   	   {158, 158, 158},		// Gray
 		                       {205, 220, 57}};		// Lime
 		                       
-int blocks[3] = {3, 5, 9};		// Number of blocks in a row for each level
+int blocks[3] = {3, 5, 8};		// Number of blocks in a row for each level
 
 // Get the number of blocks in a row
 int Environment::getLength() {
