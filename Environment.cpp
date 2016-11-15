@@ -35,17 +35,25 @@ int Environment::getLength() {
 void drawWater(){
 	int len = 2*(Environment::getLength() + 4);
 	
-	float diffuse[] = {0,0.1,2,0.5};
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, diffuse);
+	//material to make water plane look like water.
+	float m_ambient[] = {0.0,0.1,0.06,0.5};
+	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
+	float m_diff[] = {0.509,0.509,0.501,0.5};
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diff);
+	float m_specular[] = {0.501,0.501,0.501,0.5};
+	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
+	float m_shiny = 0.25f;
+	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
 
+	//draws the water plane.
 	for(int i = -8; i < len; i++){
 		for(int j = -8; j < len; j++){
 
 			glBegin(GL_QUAD_STRIP);
-			glVertex3f(i    , -0.5, j + 1);
-			glVertex3f(i + 1, -0.5, j + 1);
-			glVertex3f(i    , -0.5, j    );
-			glVertex3f(i + 1, -0.5, j    );
+			glVertex3f(i    , -0.25, j + 1);
+			glVertex3f(i + 1, -0.25, j + 1);
+			glVertex3f(i    , -0.25, j    );
+			glVertex3f(i + 1, -0.25, j    );
 			glEnd();	
 		}
 	}
