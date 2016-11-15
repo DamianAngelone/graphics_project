@@ -20,6 +20,7 @@ float Interactivity::theta = 0;			// The angle of rotation
 float eye[] = {8.0, 15.0, 0.0};			// The first 3 paramters of gluLookAt
 float center[] = {-6, 0.0, 0.0};		// The first 4-6 paramters of gluLookAt
 
+// Get the game level
 int Interactivity::getLevel() {
 	return level;
 }

@@ -25,7 +25,12 @@ unsigned char colours[6][3] = {{244, 67,  54},		// Red
 		                   	   {158, 158, 158},		// Gray
 		                       {205, 220, 57}};		// Lime
 		                       
-int blocks[3] = {3, 5, 9};		// Number of blocks for each level
+int blocks[3] = {3, 5, 9};		// Number of blocks in a row for each level
+
+// Get the number of blocks in a row
+int Environment::getLength() {
+	return blocks[Interactivity::getLevel() - 1];
+}
 
 void drawWater(){
 	
@@ -43,7 +48,7 @@ void drawReflection(){
 	glPopMatrix();
 }
 
-
+// Draws everything except the player/enemies
 void Environment::drawEnvironment() {
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1,
@@ -55,7 +60,8 @@ void Environment::drawEnvironment() {
 				glColor3ubv(colours[colour]);
 				glutSolidCube(2);
 				--colour;
-				if (colour == -1) colour = max;
+				if (colour == -1)
+					colour = max;
 			glPopMatrix();
 		}
 	}
