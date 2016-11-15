@@ -24,6 +24,23 @@ unsigned char colours[6][3] = {{244, 67,  54},		// Red
 		                       
 int blocks[3] = {3, 5, 9};		// Number of blocks for each level
 
+void drawWater(){
+	
+}
+
+void drawReflection(){
+
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, 0.0);
+	glScalef(1.0, -1.0, 1.0);
+	double waterPlane[4] = {0.0, 1.0, 0.0, 0.0};
+	glEnable(GL_CLIP_PLANE0);
+	drawWater();
+	glDisable(GL_CLIP_PLANE0);
+	glPopMatrix();
+}
+
+
 void Environment::drawEnvironment(int level) {
 	int len = blocks[level - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1,
@@ -39,5 +56,5 @@ void Environment::drawEnvironment(int level) {
 			glPopMatrix();
 		}
 	}
-	//water
+	drawWater();
 }
