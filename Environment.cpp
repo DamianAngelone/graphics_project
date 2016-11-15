@@ -33,12 +33,11 @@ int Environment::getLength() {
 }
 
 void drawWater(){
-	
+
 	int len = 2*(Interactivity::getLevel() + 3);
 	
-	glColor4ub(0, 0, 255, 1);
-	float specular[] = {0,0,1,1};
-	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+	float diffuse[] = {0,0.1,2,0.5};
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
 
 	for(int i = -4; i < len; i++){
 		for(int j = -4; j < len; j++){
@@ -51,18 +50,6 @@ void drawWater(){
 			glEnd();	
 		}
 	}
-}
-
-void drawReflection(){
-
-	glPushMatrix();
-	glTranslatef(0.0, 0.0, 0.0);
-	glScalef(1.0, -1.0, 1.0);
-	double waterPlane[4] = {0.0, 1.0, 0.0, 0.0};
-	glEnable(GL_CLIP_PLANE0);
-	drawWater();
-	glDisable(GL_CLIP_PLANE0);
-	glPopMatrix();
 }
 
 // Draws everything except the player/enemies
