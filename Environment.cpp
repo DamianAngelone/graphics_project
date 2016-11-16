@@ -36,11 +36,11 @@ void drawWater(){
 
 	int len = 2*(Environment::getLength() + 4);
 	//material to make water plane look like water.
-	float m_ambient[] = {0.0,0.1,0.06,0.5};
+	float m_ambient[] = {0.0, 0.1, 0.06, 0.5};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
-	float m_diff[] = {0.509,0.509,0.501,0.5};
+	float m_diff[] = {0.509, 0.509, 0.501, 0.5};
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diff);
-	float m_specular[] = {0.501,0.501,0.501,0.5};
+	float m_specular[] = {0.501, 0.501, 0.501, 0.5};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 	float m_shiny = 0.25f;
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
@@ -62,19 +62,18 @@ void drawWater(){
 
 void drawSand(){
 
-
 	int len = 2*(Environment::getLength() + 4);
+
+	float amb[] = {0.806, 0.567, 0.48, 1};
+	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+	float diff[] = {0.806, 0.567, 0.48, 1};
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
+	float spec[] = {0.806, 0.567, 0.48, 1};
+	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 
 	//draws the sand plane.
 	for(int i = -8; i < len; i++){
 		for(int j = -8; j < len; j++){
-
-			float amb[] = {121/150, 85/150, 72/150};
-			glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
-			float diff[] = {121/150, 85/150, 72/150};
-			glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
-			float spec[] = {121/150, 85/150, 72/150};
-			glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 
 			glBegin(GL_QUAD_STRIP);
 			glVertex3f(i    , -4, j + 1);
@@ -96,15 +95,8 @@ void drawBoard(){
 		for (int j=0; j<len - i; j++) {
 			glPushMatrix();
 
-				float matColour[4];
-				for (int k = 0; k < len; ++k) {
-					matColour[k] = (float)(colours[colour][k]/150);
-				}
-				
-				glMaterialfv(GL_FRONT, GL_AMBIENT, matColour);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, matColour);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, matColour);
-
+				float amb2[] = {colours[colour][0]/150, colours[colour][1]/150, colours[colour][2]/150, 1}; 
+				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, amb2);
 
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
 
@@ -123,8 +115,6 @@ void drawBoard(){
 void Environment::drawEnvironment() {
 	
 	drawBoard();
-	glDisable(GL_DEPTH_TEST);
 	drawWater();
-	glEnable(GL_DEPTH_TEST);
 	drawSand();
 }
