@@ -76,10 +76,10 @@ void drawSand(){
 		for(int j = -8; j < len; j++){
 
 			glBegin(GL_QUAD_STRIP);
-			glVertex3f(i    , -4, j + 1);
-			glVertex3f(i + 1, -4, j + 1);
-			glVertex3f(i    , -4, j    );
-			glVertex3f(i + 1, -4, j    );
+			glVertex3f(i    , -8.1, j + 1);
+			glVertex3f(i + 1, -8.1, j + 1);
+			glVertex3f(i    , -8.1, j    );
+			glVertex3f(i + 1, -8.1, j    );
 			glEnd();	
 		}
 	}
@@ -91,16 +91,21 @@ void drawBoard(){
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1,
 	    colour = max;
-	for (int i=0; i<len; i++) {
-		for (int j=0; j<len - i; j++) {
+	for (int i=0; i<len; ++i) {
+		for (int j=0; j<len - i; ++j) {
 			glPushMatrix();
 
 				float amb2[] = {colours[colour][0]/100, colours[colour][1]/100, colours[colour][2]/100, 1}; 
 				glMaterialfv(GL_FRONT, GL_AMBIENT, amb2);
 
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
-
 				glutSolidCube(2);
+
+				// Draw column
+				for (int k=-8; k<j * 2; k+=2) {
+					glTranslatef(0, -2, 0);
+					glutSolidCube(2);
+				}
 				--colour;
 				if (colour == -1)
 					colour = max;
