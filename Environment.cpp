@@ -18,12 +18,12 @@ using namespace std;
 // Include project files
 #include "Interactivity.h"
 
-unsigned char colours[6][3] = {{244, 67,  54},		// Red
-		                   	   {33,  150, 243},		// Blue
-		                   	   {0,   150, 36},		// Teal
-		                   	   {1,   193, 7},		// Amber
-		                   	   {158, 158, 158},		// Gray
-		                       {205, 220, 57}};		// Lime
+unsigned char colours[6][4] = {{244, 67,  54, 1},		// Red
+		                   	   {33,  150, 243,1 },		// Blue
+		                   	   {0,   150, 36, 1},		// Teal
+		                   	   {1,   193, 7, 1},		// Amber
+		                   	   {158, 158, 158, 1},		// Gray
+		                       {205, 220, 57, 1}};		// Lime
 		                       
 int blocks[3] = {3, 5, 8};		// Number of blocks in a row for each level
 
@@ -33,8 +33,8 @@ int Environment::getLength() {
 }
 
 void drawWater(){
+
 	int len = 2*(Environment::getLength() + 4);
-	
 	//material to make water plane look like water.
 	float m_ambient[] = {0.0,0.1,0.06,0.5};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
@@ -44,6 +44,7 @@ void drawWater(){
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 	float m_shiny = 0.25f;
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
+
 
 	//draws the water plane.
 	for(int i = -8; i < len; i++){
@@ -59,20 +60,55 @@ void drawWater(){
 	}
 }
 
-// Draws everything except the player/enemies
-void Environment::drawEnvironment() {
+void drawSand(){
+
+
+	int len = 2*(Environment::getLength() + 4);
+
+	//draws the sand plane.
+	for(int i = -8; i < len; i++){
+		for(int j = -8; j < len; j++){
+
+			float amb[] = {121/150, 85/150, 72/150};
+			glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+			float diff[] = {121/150, 85/150, 72/150};
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
+			float spec[] = {121/150, 85/150, 72/150};
+			glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
+
+			glBegin(GL_QUAD_STRIP);
+			glVertex3f(i    , -4, j + 1);
+			glVertex3f(i + 1, -4, j + 1);
+			glVertex3f(i    , -4, j    );
+			glVertex3f(i + 1, -4, j    );
+			glEnd();	
+		}
+	}
+
+}
+
+void drawBoard(){
+
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1,
 	    colour = max;
 	for (int i=0; i<len; i++) {
 		for (int j=0; j<len - i; j++) {
 			glPushMatrix();
+
+				float matColour[4];
+				for (int k = 0; k < len; ++k) {
+					matColour[k] = (float)(colours[colour][k]/150);
+				}
+				
+				glMaterialfv(GL_FRONT, GL_AMBIENT, matColour);
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, matColour);
+				glMaterialfv(GL_FRONT, GL_SPECULAR, matColour);
+
+
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
 
-				float diffuse2[] = {colours[colour][0], colours[colour][1], colours[colour][2], 1};
-				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, diffuse2);
-				
-				//glColor3ubv(colours[colour]);
+				glColor4ubv(colours[colour]);
 
 				glutSolidCube(2);
 				--colour;
@@ -81,5 +117,14 @@ void Environment::drawEnvironment() {
 			glPopMatrix();
 		}
 	}
+}
+
+// Draws everything except the player/enemies
+void Environment::drawEnvironment() {
+	
+	drawBoard();
+	glDisable(GL_DEPTH_TEST);
 	drawWater();
+	glEnable(GL_DEPTH_TEST);
+	drawSand();
 }
