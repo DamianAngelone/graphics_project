@@ -36,11 +36,11 @@ void drawWater(){
 
 	int len = 2*(Environment::getLength() + 4);
 	//material to make water plane look like water.
-	float m_ambient[] = {0.0, 0.1, 0.06, 0.5};
+	float m_ambient[] = {0, 0.509, 0.501, 0.75};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
-	float m_diff[] = {0.509, 0.509, 0.501, 0.5};
+	float m_diff[] = {0, 0.509, 0.501, 0.75};
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diff);
-	float m_specular[] = {0.501, 0.501, 0.501, 0.5};
+	float m_specular[] = {0, 0.501, 0.501, 0.75};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 	float m_shiny = 0.25f;
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
@@ -95,12 +95,10 @@ void drawBoard(){
 		for (int j=0; j<len - i; j++) {
 			glPushMatrix();
 
-				float amb2[] = {colours[colour][0]/150, colours[colour][1]/150, colours[colour][2]/150, 1}; 
-				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, amb2);
+				float amb2[] = {colours[colour][0]/100, colours[colour][1]/100, colours[colour][2]/100, 1}; 
+				glMaterialfv(GL_FRONT, GL_AMBIENT, amb2);
 
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
-
-				glColor4ubv(colours[colour]);
 
 				glutSolidCube(2);
 				--colour;
@@ -114,7 +112,12 @@ void drawBoard(){
 // Draws everything except the player/enemies
 void Environment::drawEnvironment() {
 	
+	glDepthMask(GL_TRUE);
 	drawBoard();
+	glDepthMask(GL_FALSE);
+	glEnable(GL_BLEND);
 	drawWater();
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 	drawSand();
 }
