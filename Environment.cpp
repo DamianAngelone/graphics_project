@@ -112,12 +112,12 @@ void drawBoard(){
 // Draws everything except the player/enemies
 void Environment::drawEnvironment() {
 	
-	glDepthMask(GL_TRUE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	drawBoard();
-	glDepthMask(GL_FALSE);
-	glEnable(GL_BLEND);
-	drawWater();
-	glDepthMask(GL_TRUE);
-	glDisable(GL_BLEND);
 	drawSand();
+	glEnable(GL_POLYGON_OFFSET_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonOffset(2.0f, 1.0f);
+	drawWater();
+	glDisable(GL_POLYGON_OFFSET_FILL);
 }
