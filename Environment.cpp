@@ -32,6 +32,35 @@ int Environment::getLength() {
 	return blocks[Interactivity::getLevel() - 1];
 }
 
+void drawBoard(){
+
+	int len = blocks[Interactivity::getLevel() - 1];
+	int max = sizeof(colours)/sizeof(colours[0]) - 1, 
+		colour = max;
+	for (int i=0; i<len; ++i) {
+		for (int j=0; j<len - i; ++j) {
+
+			float amb2[] = {colours[colour][0]/150, colours[colour][1]/150, colours[colour][2]/150, 1}; 
+			glMaterialfv(GL_FRONT, GL_AMBIENT, amb2);
+			glPushMatrix();
+
+
+				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
+				glutSolidCube(2);
+
+				// Draw column
+				for (int k=-8; k<j * 2; k+=2) {
+					glTranslatef(0, -2, 0);
+					glutSolidCube(2);
+				}
+				--colour;
+				if (colour == -1)
+					colour = max;
+			glPopMatrix();
+		}
+	}
+}
+
 void drawWater(){
 
 	int len = 2*(Environment::getLength() + 4);
@@ -66,8 +95,8 @@ void drawSand(){
 
 	float amb[] = {0.806, 0.567, 0.48, 1};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
-	float diff[] = {0.806, 0.567, 0.48, 1};
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
+	float diff2[] = {0.806, 0.567, 0.48, 1};
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff2);
 	float spec[] = {0.806, 0.567, 0.48, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 
@@ -86,43 +115,15 @@ void drawSand(){
 
 }
 
-void drawBoard(){
-
-	int len = blocks[Interactivity::getLevel() - 1];
-	int max = sizeof(colours)/sizeof(colours[0]) - 1,
-	    colour = max;
-	for (int i=0; i<len; ++i) {
-		for (int j=0; j<len - i; ++j) {
-			glPushMatrix();
-
-				float amb2[] = {colours[colour][0]/100, colours[colour][1]/100, colours[colour][2]/100, 1}; 
-				glMaterialfv(GL_FRONT, GL_AMBIENT, amb2);
-
-				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
-				glutSolidCube(2);
-
-				// Draw column
-				for (int k=-8; k<j * 2; k+=2) {
-					glTranslatef(0, -2, 0);
-					glutSolidCube(2);
-				}
-				--colour;
-				if (colour == -1)
-					colour = max;
-			glPopMatrix();
-		}
-	}
-}
 
 // Draws everything except the player/enemies
 void Environment::drawEnvironment() {
 	
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	drawBoard();
 	drawSand();
-	glEnable(GL_POLYGON_OFFSET_LINE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glPolygonOffset(2.0f, 1.0f);
+	//glEnable(GL_POLYGON_OFFSET_FILL);
+	//glPolygonOffset(2.0f, 1.0f);
 	drawWater();
-	glDisable(GL_POLYGON_OFFSET_FILL);
+	//glDisable(GL_POLYGON_OFFSET_FILL);
 }
