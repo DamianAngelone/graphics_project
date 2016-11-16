@@ -118,12 +118,8 @@ void drawSand(){
 
 // Draws everything except the player/enemies
 void Environment::drawEnvironment() {
-	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	drawBoard();
+
 	drawSand();
-	//glEnable(GL_POLYGON_OFFSET_FILL);
-	//glPolygonOffset(2.0f, 1.0f);
+	drawBoard();
 	drawWater();
-	//glDisable(GL_POLYGON_OFFSET_FILL);
 }
