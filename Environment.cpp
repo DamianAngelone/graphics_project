@@ -40,10 +40,9 @@ void drawBoard(){
 	for (int i=0; i<len; ++i) {
 		for (int j=0; j<len - i; ++j) {
 
-			float amb2[] = {colours[colour][0]/150, colours[colour][1]/150, colours[colour][2]/150, 1}; 
-			glMaterialfv(GL_FRONT, GL_AMBIENT, amb2);
+			float amb[] = {colours[colour][0]/150, colours[colour][1]/150, colours[colour][2]/150, 1}; 
+			glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
 			glPushMatrix();
-
 
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
 				glutSolidCube(2);
@@ -95,8 +94,8 @@ void drawSand(){
 
 	float amb[] = {0.806, 0.567, 0.48, 1};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
-	float diff2[] = {0.806, 0.567, 0.48, 1};
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff2);
+	float diff[] = {0.806, 0.567, 0.48, 1};
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
 	float spec[] = {0.806, 0.567, 0.48, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 

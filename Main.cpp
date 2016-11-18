@@ -17,9 +17,9 @@
 using namespace std;
 
 // Include project files
+#include "Environment.h"
 #include "Interactivity.h"
 #include "Player.h"
-#include "Environment.h"
 
 const int WIDTH = 960;
 const int HEIGHT = 540;
@@ -50,11 +50,12 @@ void display(void) {
  	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glPushMatrix();
 		// Rotation of the camera affects the whole game world
-		glRotatef(Interactivity::theta, 0, 1, 0);
+		glRotatef(Interactivity::getTheta(), 0, 1, 0);
 		Environment::drawEnvironment();
 		Player::drawPlayer(step > STEPSPEED);
 	glPopMatrix();
-	if (step > STEPSPEED) step = 0;
+	if (step > STEPSPEED)
+		step = 0;
 	glutSwapBuffers();
 }
 
@@ -75,7 +76,7 @@ void init() {
 	// Lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	float lightColour[] = {1.0, 0.9215686275, 0.2509803922, 1};	// #FFEB3B
+	float lightColour[] = {1.0, 0.9215, 0.2509, 1};	// #FFEB3B
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
 	glShadeModel(GL_FLAT);
 
