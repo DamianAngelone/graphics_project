@@ -29,7 +29,7 @@ unsigned char colours[6][4] = {{244, 67,  54, 1},		// Red
 bool getWaterHeight = true;
 bool getSandHeight = true;
 		                       
-int blocks[3] = {3, 5, 8};		// Number of blocks in a row for each level
+int blocks[3] = {3, 5, 7};		// Number of blocks in a row for each level
 
 float WaterHeightMap[100][100];
 float SandHeightMap[100][100];
@@ -39,8 +39,7 @@ int Environment::getLength() {
 	return blocks[Interactivity::getLevel() - 1];
 }
 
-void createWaves(int iterations, int size){
-
+void createWaves(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
 
@@ -69,9 +68,7 @@ void createWaves(int iterations, int size){
 	//createNormals();
 }
 
-void createSlopes(int iterations, int size){
-
-
+void createSlopes(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
 
@@ -100,8 +97,7 @@ void createSlopes(int iterations, int size){
 	//createNormals();
 }
 
-void drawBoard(){
-
+void drawBoard() {
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1, 
 		colour = max;
@@ -128,29 +124,26 @@ void drawBoard(){
 	}
 }
 
-void resetArray(int size){
-
+void resetArray(int size) {
 	for(int x = 0; x < size; x++){
         for(int z = 0; z < size; z++){
-
         	WaterHeightMap[x][z] = 0.0;
 		}
 	}
 }
 
-void drawWater(int step){
-
+void drawWater(int step) {
 	glPushMatrix();
 	//glTranslatef(0, -0.25, 0);
 
 	int len = 2*(Environment::getLength() + 4);
 
-	if(getSandHeight){
+	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createWaves(3, len);
 	}
 
-	if(step % 5 == 0){
+	if(step % 5 == 0) {
 		createWaves(3, len);
 		resetArray(len);
 	}
@@ -174,24 +167,23 @@ void drawWater(int step){
 
 			glNormal3f(0, 1, 0);
 
-			glVertex3f(i    , WaterHeightMap[i][j+1], j + 1);
-			glVertex3f(i + 1, WaterHeightMap[i+1][j+1], j + 1);
+			glVertex3f(i    , WaterHeightMap[i][j + 1], j + 1);
+			glVertex3f(i + 1, WaterHeightMap[i + 1][j + 1], j + 1);
 			glVertex3f(i    , WaterHeightMap[i][j], j    );
-			glVertex3f(i + 1, WaterHeightMap[i+1][j], j    );
+			glVertex3f(i + 1, WaterHeightMap[i + 1][j], j    );
 			glEnd();	
 		}
 	}
 	glPopMatrix();
 }
 
-void drawSand(){
-
+void drawSand() {
 	glPushMatrix();
 	glTranslatef(0, -8, 0);
 
-	int len = 2*(Environment::getLength() + 4);
+	int len = 2 * (Environment::getLength() + 4);
 
-	if(getSandHeight){
+	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createSlopes(2, len);
 	}
@@ -204,17 +196,17 @@ void drawSand(){
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 
 	//draws the sand plane.
-	for(int i = -8; i < len; i++){
-		for(int j = -8; j < len; j++){
+	for(int i = -8; i < len; i++) {
+		for(int j = -8; j < len; j++) {
 
 			glBegin(GL_QUAD_STRIP);
 
 			glNormal3f(0, 1, 0);
 		
-			glVertex3f(i    , SandHeightMap[i][j+1], j + 1);
-			glVertex3f(i + 1, SandHeightMap[i+1][j+1], j + 1);
+			glVertex3f(i    , SandHeightMap[i][j + 1], j + 1);
+			glVertex3f(i + 1, SandHeightMap[i + 1][j + 1], j + 1);
 			glVertex3f(i    , SandHeightMap[i][j], j    );
-			glVertex3f(i + 1, SandHeightMap[i+1][j], j    );
+			glVertex3f(i + 1, SandHeightMap[i + 1][j], j    );
 			glEnd();	
 
 		}
@@ -224,8 +216,7 @@ void drawSand(){
 
 // Draws everything except the player/enemies
 void Environment::drawEnvironment(int step) {
-
 	drawSand();
 	drawBoard();
-	drawWater(step);
+	//drawWater(step);
 }
