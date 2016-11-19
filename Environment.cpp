@@ -41,14 +41,13 @@ int Environment::getLength() {
 
 void createWaves(int iterations, int size){
 
-
 	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
 
 		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
 	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
-	    float terrainCircleSize = 20; 				//random radius of circle (1-5)
-	    int randomHeight = (rand() % 5) + 1;		//random height for slope (1-5)   
+	    float terrainCircleSize = 30; 				//random radius of circle (1-5)
+	    int randomHeight = (rand() % 3) + 1;		//random height for slope (1-5)   
 	    
 	    //will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
@@ -78,8 +77,8 @@ void createSlopes(int iterations, int size){
 
 		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
 	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
-	    float terrainCircleSize = 20; 				//random radius of circle (1-5)
-	    int randomHeight = (rand() % 5) + 1;		//random height for slope (1-5)   
+	    float terrainCircleSize = 30; 				//random radius of circle (1-5)
+	    int randomHeight = (rand() % 4) + 1;		//random height for slope (1-5)   
 	    
 	    //will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
@@ -129,15 +128,32 @@ void drawBoard(){
 	}
 }
 
-void drawWater(){
+void resetArray(int size){
+
+	for(int x = 0; x < size; x++){
+        for(int z = 0; z < size; z++){
+
+        	WaterHeightMap[x][z] = 0.0;
+		}
+	}
+}
+
+void drawWater(int step){
+
+	glPushMatrix();
+	//glTranslatef(0, -0.25, 0);
 
 	int len = 2*(Environment::getLength() + 4);
 
-	if(getWaterHeight){
-		getWaterHeight = !getWaterHeight;
-		createWaves(2, len);
+	if(getSandHeight){
+		getSandHeight = !getSandHeight;
+		createWaves(3, len);
 	}
 
+	if(step % 5 == 0){
+		createWaves(3, len);
+		resetArray(len);
+	}
 
 	//material to make water plane look like water.
 	float m_ambient[] = {0, 0.509, 0.501, 0.75};
@@ -158,13 +174,14 @@ void drawWater(){
 
 			glNormal3f(0, 1, 0);
 
-			glVertex3f(i    , -0.25, j + 1);
-			glVertex3f(i + 1, -0.25, j + 1);
-			glVertex3f(i    , -0.25, j    );
-			glVertex3f(i + 1, -0.25, j    );
+			glVertex3f(i    , WaterHeightMap[i][j+1], j + 1);
+			glVertex3f(i + 1, WaterHeightMap[i+1][j+1], j + 1);
+			glVertex3f(i    , WaterHeightMap[i][j], j    );
+			glVertex3f(i + 1, WaterHeightMap[i+1][j], j    );
 			glEnd();	
 		}
 	}
+	glPopMatrix();
 }
 
 void drawSand(){
@@ -205,11 +222,10 @@ void drawSand(){
 	glPopMatrix();
 }
 
-
 // Draws everything except the player/enemies
-void Environment::drawEnvironment() {
+void Environment::drawEnvironment(int step) {
 
 	drawSand();
 	drawBoard();
-	drawWater();
+	drawWater(step);
 }
