@@ -20,7 +20,7 @@ using namespace std;
 #include "Interactivity.h"
 
 unsigned char colours[6][3] = {{244, 67,  54},	// Red
-		                   	   {33,  150, 243},	// Blue
+		                   	   {0,  50, 243},	// Blue
 		                   	   {0,   150, 36},	// Teal
 		                   	   {1,   193, 7},	// Amber
 		                   	   {158, 158, 158},	// Gray
@@ -36,6 +36,7 @@ float SandHeightMap[100][100];
 
 // Get the number of blocks in a row
 int Environment::getLength() {
+
 	return blocks[Interactivity::getLevel() - 1];
 }
 
@@ -95,6 +96,23 @@ void createSlopes(int iterations, int size) {
 	}
 	//create normals for each plane.
 	//createNormals();
+}
+
+void drawBorder(){
+
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable (GL_COLOR_MATERIAL);
+
+	int len = 2*(Environment::getLength() + 4) + 8;
+
+	glColor3ubv(colours[0]); //red colour
+	glPushMatrix();
+	glScalef(0.5,len,len);
+	glTranslatef(len,0,0);
+	glutSolidCube(1);
+	glPopMatrix();
+	glDisable(GL_COLOR_MATERIAL);
+
 }
 
 void drawBoard() {
@@ -234,6 +252,7 @@ void drawSand() {
 // Draws everything except the player/enemies
 void Environment::drawEnvironment(int step) {
 	drawSand();
+	//drawBorder();
 	drawBoard();
 	drawWater(step);
 }
