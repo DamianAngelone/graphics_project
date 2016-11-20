@@ -17,12 +17,16 @@ using namespace std;
 #include "Environment.h"
 
 int level = 1;								// the level the game is on
+int playerBeenLength = 0;					// the level the game is on
 
 float theta = 0;							// The angle of rotation
+// float array instead of point3D because you can't initialize a struct up here
 // The first 3 paramters of gluLookAt
-float eye[] = {Environment::getLength(), Environment::getLength() * 3, -20};
+float eye[] = {Environment::getLength(), Environment::getLength() * 3, -12};
 // The 4-6 paramters of gluLookAt	
 float center[] = {Environment::getLength(), 0, Environment::getLength() * 2 + 8};
+
+Interactivity::point3D playerBeen[50];
 
 int Interactivity::getLevel() {	 // Get the game level
 	return level;
@@ -46,6 +50,41 @@ Interactivity::point3D Interactivity::getCenter() { // Get 4-6 paramters of gluL
 	point.y = center[1];
 	point.z = center[2];
 	return point;
+}
+
+Interactivity::point3D* Interactivity::getPlayerBeen() {
+	return playerBeen;
+}
+
+void Interactivity::pushPosition(int x, int z) {
+	Interactivity::point3D point;
+	point.x = x;
+	point.z = z;
+	bool duplicate = false;
+	// Check for duplicate spot
+	for (int i = 0; i < playerBeenLength; ++i) {
+		if (playerBeen[i].x == x
+			&& playerBeen[i].z == z) {
+			duplicate = true;
+			break;
+		}
+	}
+	if (!duplicate) {
+		playerBeen[playerBeenLength] = point;
+		++playerBeenLength;
+		int x = Environment::getLength();
+		int numOfBlocks = (x * (x + 1))/2;
+
+		if (playerBeenLength == numOfBlocks) {
+			++level;
+			for (int i = 0; i < playerBeenLength; i++) {
+				playerBeen[i].x = 0;
+				playerBeen[i].z = 0;
+			}
+			playerBeenLength = 0;
+			Player::reset();
+		}
+	}
 }
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {

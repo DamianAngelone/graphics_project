@@ -19,12 +19,12 @@ using namespace std;
 // Include project files
 #include "Interactivity.h"
 
-unsigned char colours[6][4] = {{244, 67,  54, 1},		// Red
-		                   	   {33,  150, 243,1 },		// Blue
-		                   	   {0,   150, 36, 1},		// Teal
-		                   	   {1,   193, 7, 1},		// Amber
-		                   	   {158, 158, 158, 1},		// Gray
-		                       {205, 220, 57, 1}};		// Lime
+unsigned char colours[6][3] = {{244, 67,  54},	// Red
+		                   	   {33,  150, 243},	// Blue
+		                   	   {0,   150, 36},	// Teal
+		                   	   {1,   193, 7},	// Amber
+		                   	   {158, 158, 158},	// Gray
+		                       {205, 220, 57}};	// Lime
 
 bool getWaterHeight = true;
 bool getSandHeight = true;
@@ -98,21 +98,34 @@ void createSlopes(int iterations, int size) {
 }
 
 void drawBoard() {
+	// Ignore lighting
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable (GL_COLOR_MATERIAL);
+
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1, 
 		colour = max;
-	for (int i=0; i<len; ++i) {
-		for (int j=0; j<len - i; ++j) {
+	unsigned char black[] = {0, 0, 0};
+	Interactivity::point3D* beenTo = Interactivity::getPlayerBeen();
 
-			float amb[] = {colours[colour][0]/150, colours[colour][1]/150, colours[colour][2]/150, 1}; 
-			glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+	for (int i = 0; i < len; ++i) {
+		for (int j = 0; j < len - i; ++j) {
+			bool contains = false;
+			// Check if the player has landed on the spot
+			for (int k = 0; k < 50; ++k) {
+				if (beenTo[k].x == i * 2 && beenTo[k].z == j * 2 + i * 2) {
+					contains = true;
+					break;
+				}
+			}
+			// Set block to black if the player has landed on it
+			glColor3ubv(contains ? black : colours[colour]);
 			glPushMatrix();
-
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
 				glutSolidCube(2);
 
 				// Draw column
-				for (int k=-8; k<j * 2; k+=2) {
+				for (int k=-12; k<j * 2; k+=2) {
 					glTranslatef(0, -2, 0);
 					glutSolidCube(2);
 				}
@@ -122,6 +135,7 @@ void drawBoard() {
 			glPopMatrix();
 		}
 	}
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 void resetArray(int size) {
@@ -179,7 +193,8 @@ void drawWater(int step) {
 
 void drawSand() {
 	glPushMatrix();
-	glTranslatef(0, -8, 0);
+	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
+	glTranslatef(0, -12, 0);
 
 	int len = 2 * (Environment::getLength() + 4);
 
@@ -187,7 +202,6 @@ void drawSand() {
 		getSandHeight = !getSandHeight;
 		createSlopes(2, len);
 	}
-
 	float amb[] = {0.6274, 0.3216, 0.1764, 1};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
 	float diff[] = {0.6274, 0.3216, 0.1764, 1};
@@ -208,9 +222,9 @@ void drawSand() {
 			glVertex3f(i    , SandHeightMap[i][j], j    );
 			glVertex3f(i + 1, SandHeightMap[i + 1][j], j    );
 			glEnd();	
-
 		}
 	}
+	glPopAttrib();
 	glPopMatrix();
 }
 

@@ -20,6 +20,7 @@ using namespace std;
 #include "Interactivity.h"
 
 bool canPhysics = false;					// If the player should enter freefall
+bool moved = false;							// To add the initial spot
 
 const int JUMPSIZE = 2;
 int rot = 270;								// The rotation angle
@@ -39,6 +40,21 @@ Player::point3D Player::getCoor() {
 // Change the player's orientation
 void Player::setRotation(int change) {
 	rot = change;
+}
+
+void Player::reset() {
+	canPhysics = false;
+	moved = false;
+	displacement[0] = 0;
+	displacement[1] = 1.5;
+	displacement[2] = 0;
+	velocity[0] = 0;
+	velocity[1] = 0;
+	velocity[2] = 0;
+	acceleration[0] = 0;
+	acceleration[1] = 0;
+	acceleration[2] = 0;
+	rot = 270;
 }
 
 // Computes the velocities from the acceleration
@@ -76,12 +92,17 @@ void offBlock() {
 
 // draws the player and calls the necessary logic functions
 void Player::drawPlayer(bool step) {
-	// If the player is not on a block, do physics
-	if (!canPhysics)
+	if (!canPhysics)			// If the player is not on a block, do physics
 		offBlock();
-	if (canPhysics)		// not else because offBlock changes canPhysics
+	if (canPhysics)				// not else because offBlock changes canPhysics
 		physics();
-	if (step && !canPhysics) {	// Rotate based off keyboard
+	if (step && !canPhysics) {	// Move the player
+		// Add the initial spot
+		if (!moved) {
+			Interactivity::pushPosition(displacement[0], displacement[2]);
+			moved = true;
+		}
+		// Move the player based on the orientation
 		switch(rot) {
 			case 0:		// Left
 				displacement[0] += JUMPSIZE;
@@ -100,6 +121,8 @@ void Player::drawPlayer(bool step) {
 				displacement[2] += JUMPSIZE;
 				break;
 		}
+		// record the new position
+		Interactivity::pushPosition(displacement[0], displacement[2]);
 	}
 	glPushMatrix();
 		glTranslatef(displacement[0] + velocity[0], 
