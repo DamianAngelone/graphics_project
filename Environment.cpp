@@ -40,13 +40,13 @@ int Environment::getLength() {
 }
 
 void createWaves(int iterations, int size) {
-	//will run for how many hills was specified by the user. 
+	
 	for(int i = 0; i < iterations; i++){
 
 		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
 	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
 	    float terrainCircleSize = 30; 				//random radius of circle (1-5)
-	    int randomHeight = (rand() % 3) + 1;		//random height for slope (1-5)   
+	    int randomHeight = (rand() % 1) + 1;		//random height for slope (1-5)   
 	    
 	    //will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
@@ -148,7 +148,7 @@ void resetArray(int size) {
 
 void drawWater(int step) {
 	glPushMatrix();
-	//glTranslatef(0, -0.25, 0);
+	glTranslatef(0, -0.25, 0);
 
 	int len = 2*(Environment::getLength() + 4);
 
@@ -157,9 +157,9 @@ void drawWater(int step) {
 		createWaves(3, len);
 	}
 
-	if(step % 5 == 0) {
-		createWaves(3, len);
+	if(step % 37 == 0) {
 		resetArray(len);
+		createWaves(3, len);
 	}
 
 	//material to make water plane look like water.
@@ -232,5 +232,5 @@ void drawSand() {
 void Environment::drawEnvironment(int step) {
 	drawSand();
 	drawBoard();
-	//drawWater(step);
+	drawWater(step);
 }
