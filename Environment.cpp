@@ -40,12 +40,12 @@ int Environment::getLength() {
 }
 
 void createWaves(int iterations, int size) {
-	
+	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
 
 		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
 	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
-	    float terrainCircleSize = 30; 				//random radius of circle (1-5)
+	    float terrainCircleSize = 35; 				//random radius of circle (1-5)
 	    int randomHeight = (rand() % 1) + 1;		//random height for slope (1-5)   
 	    
 	    //will run for every vertex in the grid.
@@ -59,7 +59,7 @@ void createWaves(int iterations, int size) {
 
                 if (fabs(pd) <= 1.0){
              	
-                	WaterHeightMap[x][z] += randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0;
+                	WaterHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
                 }
             }
         } 
@@ -101,6 +101,9 @@ void drawBoard() {
 	// Ignore lighting
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable (GL_COLOR_MATERIAL);
+
+	float m_specular[] = {0.1, 0.1, 0.1, 1};
+	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1, 
@@ -148,16 +151,16 @@ void resetArray(int size) {
 
 void drawWater(int step) {
 	glPushMatrix();
-	glTranslatef(0, -0.25, 0);
+	glTranslatef(-8, -2, -8);
 
-	int len = 2*(Environment::getLength() + 4);
+	int len = 2*(Environment::getLength() + 4) + 8;
 
 	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createWaves(3, len);
 	}
 
-	if(step % 37 == 0) {
+	if(step % 38 == 0) {
 		resetArray(len);
 		createWaves(3, len);
 	}
@@ -174,8 +177,8 @@ void drawWater(int step) {
 
 
 	//draws the water plane.
-	for(int i = -8; i < len; i++){
-		for(int j = -8; j < len; j++){
+	for(int i = 0; i < len; i++){
+		for(int j = 0; j < len; j++){
 
 			glBegin(GL_QUAD_STRIP);
 
@@ -194,9 +197,9 @@ void drawWater(int step) {
 void drawSand() {
 	glPushMatrix();
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
-	glTranslatef(0, -12, 0);
+	glTranslatef(-8, -12, -8);
 
-	int len = 2 * (Environment::getLength() + 4);
+	int len = 2 * (Environment::getLength() + 4) + 8;
 
 	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
@@ -210,8 +213,8 @@ void drawSand() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 
 	//draws the sand plane.
-	for(int i = -8; i < len; i++) {
-		for(int j = -8; j < len; j++) {
+	for(int i = 0; i < len; i++) {
+		for(int j = 0; j < len; j++) {
 
 			glBegin(GL_QUAD_STRIP);
 
