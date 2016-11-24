@@ -107,11 +107,20 @@ void drawBorder(){
 
 	glColor3ubv(colours[0]); //red colour
 	glPushMatrix();
-	glScalef(0.5,len,len);
-	glTranslatef(len,0,0);
+	glTranslatef(-8,-6,3);
+	glScalef(0.5,13,len);
+	glutSolidCube(1);
+	glPopMatrix();
+	
+	glColor3ubv(colours[0]); //red colour
+	glPushMatrix();
+	glRotatef(90,0,1,0);
+	glTranslatef(-14,-6,3);
+	glScalef(0.5,13,len);
 	glutSolidCube(1);
 	glPopMatrix();
 	glDisable(GL_COLOR_MATERIAL);
+	
 
 }
 
@@ -252,7 +261,7 @@ void drawSand() {
 // Draws everything except the player/enemies
 void Environment::drawEnvironment(int step) {
 	drawSand();
-	//drawBorder();
+	drawBorder();
 	drawBoard();
 	drawWater(step);
 }
