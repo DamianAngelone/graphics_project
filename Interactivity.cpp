@@ -19,10 +19,10 @@ using namespace std;
 int level = 1;								// the level the game is on
 int playerBeenLength = 0;					// the level the game is on
 
-float theta = 0;							// The angle of rotation
+float theta = 40;							// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
 // The first 3 paramters of gluLookAt
-float eye[] = {Environment::getLength(), Environment::getLength() * 3, -12};
+float eye[] = {Environment::getLength() + 1, Environment::getLength() * 3, -10};
 // The 4-6 paramters of gluLookAt	
 float center[] = {Environment::getLength(), 0, Environment::getLength() * 2 + 8};
 
@@ -69,12 +69,14 @@ void Interactivity::pushPosition(int x, int z) {
 			break;
 		}
 	}
-	if (!duplicate) {
+	int len = Environment::getLength();
+	// Check if its a not a duplicate spot and doesn't go past bounds
+		cout << len << endl;
+	if (!duplicate && x/2 < len && z/2 < len) {
 		playerBeen[playerBeenLength] = point;
 		++playerBeenLength;
-		int x = Environment::getLength();
-		int numOfBlocks = (x * (x + 1))/2;
-
+		
+		int numOfBlocks = (len * (len + 1))/2;
 		if (playerBeenLength == numOfBlocks) {
 			++level;
 			for (int i = 0; i < playerBeenLength; i++) {
@@ -109,6 +111,9 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 		case 'd':	// Right
 		case 'D':
 			Player::setRotation(180);
+			break;
+		case 'h':
+			++level;
 			break;
 	}
 }

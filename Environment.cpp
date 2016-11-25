@@ -258,36 +258,7 @@ void drawWater(int step) {
 	}
 	glPopMatrix();
 
-	glPushMatrix();
-
-	glRotatef(-90, 0, 1, 0);
-	glTranslatef(-7.99, -12, -14);
-
-	for(int i = 0; i < 10; i++){
-		for(int k = 0; k < len; k++){
-
-			glBegin(GL_QUAD_STRIP);
-
-			glNormal3f(-1, 0, 0);
-
-			if(i == 9){
-
-				glVertex3f(0, WaterHeightMap[0][k + 1], k + 1);
-				glVertex3f(0, WaterHeightMap[0][k + 1], k + 1);
-				glVertex3f(0, WaterHeightMap[0][k]    , k    );
-				glVertex3f(0, WaterHeightMap[0][k]    , k    );
-			}
-			else{
-				
-				glVertex3f(0, i    , k + 1);
-				glVertex3f(0, i + 1, k + 1);
-				glVertex3f(0, i    , k    );
-				glVertex3f(0, i + 1, k    );
-			}
-			glEnd();	
-		}
-	}
-	glPopMatrix();
+	
 }
 
 void drawSand() {
