@@ -105,23 +105,62 @@ void drawBorder(){
 
 	int len = 2*(Environment::getLength() + 4) + 8;
 
-	glColor3ubv(colours[0]); //red colour
-	glPushMatrix();
-	glTranslatef(-8,-6,3);
-	glScalef(0.5,13,len);
-	glutSolidCube(1);
-	glPopMatrix();
-	
-	glColor3ubv(colours[0]); //red colour
-	glPushMatrix();
-	glRotatef(90,0,1,0);
-	glTranslatef(-14,-6,3);
-	glScalef(0.5,13,len);
-	glutSolidCube(1);
-	glPopMatrix();
-	glDisable(GL_COLOR_MATERIAL);
-	
 
+	if(Interactivity::getLevel() == 1){
+
+		glColor3ubv(colours[0]); //red colour
+		glPushMatrix();
+		glTranslatef(-8,-6,3);
+		glScalef(0.5,13,len);
+		glutSolidCube(1);
+		glPopMatrix();
+		
+		glColor3ubv(colours[0]); //red colour
+		glPushMatrix();
+		glRotatef(90,0,1,0);
+		glTranslatef(-14,-6,3);
+		glScalef(0.5,13,len);
+		glutSolidCube(1);
+		glPopMatrix();
+	}
+
+	if(Interactivity::getLevel() == 2){
+
+		glColor3ubv(colours[0]); //red colour
+		glPushMatrix();
+		glTranslatef(-8,-6,5);
+		glScalef(0.5,13,len);
+		glutSolidCube(1);
+		glPopMatrix();
+		
+		glColor3ubv(colours[0]); //red colour
+		glPushMatrix();
+		glRotatef(90,0,1,0);
+		glTranslatef(-18,-6,5);
+		glScalef(0.5,13,len);
+		glutSolidCube(1);
+		glPopMatrix();
+	}
+
+	if(Interactivity::getLevel() == 3){
+
+		glColor3ubv(colours[0]); //red colour
+		glPushMatrix();
+		glTranslatef(-8,-6,7);
+		glScalef(0.5,13,len);
+		glutSolidCube(1);
+		glPopMatrix();
+		
+		glColor3ubv(colours[0]); //red colour
+		glPushMatrix();
+		glRotatef(90,0,1,0);
+		glTranslatef(-22,-6,7);
+		glScalef(0.5,13,len);
+		glutSolidCube(1);
+		glPopMatrix();
+	}
+	
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 void drawBoard() {
@@ -187,7 +226,7 @@ void drawWater(int step) {
 		createWaves(3, len);
 	}
 
-	if(step % 38 == 0) {
+	if(step % 40 == 0) {
 		resetArray(len);
 		createWaves(3, len);
 	}
@@ -202,7 +241,6 @@ void drawWater(int step) {
 	float m_shiny = 0.25f;
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
 
-
 	//draws the water plane.
 	for(int i = 0; i < len; i++){
 		for(int j = 0; j < len; j++){
@@ -211,10 +249,41 @@ void drawWater(int step) {
 
 			glNormal3f(0, 1, 0);
 
-			glVertex3f(i    , WaterHeightMap[i][j + 1], j + 1);
+			glVertex3f(i    , WaterHeightMap[i][j + 1]    , j + 1);
 			glVertex3f(i + 1, WaterHeightMap[i + 1][j + 1], j + 1);
-			glVertex3f(i    , WaterHeightMap[i][j], j    );
-			glVertex3f(i + 1, WaterHeightMap[i + 1][j], j    );
+			glVertex3f(i    , WaterHeightMap[i][j]        , j    );
+			glVertex3f(i + 1, WaterHeightMap[i + 1][j]    , j    );
+			glEnd();	
+		}
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(-7.99, -12, -14);
+
+	for(int i = 0; i < 10; i++){
+		for(int k = 0; k < len; k++){
+
+			glBegin(GL_QUAD_STRIP);
+
+			glNormal3f(-1, 0, 0);
+
+			if(i == 9){
+
+				glVertex3f(0, WaterHeightMap[0][k + 1], k + 1);
+				glVertex3f(0, WaterHeightMap[0][k + 1], k + 1);
+				glVertex3f(0, WaterHeightMap[0][k]    , k    );
+				glVertex3f(0, WaterHeightMap[0][k]    , k    );
+			}
+			else{
+				
+				glVertex3f(0, i    , k + 1);
+				glVertex3f(0, i + 1, k + 1);
+				glVertex3f(0, i    , k    );
+				glVertex3f(0, i + 1, k    );
+			}
 			glEnd();	
 		}
 	}
@@ -261,7 +330,7 @@ void drawSand() {
 // Draws everything except the player/enemies
 void Environment::drawEnvironment(int step) {
 	drawSand();
-	drawBorder();
 	drawBoard();
+	drawBorder();
 	drawWater(step);
 }
