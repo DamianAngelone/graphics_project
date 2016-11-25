@@ -22,7 +22,7 @@ int playerBeenLength = 0;					// the level the game is on
 float theta = 40;							// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
 // The first 3 paramters of gluLookAt
-float eye[] = {Environment::getLength() + 1, Environment::getLength() * 3, -10};
+float eye[] = {Environment::getLength(), Environment::getLength() * 3, -12};
 // The 4-6 paramters of gluLookAt	
 float center[] = {Environment::getLength(), 0, Environment::getLength() * 2 + 8};
 
@@ -56,6 +56,13 @@ Interactivity::point3D* Interactivity::getPlayerBeen() {
 	return playerBeen;
 }
 
+void cameraAdjust() {
+	eye[0] = Environment::getLength();
+	eye[1] = Environment::getLength() * 3;
+	center[0] = Environment::getLength();
+	center[2] = Environment::getLength() * 2 + 8;
+}
+
 void Interactivity::pushPosition(int x, int z) {
 	Interactivity::point3D point;
 	point.x = x;
@@ -69,9 +76,9 @@ void Interactivity::pushPosition(int x, int z) {
 			break;
 		}
 	}
+	
 	int len = Environment::getLength();
 	// Check if its a not a duplicate spot and doesn't go past bounds
-		cout << len << endl;
 	if (!duplicate && x/2 < len && z/2 < len) {
 		playerBeen[playerBeenLength] = point;
 		++playerBeenLength;
@@ -85,6 +92,7 @@ void Interactivity::pushPosition(int x, int z) {
 			}
 			playerBeenLength = 0;
 			Player::reset();
+			cameraAdjust();
 		}
 	}
 }

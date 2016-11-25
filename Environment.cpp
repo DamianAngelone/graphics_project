@@ -20,7 +20,7 @@ using namespace std;
 #include "Interactivity.h"
 
 unsigned char colours[6][3] = {{244, 67,  54},	// Red
-		                   	   {0,  50, 243},	// Blue
+		                   	   {0,   50, 243},	// Blue
 		                   	   {0,   150, 36},	// Teal
 		                   	   {1,   193, 7},	// Amber
 		                   	   {158, 158, 158},	// Gray
@@ -36,7 +36,6 @@ float SandHeightMap[100][100];
 
 // Get the number of blocks in a row
 int Environment::getLength() {
-
 	return blocks[Interactivity::getLevel() - 1];
 }
 
@@ -104,10 +103,7 @@ void drawBorder(){
 	glEnable (GL_COLOR_MATERIAL);
 
 	int len = 2*(Environment::getLength() + 4) + 8;
-
-
-	if(Interactivity::getLevel() == 1){
-
+	if (Interactivity::getLevel() == 1) {
 		glColor3ubv(colours[0]); //red colour
 		glPushMatrix();
 		glTranslatef(-8,-6,3);
@@ -123,9 +119,7 @@ void drawBorder(){
 		glutSolidCube(1);
 		glPopMatrix();
 	}
-
-	if(Interactivity::getLevel() == 2){
-
+	else if (Interactivity::getLevel() == 2) {
 		glColor3ubv(colours[0]); //red colour
 		glPushMatrix();
 		glTranslatef(-8,-6,5);
@@ -141,8 +135,7 @@ void drawBorder(){
 		glutSolidCube(1);
 		glPopMatrix();
 	}
-
-	if(Interactivity::getLevel() == 3){
+	else if (Interactivity::getLevel() == 3){
 
 		glColor3ubv(colours[0]); //red colour
 		glPushMatrix();
@@ -177,8 +170,8 @@ void drawBoard() {
 	unsigned char black[] = {0, 0, 0};
 	Interactivity::point3D* beenTo = Interactivity::getPlayerBeen();
 
-	for (int i = 0; i < len; ++i) {
-		for (int j = 0; j < len - i; ++j) {
+	for(int i = 0; i < len; ++i) {
+		for(int j = 0; j < len - i; ++j) {
 			bool contains = false;
 			// Check if the player has landed on the spot
 			for (int k = 0; k < 50; ++k) {
@@ -221,12 +214,12 @@ void drawWater(int step) {
 
 	int len = 2*(Environment::getLength() + 4) + 8;
 
-	if(getSandHeight) {		// Initial load
+	if (getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createWaves(3, len);
 	}
 
-	if(step % 40 == 0) {
+	if (step % 40 == 0) {
 		resetArray(len);
 		createWaves(3, len);
 	}
@@ -257,8 +250,6 @@ void drawWater(int step) {
 		}
 	}
 	glPopMatrix();
-
-	
 }
 
 void drawSand() {
@@ -267,7 +258,6 @@ void drawSand() {
 	glTranslatef(-8, -12, -8);
 
 	int len = 2 * (Environment::getLength() + 4) + 8;
-
 	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createSlopes(2, len);
@@ -282,11 +272,8 @@ void drawSand() {
 	//draws the sand plane.
 	for(int i = 0; i < len; i++) {
 		for(int j = 0; j < len; j++) {
-
 			glBegin(GL_QUAD_STRIP);
-
 			glNormal3f(0, 1, 0);
-		
 			glVertex3f(i    , SandHeightMap[i][j + 1], j + 1);
 			glVertex3f(i + 1, SandHeightMap[i + 1][j + 1], j + 1);
 			glVertex3f(i    , SandHeightMap[i][j], j    );

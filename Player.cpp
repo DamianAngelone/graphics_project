@@ -71,19 +71,19 @@ void drawHalfSphere(int scaley, int scalex, GLfloat r) {
  
    for (i=0; i<scalex; ++i) {
      for (j=0; j<scaley; ++j) {
-       v[i*scaley+j][0]=r*cos(j*2*M_PI/scaley)*cos(i*M_PI/(2*scalex));
-       v[i*scaley+j][1]=r*sin(i*M_PI/(2*scalex));
-       v[i*scaley+j][2]=r*sin(j*2*M_PI/scaley)*cos(i*M_PI/(2*scalex));
+       v[i*scaley+j][0] = r * cos(j * 2 * M_PI/scaley) * cos(i * M_PI/(2 * scalex));
+       v[i*scaley+j][1] = r * sin(i * M_PI/(2 * scalex));
+       v[i*scaley+j][2] = r * sin(j * 2 * M_PI/scaley) * cos(i * M_PI/(2 * scalex));
      }
    }
  
    glBegin(GL_QUADS);
-     for (i=0; i<scalex-1; ++i) {
+     for (i=0; i<scalex - 1; ++i) {
        for (j=0; j<scaley; ++j) {
-         glVertex3fv(v[i*scaley+j]);
-         glVertex3fv(v[i*scaley+(j+1)%scaley]);
-         glVertex3fv(v[(i+1)*scaley+(j+1)%scaley]);
-         glVertex3fv(v[(i+1)*scaley+j]);
+         glVertex3fv(v[i * scaley + j]);
+         glVertex3fv(v[i * scaley + (j + 1) % scaley]);
+         glVertex3fv(v[(i + 1) * scaley + (j + 1) % scaley]);
+         glVertex3fv(v[(i + 1) * scaley + j]);
        }
      }
    glEnd();
@@ -91,37 +91,28 @@ void drawHalfSphere(int scaley, int scalex, GLfloat r) {
  }
 
 void drawQubert() {
-	
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable (GL_COLOR_MATERIAL);
-
+	glEnable(GL_COLOR_MATERIAL);
 	glPushMatrix();
-
 		glTranslatef(0, 1.0, 0);
 		glRotatef(-270, 0, 1, 0);
 		glColor3f(1,0.5,0);
 		glScalef(0.6, 0.6, 0.6);
-		
 		//draw body
 		glPushMatrix();
-		
 			glutSolidSphere(1, 100, 100);
-			
 			//eyes
 			glPushMatrix();
 				glColor3f(1,1,1);
 				glTranslatef(-0.3,0.4,0.6);
 				glutSolidSphere(0.4, 100, 100);
-				
 				//pupil
 				glPushMatrix();
 					glColor3f(0,0,0);
 					glTranslatef(0,0.1,0.25);
 					glutSolidSphere(0.2,100,100);
 				glPopMatrix();
-
 			glPopMatrix();
-
 		glPopMatrix();
 		
 		glPushMatrix();
@@ -138,13 +129,12 @@ void drawQubert() {
 		glPushMatrix(); //nose
 			glColor3f(1,0.5,0);
 			gluCylinder(qobj,0.35,0.55,2,100,100);
-			
 			glPushMatrix(); //disc
 				glTranslatef(0,0,2);
 				glColor3f(1,0.5,0);
 				gluDisk(qobj, 0.35, 0.55,  100, 100);
 			glPopMatrix();
-		
+
 			glColor3f(0,0,0);
 			gluCylinder(qobj,0.2,0.35,2,100,100);
 			glPushMatrix();
@@ -181,7 +171,6 @@ void drawQubert() {
 				drawHalfSphere(100,100,0.3);
 			glPopMatrix();
 		glPopMatrix();
-	
 	glPopMatrix();//body
 
 	glDisable(GL_COLOR_MATERIAL);
