@@ -34,8 +34,8 @@ float pos[] = {0, 1, 0};
 float rot2[] = {0, 0, 0};
 GLUquadric* qobj;
 
-Player::point3D Player::getCoor() {
-	point3D position;
+Structure::point3D Player::getCoor() {
+	Structure::point3D position;
 	position.x = displacement[0];
 	position.y = displacement[1];
 	position.z = displacement[2];

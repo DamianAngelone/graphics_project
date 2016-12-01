@@ -17,6 +17,7 @@
 using namespace std;
 
 // Include project files
+#include "Structure.h"
 #include "Environment.h"
 #include "Interactivity.h"
 #include "Player.h"
@@ -40,20 +41,22 @@ void display(void) {
 	glLoadIdentity();
 
 	// Camera
-	Interactivity::point3D eye = Interactivity::getEye();
-	Interactivity::point3D center = Interactivity::getCenter();
+	Structure::point3D eye = Interactivity::getEye();
+	Structure::point3D center = Interactivity::getCenter();
 	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, 0, 1, 0);
 	glShadeModel(GL_SMOOTH);
 
 	// Scene
 	float lightPos[] = {eye.x, eye.y, eye.z, 1};
  	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
 	glPushMatrix();
 		// Rotation of the camera affects the whole game world
 		glRotatef(Interactivity::getTheta(), 0, 1, 0);
 		Environment::drawEnvironment(step);
 		Player::drawPlayer(step > STEPSPEED);
 	glPopMatrix();
+
 	if (step > STEPSPEED)
 		step = 0;
 	glutSwapBuffers();

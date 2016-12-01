@@ -16,17 +16,17 @@ using namespace std;
 #include "Player.h"
 #include "Environment.h"
 
-int level = 1;								// the level the game is on
-int playerBeenLength = 0;					// the level the game is on
+int level = 1;						// the level the game is on
+int playerBeenLength = 0;			// the level the game is on
 
-float theta = 40;							// The angle of rotation
+float theta = 40;					// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
 // The first 3 paramters of gluLookAt
 float eye[] = {Environment::getLength(), Environment::getLength() * 3, -12};
 // The 4-6 paramters of gluLookAt	
 float center[] = {Environment::getLength(), 0, Environment::getLength() * 2 + 8};
 
-Interactivity::point3D playerBeen[50];
+Structure::point3D playerBeen[50];
 
 int Interactivity::getLevel() {	 // Get the game level
 	return level;
@@ -36,26 +36,27 @@ float Interactivity::getTheta() { // Get the horizontal angle of rotation
 	return theta;
 }
 
-Interactivity::point3D Interactivity::getEye() { // Get first 3 paramters of gluLookAt
-	Interactivity::point3D point;
+Structure::point3D Interactivity::getEye() { // Get first 3 paramters of gluLookAt
+	Structure::point3D point;
 	point.x = eye[0];
 	point.y = eye[1];
 	point.z = eye[2];
 	return point;
 }
 
-Interactivity::point3D Interactivity::getCenter() { // Get 4-6 paramters of gluLookAt
-	Interactivity::point3D point;
+Structure::point3D Interactivity::getCenter() { // Get 4-6 paramters of gluLookAt
+	Structure::point3D point;
 	point.x = center[0];
 	point.y = center[1];
 	point.z = center[2];
 	return point;
 }
 
-Interactivity::point3D* Interactivity::getPlayerBeen() {
+Structure::point3D* Interactivity::getPlayerBeen() {
 	return playerBeen;
 }
 
+// Move back the camera when the game progress through the levels
 void cameraAdjust() {
 	eye[0] = Environment::getLength();
 	eye[1] = Environment::getLength() * 3;
@@ -64,7 +65,7 @@ void cameraAdjust() {
 }
 
 void Interactivity::pushPosition(int x, int z) {
-	Interactivity::point3D point;
+	Structure::point3D point;
 	point.x = x;
 	point.z = z;
 	bool duplicate = false;

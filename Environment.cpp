@@ -159,7 +159,7 @@ void drawBorder(){
 void drawBoard() {
 	// Ignore lighting
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable (GL_COLOR_MATERIAL);
+	glEnable(GL_COLOR_MATERIAL);
 
 	float m_specular[] = {0.1, 0.1, 0.1, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
@@ -167,8 +167,9 @@ void drawBoard() {
 	int len = blocks[Interactivity::getLevel() - 1];
 	int max = sizeof(colours)/sizeof(colours[0]) - 1, 
 		colour = max;
-	unsigned char black[] = {0, 0, 0};
-	Interactivity::point3D* beenTo = Interactivity::getPlayerBeen();
+	unsigned char blue[] = {0, 0, 255};
+	unsigned char yellow[] = {255, 255, 0};
+	Structure::point3D* beenTo = Interactivity::getPlayerBeen();
 
 	for(int i = 0; i < len; ++i) {
 		for(int j = 0; j < len - i; ++j) {
@@ -181,7 +182,7 @@ void drawBoard() {
 				}
 			}
 			// Set block to black if the player has landed on it
-			glColor3ubv(contains ? black : colours[colour]);
+			glColor3ubv(contains ? yellow : blue);
 			glPushMatrix();
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
 				glutSolidCube(2);

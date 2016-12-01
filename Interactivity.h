@@ -1,16 +1,15 @@
 #ifndef INTERACTIVITY_H
 #define INTERACTIVITY_H
 
+#include "Structure.h"
+
 class Interactivity {
 public:
-	struct point3D {
-		float x, y, z;
-	};
 	static int getLevel();						// Get the level
 	static float getTheta();					// Get the angle of rotation
-	static Interactivity::point3D getEye();		// The first 3 paramters of gluLookAt
-	static point3D getCenter();					// The 4-6 parameters of gluLookAt
-	static point3D* getPlayerBeen();				// Get what spots the player has been to
+	static Structure::point3D getEye();			// The first 3 paramters of gluLookAt
+	static Structure::point3D getCenter();			// The 4-6 parameters of gluLookAt
+	static Structure::point3D* getPlayerBeen();		// Get what spots the player has been to
 	/**
 		Record that the player has landed on a spot
 		@param x  -> The x position of the object
