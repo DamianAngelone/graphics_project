@@ -53,8 +53,8 @@ void display(void) {
 	glPushMatrix();
 		// Rotation of the camera affects the whole game world
 		glRotatef(Interactivity::getTheta(), 0, 1, 0);
-		Environment::drawEnvironment(step);
 		Player::drawPlayer(step > STEPSPEED);
+		Environment::drawEnvironment(step);
 	glPopMatrix();
 
 	if (step > STEPSPEED)

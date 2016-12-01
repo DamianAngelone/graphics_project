@@ -19,13 +19,6 @@ using namespace std;
 // Include project files
 #include "Interactivity.h"
 
-unsigned char colours[6][3] = {{244, 67,  54},	// Red
-		                   	   {0,   50, 243},	// Blue
-		                   	   {0,   150, 36},	// Teal
-		                   	   {1,   193, 7},	// Amber
-		                   	   {158, 158, 158},	// Gray
-		                       {205, 220, 57}};	// Lime
-
 bool getWaterHeight = true;
 bool getSandHeight = true;
 		                       
@@ -97,67 +90,71 @@ void createSlopes(int iterations, int size) {
 	//createNormals();
 }
 
-void drawBorder(){
-
+void drawBorder() {
+	glPushAttrib(GL_LIGHTING_BIT);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable (GL_COLOR_MATERIAL);
+	glEnable(GL_COLOR_MATERIAL);
 
-	int len = 2*(Environment::getLength() + 4) + 8;
-	if (Interactivity::getLevel() == 1) {
-		glColor3ubv(colours[0]); //red colour
-		glPushMatrix();
-		glTranslatef(-8,-6,3);
-		glScalef(0.5,13,len);
-		glutSolidCube(1);
-		glPopMatrix();
-		
-		glColor3ubv(colours[0]); //red colour
-		glPushMatrix();
-		glRotatef(90,0,1,0);
-		glTranslatef(-14,-6,3);
-		glScalef(0.5,13,len);
-		glutSolidCube(1);
-		glPopMatrix();
-	}
-	else if (Interactivity::getLevel() == 2) {
-		glColor3ubv(colours[0]); //red colour
-		glPushMatrix();
-		glTranslatef(-8,-6,5);
-		glScalef(0.5,13,len);
-		glutSolidCube(1);
-		glPopMatrix();
-		
-		glColor3ubv(colours[0]); //red colour
-		glPushMatrix();
-		glRotatef(90,0,1,0);
-		glTranslatef(-18,-6,5);
-		glScalef(0.5,13,len);
-		glutSolidCube(1);
-		glPopMatrix();
-	}
-	else if (Interactivity::getLevel() == 3){
+	int len = 2 * (Environment::getLength() + 4) + 8;
 
-		glColor3ubv(colours[0]); //red colour
-		glPushMatrix();
-		glTranslatef(-8,-6,7);
-		glScalef(0.5,13,len);
-		glutSolidCube(1);
-		glPopMatrix();
-		
-		glColor3ubv(colours[0]); //red colour
-		glPushMatrix();
-		glRotatef(90,0,1,0);
-		glTranslatef(-22,-6,7);
-		glScalef(0.5,13,len);
-		glutSolidCube(1);
-		glPopMatrix();
+	switch (Interactivity::getLevel()) {
+		case 1:
+			glColor3ub(244, 67, 54); //red colour
+			glPushMatrix();
+			glTranslatef(-8,-6,3);
+			glScalef(0.5,13,len);
+			glutSolidCube(1);
+			glPopMatrix();
+			
+			glColor3ub(244, 67, 54); //red colour
+			glPushMatrix();
+			glRotatef(90,0,1,0);
+			glTranslatef(-14,-6,3);
+			glScalef(0.5,13,len);
+			glutSolidCube(1);
+			glPopMatrix();
+			break;
+		case 2:
+			glColor3ub(244, 67, 54); //red colour
+			glPushMatrix();
+			glTranslatef(-8,-6,5);
+			glScalef(0.5,13,len);
+			glutSolidCube(1);
+			glPopMatrix();
+			
+			glColor3ub(244, 67, 54); //red colour
+			glPushMatrix();
+			glRotatef(90,0,1,0);
+			glTranslatef(-18,-6,5);
+			glScalef(0.5,13,len);
+			glutSolidCube(1);
+			glPopMatrix();
+			break;
+		case 3:
+			glColor3ub(244, 67, 54); //red colour
+			glPushMatrix();
+			glTranslatef(-8,-6,7);
+			glScalef(0.5,13,len);
+			glutSolidCube(1);
+			glPopMatrix();
+			
+			glColor3ub(244, 67, 54); //red colour
+			glPushMatrix();
+			glRotatef(90,0,1,0);
+			glTranslatef(-22,-6,7);
+			glScalef(0.5,13,len);
+			glutSolidCube(1);
+			glPopMatrix();
+			break;
 	}
 	
 	glDisable(GL_COLOR_MATERIAL);
+	glPopAttrib();
 }
 
 void drawBoard() {
 	// Ignore lighting
+	glPushAttrib(GL_LIGHTING_BIT);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
@@ -165,10 +162,9 @@ void drawBoard() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 
 	int len = blocks[Interactivity::getLevel() - 1];
-	int max = sizeof(colours)/sizeof(colours[0]) - 1, 
-		colour = max;
-	unsigned char blue[] = {0, 0, 255};
-	unsigned char yellow[] = {255, 255, 0};
+	// colours
+	unsigned char blue[] = {33, 150, 243};
+	unsigned char yellow[] = {255, 235, 59};
 	Structure::point3D* beenTo = Interactivity::getPlayerBeen();
 
 	for(int i = 0; i < len; ++i) {
@@ -192,13 +188,11 @@ void drawBoard() {
 					glTranslatef(0, -2, 0);
 					glutSolidCube(2);
 				}
-				--colour;
-				if (colour == -1)
-					colour = max;
 			glPopMatrix();
 		}
 	}
 	glDisable(GL_COLOR_MATERIAL);
+	glPopAttrib();
 }
 
 void resetArray(int size) {
@@ -211,16 +205,17 @@ void resetArray(int size) {
 
 void drawWater(int step) {
 	glPushMatrix();
+	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
 	glTranslatef(-8, -2, -8);
 
-	int len = 2*(Environment::getLength() + 4) + 8;
+	int len = 2 * (Environment::getLength() + 4) + 8;
 
 	if (getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createWaves(3, len);
 	}
 
-	if (step % 40 == 0) {
+	if (step % 40 == 0) {	// the waves
 		resetArray(len);
 		createWaves(3, len);
 	}
@@ -235,21 +230,20 @@ void drawWater(int step) {
 	float m_shiny = 0.25f;
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
 
-	//draws the water plane.
+	// draws the water plane.
 	for(int i = 0; i < len; i++){
 		for(int j = 0; j < len; j++){
-
 			glBegin(GL_QUAD_STRIP);
-
 			glNormal3f(0, 1, 0);
 
 			glVertex3f(i    , WaterHeightMap[i][j + 1]    , j + 1);
 			glVertex3f(i + 1, WaterHeightMap[i + 1][j + 1], j + 1);
 			glVertex3f(i    , WaterHeightMap[i][j]        , j    );
 			glVertex3f(i + 1, WaterHeightMap[i + 1][j]    , j    );
-			glEnd();	
+			glEnd();
 		}
 	}
+	glPopAttrib();
 	glPopMatrix();
 }
 
@@ -275,10 +269,10 @@ void drawSand() {
 		for(int j = 0; j < len; j++) {
 			glBegin(GL_QUAD_STRIP);
 			glNormal3f(0, 1, 0);
-			glVertex3f(i    , SandHeightMap[i][j + 1], j + 1);
+			glVertex3f(i    , SandHeightMap[i][j + 1],     j + 1);
 			glVertex3f(i + 1, SandHeightMap[i + 1][j + 1], j + 1);
-			glVertex3f(i    , SandHeightMap[i][j], j    );
-			glVertex3f(i + 1, SandHeightMap[i + 1][j], j    );
+			glVertex3f(i    , SandHeightMap[i][j],         j    );
+			glVertex3f(i + 1, SandHeightMap[i + 1][j],     j    );
 			glEnd();	
 		}
 	}
