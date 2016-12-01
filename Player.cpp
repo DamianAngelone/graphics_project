@@ -212,7 +212,6 @@ void offBlock() {
 
 // draws the player and calls the necessary logic functions
 void Player::drawPlayer(bool step) {
-	
 	qobj = gluNewQuadric();
 
 	if (!canPhysics)			// If the player is not on a block, do physics
@@ -253,6 +252,5 @@ void Player::drawPlayer(bool step) {
 			         displacement[2] + velocity[2]);
 		glRotatef(rot, 0, 1, 0);
 		drawQubert();
-		//glutSolidTeapot(0.5);
 	glPopMatrix();
 }

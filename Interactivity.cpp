@@ -80,7 +80,10 @@ void Interactivity::pushPosition(int x, int z) {
 	
 	int len = Environment::getLength();
 	// Check if its a not a duplicate spot and doesn't go past bounds
-	if (!duplicate && x/2 < len && z/2 < len) {
+	if (!duplicate &&	// not a duplicate
+		x/2 < len &&	// further edge
+		z/2 < len &&	// further edge
+		x != z + 2) {	// dont count inside jump out of bounds
 		playerBeen[playerBeenLength] = point;
 		++playerBeenLength;
 		

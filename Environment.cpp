@@ -64,7 +64,6 @@ void createWaves(int iterations, int size) {
 void createSlopes(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
-
 		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
 	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
 	    float terrainCircleSize = 30; 				//random radius of circle (1-5)
@@ -73,14 +72,12 @@ void createSlopes(int iterations, int size) {
 	    //will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
             for(int z = 0; z < size; z++){
-
 				float distanceFromX = x - center_X;
                 float distanceFromZ = z - center_Z;
                 float totalDistance = sqrtf((distanceFromX * distanceFromX) + (distanceFromZ * distanceFromZ));
                 float pd = (totalDistance * 2) / terrainCircleSize;
 
-                if (fabs(pd) <= 1.0){
-             	
+                if (fabs(pd) <= 1.0) {
                 	SandHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
                 }
             }
