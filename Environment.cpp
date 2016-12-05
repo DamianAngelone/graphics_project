@@ -21,16 +21,9 @@ using namespace std;
 
 bool getWaterHeight = true;
 bool getSandHeight = true;
-		                       
-int blocks[3] = {3, 5, 7};		// Number of blocks in a row for each level
 
 float WaterHeightMap[100][100];
 float SandHeightMap[100][100];
-
-// Get the number of blocks in a row
-int Environment::getLength() {
-	return blocks[Interactivity::getLevel() - 1];
-}
 
 void createWaves(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
@@ -92,7 +85,7 @@ void drawBorder() {
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
-	int len = 2 * (Environment::getLength() + 4) + 8;
+	int len = 2 * (Interactivity::getLength() + 4) + 8;
 
 	switch (Interactivity::getLevel()) {
 		case 1:
@@ -158,7 +151,7 @@ void drawBoard() {
 	float m_specular[] = {0.1, 0.1, 0.1, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 
-	int len = blocks[Interactivity::getLevel() - 1];
+	int len = Interactivity::getLength();
 	// colours
 	unsigned char blue[] = {33, 150, 243};
 	unsigned char yellow[] = {255, 235, 59};
@@ -205,7 +198,7 @@ void drawWater(int step) {
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
 	glTranslatef(-8, -2, -8);
 
-	int len = 2 * (Environment::getLength() + 4) + 8;
+	int len = 2 * (Interactivity::getLength() + 4) + 8;
 
 	if (getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
@@ -249,7 +242,7 @@ void drawSand() {
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
 	glTranslatef(-8, -12, -8);
 
-	int len = 2 * (Environment::getLength() + 4) + 8;
+	int len = 2 * (Interactivity::getLength() + 4) + 8;
 	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
 		createSlopes(2, len);

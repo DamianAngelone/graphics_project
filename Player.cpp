@@ -17,7 +17,6 @@
 using namespace std;
 
 // Include project files
-#include "Environment.h"
 #include "Interactivity.h"
 
 bool canPhysics = false;					// If the player should enter freefall
@@ -186,8 +185,8 @@ void physics() {
 
 // Checks if the player is on a block
 void offBlock() {
-	if (displacement[0] == 2 * Environment::getLength() ||	// far edges
-		displacement[2] == 2 * Environment::getLength() ||
+	if (displacement[0] == 2 * Interactivity::getLength() ||	// far edges
+		displacement[2] == 2 * Interactivity::getLength() ||
 		displacement[0] < 0 || displacement[2] < 0 ||		// close edges
 		// going left/down "into" the board with no block
 		displacement[0] == displacement[2] + 2) {

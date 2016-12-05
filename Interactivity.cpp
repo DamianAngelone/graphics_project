@@ -14,22 +14,26 @@ using namespace std;
 
 // Include project files
 #include "Player.h"
-#include "Environment.h"
 
 int level = 1;						// the level the game is on
 int playerBeenLength = 0;			// the level the game is on
+int blocks[3] = {3, 5, 7};			// Number of blocks in a row for each level
 
 float theta = 40;					// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
 // The first 3 paramters of gluLookAt
-float eye[] = {Environment::getLength(), Environment::getLength() * 3, -12};
+float eye[] = {Interactivity::getLength(), Interactivity::getLength() * 3, -12};
 // The 4-6 paramters of gluLookAt	
-float center[] = {Environment::getLength(), 0, Environment::getLength() * 2 + 8};
+float center[] = {Interactivity::getLength(), 0, Interactivity::getLength() * 2 + 8};
 
 Structure::point3D playerBeen[50];
 
 int Interactivity::getLevel() {	 // Get the game level
 	return level;
+}
+
+int Interactivity::getLength() {	// Get the number of blocks in a row
+	return blocks[level - 1];
 }
 
 float Interactivity::getTheta() { // Get the horizontal angle of rotation
@@ -58,10 +62,10 @@ Structure::point3D* Interactivity::getPlayerBeen() {
 
 // Move back the camera when the game progress through the levels
 void cameraAdjust() {
-	eye[0] = Environment::getLength();
-	eye[1] = Environment::getLength() * 3;
-	center[0] = Environment::getLength();
-	center[2] = Environment::getLength() * 2 + 8;
+	eye[0] = Interactivity::getLength();
+	eye[1] = Interactivity::getLength() * 3;
+	center[0] = Interactivity::getLength();
+	center[2] = Interactivity::getLength() * 2 + 8;
 }
 
 void Interactivity::pushPosition(int x, int z) {
@@ -78,7 +82,7 @@ void Interactivity::pushPosition(int x, int z) {
 		}
 	}
 	
-	int len = Environment::getLength();
+	int len = Interactivity::getLength();
 	// Check if its a not a duplicate spot and doesn't go past bounds
 	if (!duplicate &&	// not a duplicate
 		x/2 < len &&	// further edge

@@ -6,7 +6,9 @@
 class Interactivity {
 public:
 	static int getLevel();						// Get the level
+	static int getLength();						// Get the number of blocks in a row
 	static float getTheta();					// Get the angle of rotation
+
 	static Structure::point3D getEye();			// The first 3 paramters of gluLookAt
 	static Structure::point3D getCenter();			// The 4-6 parameters of gluLookAt
 	static Structure::point3D* getPlayerBeen();		// Get what spots the player has been to
