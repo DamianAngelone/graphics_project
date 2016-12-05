@@ -22,8 +22,13 @@ using namespace std;
 bool getWaterHeight = true;
 bool getSandHeight = true;
 
-float WaterHeightMap[100][100];
-float SandHeightMap[100][100];
+float waterHeightMap[100][100];
+float sandHeightMap[100][100];
+
+bool Environment::touchingSand(int x, float y, int z) {
+	float dist = y - (sandHeightMap[x][z] - 12);
+	return dist < 1 || dist < 0;
+}
 
 void createWaves(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
@@ -45,7 +50,7 @@ void createWaves(int iterations, int size) {
 
                 if (fabs(pd) <= 1.0){
              	
-                	WaterHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
+                	waterHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
                 }
             }
         } 
@@ -71,7 +76,7 @@ void createSlopes(int iterations, int size) {
                 float pd = (totalDistance * 2) / terrainCircleSize;
 
                 if (fabs(pd) <= 1.0) {
-                	SandHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
+                	sandHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
                 }
             }
         } 
@@ -188,7 +193,7 @@ void drawBoard() {
 void resetArray(int size) {
 	for(int x = 0; x < size; x++){
         for(int z = 0; z < size; z++){
-        	WaterHeightMap[x][z] = 0.0;
+        	waterHeightMap[x][z] = 0.0;
 		}
 	}
 }
@@ -226,10 +231,10 @@ void drawWater(int step) {
 			glBegin(GL_QUAD_STRIP);
 			glNormal3f(0, 1, 0);
 
-			glVertex3f(i    , WaterHeightMap[i][j + 1]    , j + 1);
-			glVertex3f(i + 1, WaterHeightMap[i + 1][j + 1], j + 1);
-			glVertex3f(i    , WaterHeightMap[i][j]        , j    );
-			glVertex3f(i + 1, WaterHeightMap[i + 1][j]    , j    );
+			glVertex3f(i    , waterHeightMap[i][j + 1]    , j + 1);
+			glVertex3f(i + 1, waterHeightMap[i + 1][j + 1], j + 1);
+			glVertex3f(i    , waterHeightMap[i][j]        , j    );
+			glVertex3f(i + 1, waterHeightMap[i + 1][j]    , j    );
 			glEnd();
 		}
 	}
@@ -259,10 +264,10 @@ void drawSand() {
 		for(int j = 0; j < len; j++) {
 			glBegin(GL_QUAD_STRIP);
 			glNormal3f(0, 1, 0);
-			glVertex3f(i    , SandHeightMap[i][j + 1],     j + 1);
-			glVertex3f(i + 1, SandHeightMap[i + 1][j + 1], j + 1);
-			glVertex3f(i    , SandHeightMap[i][j],         j    );
-			glVertex3f(i + 1, SandHeightMap[i + 1][j],     j    );
+			glVertex3f(i    , sandHeightMap[i][j + 1],     j + 1);
+			glVertex3f(i + 1, sandHeightMap[i + 1][j + 1], j + 1);
+			glVertex3f(i    , sandHeightMap[i][j],         j    );
+			glVertex3f(i + 1, sandHeightMap[i + 1][j],     j    );
 			glEnd();	
 		}
 	}

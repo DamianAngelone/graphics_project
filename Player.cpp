@@ -17,10 +17,12 @@
 using namespace std;
 
 // Include project files
+#include "Environment.h"
 #include "Interactivity.h"
 
 bool canPhysics = false;					// If the player should enter freefall
 bool moved = false;							// To add the initial spot
+bool hitSand = false;						// To add the initial spot
 
 const int JUMPSIZE = 2;
 int rot = 270;								// The rotation angle
@@ -31,7 +33,7 @@ float acceleration[] = {0.0, 0.0, 0.0};		// The velocity matrix
 
 float pos[] = {0, 1, 0};
 float rot2[] = {0, 0, 0};
-GLUquadric* qobj;
+GLUquadric* qobj = gluNewQuadric();
 
 Structure::point3D Player::getCoor() {
 	Structure::point3D position;
@@ -178,10 +180,18 @@ void drawQubert() {
 
 // Computes the velocities from the acceleration
 void physics() {
-	velocity[0] = acceleration[0] + velocity[0];
-	velocity[1] = acceleration[1] + velocity[1];
-	velocity[2] = acceleration[2] + velocity[2];
-}
+	int x, z;
+	x = floor(displacement[0] + velocity[0] + 0.5);
+	z = floor(displacement[2] + velocity[2] + 0.5);
+ 	// check to see if it has touched the sand 
+	if (Environment::touchingSand(x, displacement[1] + velocity[1], z)) {
+		hitSand = true;
+	} else {
+		velocity[0] = acceleration[0] + velocity[0];
+		velocity[1] = acceleration[1] + velocity[1];
+		velocity[2] = acceleration[2] + velocity[2];
+	}
+ }
 
 // Checks if the player is on a block
 void offBlock() {
@@ -211,39 +221,39 @@ void offBlock() {
 
 // draws the player and calls the necessary logic functions
 void Player::drawPlayer(bool step) {
-	qobj = gluNewQuadric();
-
-	if (!canPhysics)			// If the player is not on a block, do physics
-		offBlock();
-	if (canPhysics)				// not else because offBlock changes canPhysics
-		physics();
-	if (step && !canPhysics) {	// Move the player
-		// Add the initial spot
-		if (!moved) {
+	if (!hitSand) {
+		if (!canPhysics)			// Check if the player is on a block
+			offBlock();
+		if (canPhysics)				// not else because offBlock changes canPhysics
+			physics();				// If the player is not on a block, do physics
+		if (step && !canPhysics) {	// Move the player
+			// Add the initial spot
+			if (!moved) {
+				Interactivity::pushPosition(displacement[0], displacement[2]);
+				moved = true;
+			}
+			// Move the player based on the orientation
+			switch(rot) {
+				case 0:		// Left
+					displacement[0] += JUMPSIZE;
+					displacement[1] -= JUMPSIZE;
+					break;
+				case 90:	// Backwards
+					displacement[1] -= JUMPSIZE;
+					displacement[2] -= JUMPSIZE;
+					break;
+				case 180:	// Right
+					displacement[0] -= JUMPSIZE;
+					displacement[1] += JUMPSIZE;
+					break;
+				case 270:	// Forwards
+					displacement[1] += JUMPSIZE;
+					displacement[2] += JUMPSIZE;
+					break;
+			}
+			// record the new position
 			Interactivity::pushPosition(displacement[0], displacement[2]);
-			moved = true;
 		}
-		// Move the player based on the orientation
-		switch(rot) {
-			case 0:		// Left
-				displacement[0] += JUMPSIZE;
-				displacement[1] -= JUMPSIZE;
-				break;
-			case 90:	// Backwards
-				displacement[1] -= JUMPSIZE;
-				displacement[2] -= JUMPSIZE;
-				break;
-			case 180:	// Right
-				displacement[0] -= JUMPSIZE;
-				displacement[1] += JUMPSIZE;
-				break;
-			case 270:	// Forwards
-				displacement[1] += JUMPSIZE;
-				displacement[2] += JUMPSIZE;
-				break;
-		}
-		// record the new position
-		Interactivity::pushPosition(displacement[0], displacement[2]);
 	}
 	glPushMatrix();
 		glTranslatef(displacement[0] + velocity[0], 
