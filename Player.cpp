@@ -23,6 +23,7 @@ using namespace std;
 bool canPhysics = false;					// If the player should enter freefall
 bool moved = false;							// To add the initial spot
 bool hitSand = false;						// To add the initial spot
+bool gameOver = false;
 
 const int JUMPSIZE = 2;
 int rot = 270;								// The rotation angle
@@ -146,7 +147,6 @@ void drawQubert() {
 			glPopMatrix();
 		glPopMatrix();
 
-
 		//left foot
 		glPushMatrix();
 			glColor3ub(244, 67, 54);
@@ -187,6 +187,7 @@ void physics() {
  	// check to see if it has touched the sand 
 	if (displacement[1] + velocity[1] < -9) {
 		hitSand = true;
+		Interactivity::decrLives();
 	} 
 	else {
 		velocity[0] = acceleration[0] + velocity[0];
@@ -235,26 +236,26 @@ void Player::drawPlayer(bool step) {
 				moved = true;
 			}
 			// Move the player based on the orientation
-			//if(){
-				switch(rot) {
-					case 0:		// Left
-						displacement[0] += JUMPSIZE;
-						displacement[1] -= JUMPSIZE;
-						break;
-					case 90:	// Backwards
-						displacement[1] -= JUMPSIZE;
-						displacement[2] -= JUMPSIZE;
-						break;
-					case 180:	// Right
-						displacement[0] -= JUMPSIZE;
-						displacement[1] += JUMPSIZE;
-						break;
-					case 270:	// Forwards
-						displacement[1] += JUMPSIZE;
-						displacement[2] += JUMPSIZE;
-						break;
-				}
-			//}
+			
+			switch(rot) {
+				case 0:		// Left
+					displacement[0] += JUMPSIZE;
+					displacement[1] -= JUMPSIZE;
+					break;
+				case 90:	// Backwards
+					displacement[1] -= JUMPSIZE;
+					displacement[2] -= JUMPSIZE;
+					break;
+				case 180:	// Right
+					displacement[0] -= JUMPSIZE;
+					displacement[1] += JUMPSIZE;
+					break;
+				case 270:	// Forwards
+					displacement[1] += JUMPSIZE;
+					displacement[2] += JUMPSIZE;
+					break;
+			}
+			
 			Interactivity::setSpace(0);
 			// record the new position
 			Interactivity::pushPosition(displacement[0], displacement[2]);

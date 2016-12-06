@@ -79,33 +79,38 @@ void UserInterface::drawUI() {
 			char buf2[5];
 			char buf3[5];
 			char buf4[5];
+			char buf5[5];
 
 			double temp1 = Interactivity::getLevel();
 			double temp2 = (Interactivity::getAmountOfBlocks() - Interactivity::getBeenTo());
 			double temp3 = UserInterface::getScore();
 			double temp4 = UserInterface::getTime();
+			double temp5 = Interactivity::getLives();
 
 			snprintf(buf1, sizeof(buf1), "%f", temp1);
 			snprintf(buf2, sizeof(buf2), "%f", temp2);
 			snprintf(buf3, sizeof(buf3), "%f", temp3);
 			snprintf(buf4, sizeof(buf4), "%f", temp4);
+			snprintf(buf5, sizeof(buf5), "%f", temp5);
 
 			string level(buf1);						// char array to float
 			string blocksLeft(buf2);				// char array to float
 			string scoreTot(buf3);					// char array to float
 			string currTime(buf4);					// char array to float
+			string currLives(buf5);					// char array to float
 
 			//cout << "level: " << temp1 << " blocks left: " << temp2 << " score: " << temp3;
 
-			string s[4];
+			string s[5];
 		    s[0] = "Current Level: " + level;
 		    s[1] = "Blocks Left: " + blocksLeft;
 		    s[2] = "Score: " + scoreTot;
 		    s[3] = "Time Left: " + currTime;
+		    s[4] = "Lives Left: " + currLives;
 
 			// Render each string
 			int v = sizeof(s)/24; // number of strings to draw
-		    for(int i = 0; i < 4; i++) {
+		    for(int i = 0; i < 5; i++) {
 		    	glRasterPos2i(10, ((-i * 20) + 30));
 		  		drawText(s[i]);
 		 	}

@@ -10,6 +10,8 @@ public:
 	static void draw(bool step);
 	static void setSpace(int n);	
 	static int getSpace();	
+	static int getLives();	
+	static void decrLives();	
 	static int getLevel();						// Get the level
 	static int getLength();						// Get the number of blocks in a row
 	static float getTheta();					// Get the angle of rotation

@@ -17,6 +17,7 @@ using namespace std;
 #include "UserInterface.h"
 
 int level = 1;						// the level the game is on
+int lives = 3;
 int playerBeenLength = 0;			// the level the game is on
 int blocks[3] = {3, 5, 7};			// Number of blocks in a row for each level
 int space = 0;
@@ -31,6 +32,16 @@ float center[] = {Interactivity::getLength(), 0, Interactivity::getLength() * 2 
 Structure::point3D playerBeen[50];
 
 Enemy Interactivity::enemy[3];
+
+int Interactivity::getLives() {	 // Get the game level
+	
+	return lives;
+}
+
+void Interactivity::decrLives() {	 // Get the game level
+	
+	lives -= 1;
+}
 
 int Interactivity::getSpace() {	 // Get the game level
 	
@@ -139,6 +150,7 @@ void Interactivity::pushPosition(int x, int z) {
 }
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {
+	
 	switch (key) {
 		case 'q':	// Quit the program
 		case 'Q':
@@ -166,7 +178,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 32:
 			space = 1;
-			cout << "SPACE";
 			break;
 	}
 }
