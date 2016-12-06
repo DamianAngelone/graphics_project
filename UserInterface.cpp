@@ -139,6 +139,7 @@ void UserInterface::drawMap(){
 			glTranslatef(0, -490, 0);
 			glRasterPos2i(0, 0);
 
+			glDisable(GL_LIGHTING);
 			glColor3f(0, 0.509, 0.501);
 			glBegin(GL_QUADS);
 				glVertex2f(760.0, 340.0);
@@ -173,9 +174,9 @@ void UserInterface::drawMap(){
 				glRotatef(90, 1, 0, 0);
 				glRotatef(270, 0, 1, 0);
 			}
-			
-			Environment::drawBoard();	
 
+			Environment::drawBoard();	
+			glEnable(GL_LIGHTING);
 			glPopMatrix();		
 
 		  	// Making sure we can render 3D again
