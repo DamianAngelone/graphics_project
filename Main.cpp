@@ -57,10 +57,12 @@ void display(void) {
 		glRotatef(Interactivity::getTheta(), 0, 1, 0);
 
 		Player::drawPlayer(step > STEPSPEED);
-		if (Interactivity::getLevel() > 1)
+		if (Interactivity::getLevel() > 1) {
 			Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
-		if (Interactivity::getLevel() == 3)
 			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
+		}
+		if (Interactivity::getLevel() == 3)
+			Interactivity::enemy[2].drawEnemy(step > STEPSPEED);
 		Environment::drawEnvironment(step);
 		UserInterface::drawUI();
 		UserInterface::drawMap();

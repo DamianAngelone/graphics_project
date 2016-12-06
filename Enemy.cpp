@@ -26,9 +26,23 @@ void Enemy::init(int id) {
 	ID = id;
 	rotate = 180;
 	enemyMoved = false;
-	enemyDisp[0] = 8;
-	enemyDisp[1] = 1.5;
-	enemyDisp[2] = ID == 0 ? 8 : 0;
+	switch(ID) {
+		case 0:
+			enemyDisp[0] = 8;
+			enemyDisp[1] = 1.5;
+			enemyDisp[2] = 8;
+			break;
+		case 1:
+			enemyDisp[0] = 0;
+			enemyDisp[1] = ((Interactivity::getLength() - 1) * 2) + 1.5;
+			enemyDisp[2] = Interactivity::getLength() * 2;
+			break;
+		case 2:
+			enemyDisp[0] = 6;
+			enemyDisp[1] = 1.5;
+			enemyDisp[2] = 6;
+			break;
+	}
 }
 
 // Get x, y, z of where the enemy is

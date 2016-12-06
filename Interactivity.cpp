@@ -134,6 +134,7 @@ void Interactivity::pushPosition(int x, int z) {
 			cameraAdjust();
 			Interactivity::enemy[0].init(0);
 			Interactivity::enemy[1].init(1);
+			Interactivity::enemy[2].init(2);
 		}
 	}
 }
@@ -166,7 +167,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 32:
 			space = 1;
-			cout << "SPACE";
 			break;
 	}
 }
