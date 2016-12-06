@@ -145,6 +145,7 @@ void Interactivity::pushPosition(int x, int z) {
 			cameraAdjust();
 			Interactivity::enemy[0].init(0);
 			Interactivity::enemy[1].init(1);
+			Interactivity::enemy[2].init(2);
 		}
 	}
 }
