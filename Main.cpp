@@ -63,6 +63,7 @@ void display(void) {
 			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
 		Environment::drawEnvironment(step);
 		UserInterface::drawUI();
+		UserInterface::drawMap();
 
 	glPopMatrix();
 		

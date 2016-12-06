@@ -106,13 +106,50 @@ void UserInterface::drawUI() {
 			// Render each string
 			int v = sizeof(s)/24; // number of strings to draw
 		    for(int i = 0; i < 4; i++) {
-		    	glRasterPos2i(30, ((-i * 20) + 30));
+		    	glRasterPos2i(10, ((-i * 20) + 30));
 		  		drawText(s[i]);
 		 	}
+
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();
+		glMatrixMode(GL_PROJECTION);
+	glDisable(GL_COLOR_MATERIAL);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void UserInterface::drawMap(){
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
+		glLoadIdentity();
+		gluOrtho2D(0, 960, 50 - 540, 50);
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+			glLoadIdentity();
+			glDisable(GL_CULL_FACE);
+
+			glClear(GL_DEPTH_BUFFER_BIT);
+			glColor3f(0, 0, 0);
+			
+			glTranslatef(0, -490, 0);
+			glRasterPos2i(0, 0);
+
+			glBegin(GL_QUADS);
+				glVertex2f(800.0, 380.0);
+				glVertex2f(800.0, 540.0);
+				glVertex2f(960.0, 540.0);
+				glVertex2f(960.0, 380.0);
+			 glEnd();
+
+		  	// Making sure we can render 3D again
+			glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+
 		glMatrixMode(GL_PROJECTION);
 	glDisable(GL_COLOR_MATERIAL);
 	glPopMatrix();
