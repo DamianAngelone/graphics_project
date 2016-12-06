@@ -45,28 +45,56 @@ void Enemy::setRotation(int change) {
 	rotate = change;
 }
 
-void inBounds(int x, int z) {
-
+bool inBounds(int x, int z) {
+	int len = Interactivity::getLength() * 2;
+	return x > -1 &&
+		   z > -1 &&
+		   x < len &&		// further edge
+		   z < len &&		// further edge
+		   x != z + 2;  	// dont count inside jump out of bounds
 }
 
 // draws the player and calls the necessary logic functions
 void Enemy::drawEnemy(bool step) {
 	if (step) {	// Move the player
+		int rotate;
+		bool findRotate = false;
+		while (!findRotate) {
+			rotate = rand() % 4;
+			switch(rotate) {
+				case 0:		// Left
+					if (inBounds(enemyDisp[0] + JUMPSIZE, enemyDisp[2]))
+						findRotate = true;
+					break;
+				case 1:	// Backwards
+					if (inBounds(enemyDisp[0], enemyDisp[2] - JUMPSIZE))
+						findRotate = true;
+					break;
+				case 2:	// Right
+					if (inBounds(enemyDisp[0] - JUMPSIZE, enemyDisp[2]))
+						findRotate = true;
+					break;
+				case 3:	// Forwards
+					if (inBounds(enemyDisp[0], enemyDisp[2] + JUMPSIZE))
+						findRotate = true;
+					break;
+			}
+		}
 		// Move the player based on the orientation
 		switch(rotate) {
 			case 0:		// Left
 				enemyDisp[0] += JUMPSIZE;
 				enemyDisp[1] -= JUMPSIZE;
 				break;
-			case 90:	// Backwards
+			case 1:	// Backwards
 				enemyDisp[1] -= JUMPSIZE;
 				enemyDisp[2] -= JUMPSIZE;
 				break;
-			case 180:	// Right
+			case 2:	// Right
 				enemyDisp[0] -= JUMPSIZE;
 				enemyDisp[1] += JUMPSIZE;
 				break;
-			case 270:	// Forwards
+			case 3:	// Forwards
 				enemyDisp[1] += JUMPSIZE;
 				enemyDisp[2] += JUMPSIZE;
 				break;

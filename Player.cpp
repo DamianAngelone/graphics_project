@@ -183,9 +183,10 @@ void physics() {
 	x = floor(displacement[0] + velocity[0] + 0.5);
 	z = floor(displacement[2] + velocity[2] + 0.5);
  	// check to see if it has touched the sand 
-	if (Environment::touchingSand(x, displacement[1] + velocity[1], z)) {
+	if (displacement[1] + velocity[1] < -9) {
 		hitSand = true;
-	} else {
+	} 
+	else {
 		velocity[0] = acceleration[0] + velocity[0];
 		velocity[1] = acceleration[1] + velocity[1];
 		velocity[2] = acceleration[2] + velocity[2];

@@ -25,11 +25,6 @@ bool getSandHeight = true;
 float waterHeightMap[100][100];
 float sandHeightMap[100][100];
 
-bool Environment::touchingSand(int x, float y, int z) {
-	float dist = y - (sandHeightMap[x][z] - 12);
-	return dist < 1 || dist < 0;
-}
-
 void createWaves(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
