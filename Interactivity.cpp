@@ -28,6 +28,8 @@ float center[] = {Interactivity::getLength(), 0, Interactivity::getLength() * 2 
 
 Structure::point3D playerBeen[50];
 
+Enemy Interactivity::enemy[3];
+
 int Interactivity::getLevel() {	 // Get the game level
 	return level;
 }
@@ -101,6 +103,8 @@ void Interactivity::pushPosition(int x, int z) {
 			playerBeenLength = 0;
 			Player::reset();
 			cameraAdjust();
+			Interactivity::enemy[0].init(0);
+			Interactivity::enemy[1].init(1);
 		}
 	}
 }

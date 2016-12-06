@@ -31,8 +31,6 @@ float displacement[] = {0.0, 1.5, 0.0};		// The transformation matrix
 float velocity[] = {0.0, 0.0, 0.0};			// The velocity matrix
 float acceleration[] = {0.0, 0.0, 0.0};		// The velocity matrix
 
-float pos[] = {0, 1, 0};
-float rot2[] = {0, 0, 0};
 GLUquadric* qobj = gluNewQuadric();
 
 Structure::point3D Player::getCoor() {
@@ -48,6 +46,7 @@ void Player::setRotation(int change) {
 	rot = change;
 }
 
+// Reset the player's position
 void Player::reset() {
 	canPhysics = false;
 	moved = false;

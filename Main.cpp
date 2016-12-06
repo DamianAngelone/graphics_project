@@ -21,12 +21,12 @@ using namespace std;
 #include "Environment.h"
 #include "Interactivity.h"
 #include "Player.h"
-
-const int WIDTH = 960;
-const int HEIGHT = 540;
+#include "Enemy.h"
 
 bool pause = false;		// if the game is paused
 
+const int WIDTH = 960;
+const int HEIGHT = 540;
 const int STEPSPEED = 1000;
 int step = 0;			// When to make the game step
 
@@ -53,8 +53,14 @@ void display(void) {
 	glPushMatrix();
 		// Rotation of the camera affects the whole game world
 		glRotatef(Interactivity::getTheta(), 0, 1, 0);
+
 		Player::drawPlayer(step > STEPSPEED);
+		if (Interactivity::getLevel() > 1)
+			Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
+		if (Interactivity::getLevel() == 3)
+			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
 		Environment::drawEnvironment(step);
+
 	glPopMatrix();
 
 	if (step > STEPSPEED)
@@ -91,6 +97,10 @@ void init() {
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(90, 1, 1, 400);
 	srand(time(0));
+
+	Interactivity::enemy[0].init(0);
+	Interactivity::enemy[1].init(1);
+
 	redraw(0);
 }
 
