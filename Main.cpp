@@ -75,6 +75,7 @@ void redraw(int i) {
 	if (!pause) {
 		glutPostRedisplay();
 		step += 17;
+		UserInterface::decrTime();
 		glutTimerFunc(17, redraw, 0);
 	}
 }

@@ -11,6 +11,8 @@ public:
 	static int getLevel();						// Get the level
 	static int getLength();						// Get the number of blocks in a row
 	static float getTheta();					// Get the angle of rotation
+	static int getBeenTo();						// Get amount of blocks visited in the current level
+	static int getAmountOfBlocks();             // Get amount of blocks in current level.
 
 	static Structure::point3D getEye();			// The first 3 paramters of gluLookAt
 	static Structure::point3D getCenter();			// The 4-6 parameters of gluLookAt

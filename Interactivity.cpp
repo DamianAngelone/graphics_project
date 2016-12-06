@@ -14,6 +14,7 @@ using namespace std;
 
 // Include project files
 #include "Player.h"
+#include "UserInterface.h"
 
 int level = 1;						// the level the game is on
 int playerBeenLength = 0;			// the level the game is on
@@ -38,6 +39,14 @@ int Interactivity::getLength() {	// Get the number of blocks in a row
 	return blocks[level - 1];
 }
 
+int Interactivity::getBeenTo() {	// Get the number of blocks in a row
+	return playerBeenLength;
+}
+int Interactivity::getAmountOfBlocks(){
+
+	int len = Interactivity::getLength();
+	return (len * (len + 1))/2;
+}
 float Interactivity::getTheta() { // Get the horizontal angle of rotation
 	return theta;
 }
@@ -80,6 +89,7 @@ void Interactivity::pushPosition(int x, int z) {
 		if (playerBeen[i].x == x
 			&& playerBeen[i].z == z) {
 			duplicate = true;
+			UserInterface::decrScore();
 			break;
 		}
 	}
@@ -93,7 +103,8 @@ void Interactivity::pushPosition(int x, int z) {
 		playerBeen[playerBeenLength] = point;
 		++playerBeenLength;
 		
-		int numOfBlocks = (len * (len + 1))/2;
+		UserInterface::incrScore();
+		int numOfBlocks = Interactivity::getAmountOfBlocks();
 		if (playerBeenLength == numOfBlocks) {
 			++level;
 			for (int i = 0; i < playerBeenLength; i++) {
