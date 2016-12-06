@@ -98,9 +98,6 @@ void init() {
 	gluPerspective(90, 1, 1, 400);
 	srand(time(0));
 
-	Interactivity::enemy[0].init(0);
-	Interactivity::enemy[1].init(1);
-
 	redraw(0);
 }
 
