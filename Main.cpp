@@ -22,6 +22,7 @@ using namespace std;
 #include "Interactivity.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "UserInterface.h"
 
 bool pause = false;		// if the game is paused
 
@@ -60,6 +61,7 @@ void display(void) {
 		if (Interactivity::getLevel() == 3)
 			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
 		Environment::drawEnvironment(step);
+		UserInterface::drawUI();
 
 	glPopMatrix();
 

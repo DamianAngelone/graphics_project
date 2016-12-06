@@ -45,6 +45,10 @@ void Enemy::setRotation(int change) {
 	rotate = change;
 }
 
+void inBounds(int x, int z) {
+
+}
+
 // draws the player and calls the necessary logic functions
 void Enemy::drawEnemy(bool step) {
 	if (step) {	// Move the player
