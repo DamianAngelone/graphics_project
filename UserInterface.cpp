@@ -146,27 +146,37 @@ void UserInterface::drawMap(){
 				glVertex2f(960.0, 540.0);
 				glVertex2f(960.0, 340.0);
 			glEnd();
+
+			glColor3f(0, 0, 0);
+			glBegin(GL_QUADS);
+				glVertex2f(740.0, 320.0);
+				glVertex2f(740.0, 540.0);
+				glVertex2f(960.0, 540.0);
+				glVertex2f(960.0, 320.0);
+			glEnd();
 			
 			if(Interactivity::getLevel() == 1){
-				glTranslatef(830, 480, 0);
+				glTranslatef(905, 485, 0);
 				glScalef(20, 20, 1);
 				glRotatef(90, 1, 0, 0);
 				glRotatef(270, 0, 1, 0);
 			}
 			else if(Interactivity::getLevel() == 2){
-				glTranslatef(830, 480, 0);
-				glScalef(20, 20, 1);
+				glTranslatef(925, 495, 0);
+				glScalef(15, 15, 1);
 				glRotatef(90, 1, 0, 0);
 				glRotatef(270, 0, 1, 0);
 			}
 			else if(Interactivity::getLevel() == 3){
-				glTranslatef(830, 480, 0);
-				glScalef(20, 20, 1);
+				glTranslatef(935, 510, 0);
+				glScalef(12, 12, 1);
 				glRotatef(90, 1, 0, 0);
 				glRotatef(270, 0, 1, 0);
 			}
 			
-			Environment::drawBoard();			
+			Environment::drawBoard();	
+
+			glPopMatrix();		
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);
