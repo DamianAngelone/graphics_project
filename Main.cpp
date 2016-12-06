@@ -30,6 +30,7 @@ const int WIDTH = 960;
 const int HEIGHT = 540;
 const int STEPSPEED = 1000;
 int step = 0;			// When to make the game step
+int clockTimer = 0;
 
 void display(void) {
 	glClearColor(95.0/255, 195.0/255, 240.0/255, 0);
@@ -64,9 +65,16 @@ void display(void) {
 		UserInterface::drawUI();
 
 	glPopMatrix();
-
+		
+	if (clockTimer > 500)
+		UserInterface::decrTime();
+		
 	if (step > STEPSPEED)
 		step = 0;
+
+	if (clockTimer > 500)
+		clockTimer = 0;
+
 	glutSwapBuffers();
 }
 
@@ -75,7 +83,7 @@ void redraw(int i) {
 	if (!pause) {
 		glutPostRedisplay();
 		step += 17;
-		UserInterface::decrTime();
+		clockTimer += 17;
 		glutTimerFunc(17, redraw, 0);
 	}
 }
