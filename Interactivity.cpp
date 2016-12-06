@@ -140,6 +140,7 @@ void Interactivity::pushPosition(int x, int z) {
 				playerBeen[i].x = 0;
 				playerBeen[i].z = 0;
 			}
+			
 			playerBeenLength = 0;
 			Player::reset();
 			cameraAdjust();
