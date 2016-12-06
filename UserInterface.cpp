@@ -58,75 +58,96 @@ void drawText(string s) {
     }
 }
 
-// draws the player and calls the necessary logic functions
-void UserInterface::drawUI() {
-	
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
-		glLoadIdentity();
-		gluOrtho2D(0, 960, 50 - 540, 50);
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-			glLoadIdentity();
-			glDisable(GL_CULL_FACE);
+void drawLeft() {
+	char buf1[5];
+	char buf2[5];
+	char buf3[5];
+	char buf4[5];
+	char buf5[5];
 
-			glClear(GL_DEPTH_BUFFER_BIT);
-			glColor3f(0, 0, 0);
+	double temp1 = Interactivity::getLevel();
+	double temp2 = (Interactivity::getAmountOfBlocks() - Interactivity::getBeenTo());
+	double temp3 = UserInterface::getScore();
+	double temp4 = UserInterface::getTime();
+	double temp5 = Interactivity::getLives();
 
-			char buf1[5];
-			char buf2[5];
-			char buf3[5];
-			char buf4[5];
-			char buf5[5];
+	snprintf(buf1, sizeof(buf1), "%f", temp1);
+	snprintf(buf2, sizeof(buf2), "%f", temp2);
+	snprintf(buf3, sizeof(buf3), "%f", temp3);
+	snprintf(buf4, sizeof(buf4), "%f", temp4);
+	snprintf(buf5, sizeof(buf5), "%f", temp5);
 
-			double temp1 = Interactivity::getLevel();
-			double temp2 = (Interactivity::getAmountOfBlocks() - Interactivity::getBeenTo());
-			double temp3 = UserInterface::getScore();
-			double temp4 = UserInterface::getTime();
-			double temp5 = Interactivity::getLives();
+	string level(buf1);						// char array to float
+	string blocksLeft(buf2);				// char array to float
+	string scoreTot(buf3);					// char array to float
+	string currTime(buf4);					// char array to float
+	string currLives(buf5);					// char array to float
 
-			snprintf(buf1, sizeof(buf1), "%f", temp1);
-			snprintf(buf2, sizeof(buf2), "%f", temp2);
-			snprintf(buf3, sizeof(buf3), "%f", temp3);
-			snprintf(buf4, sizeof(buf4), "%f", temp4);
-			snprintf(buf5, sizeof(buf5), "%f", temp5);
+	string s[5];
+    s[0] = "Current Level: " + level;
+    s[1] = "Blocks Left: " + blocksLeft;
+    s[2] = "Score: " + scoreTot;
+    s[3] = "Time Left: " + currTime;
+    s[4] = "Lives Left: " + currLives;
 
-			string level(buf1);						// char array to float
-			string blocksLeft(buf2);				// char array to float
-			string scoreTot(buf3);					// char array to float
-			string currTime(buf4);					// char array to float
-			string currLives(buf5);					// char array to float
-
-			//cout << "level: " << temp1 << " blocks left: " << temp2 << " score: " << temp3;
-
-			string s[5];
-		    s[0] = "Current Level: " + level;
-		    s[1] = "Blocks Left: " + blocksLeft;
-		    s[2] = "Score: " + scoreTot;
-		    s[3] = "Time Left: " + currTime;
-		    s[4] = "Lives Left: " + currLives;
-
-			// Render each string
-			int v = sizeof(s)/24; // number of strings to draw
-		    for(int i = 0; i < 5; i++) {
-		    	glRasterPos2i(10, ((-i * 20) + 30));
-		  		drawText(s[i]);
-		 	}
-
-
-		  	// Making sure we can render 3D again
-			glMatrixMode(GL_MODELVIEW);
-		glPopMatrix();
-		glMatrixMode(GL_PROJECTION);
-	glDisable(GL_COLOR_MATERIAL);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	// Render each string
+	int v = sizeof(s)/24; // number of strings to draw
+    for(int i = 0; i < 5; i++) {
+    	glRasterPos2i(10, ((-i * 20) + 30));
+  		drawText(s[i]);
+ 	}
 }
 
-void UserInterface::drawMap(){
+void drawRight() {
+	glPushMatrix();
+	glTranslatef(0, -490, 0);
+	glRasterPos2i(0, 0);
 
+	glDisable(GL_LIGHTING);
+	glColor3f(0, 0.509, 0.501);
+	glBegin(GL_QUADS);
+		glVertex2f(760.0, 340.0);
+		glVertex2f(760.0, 540.0);
+		glVertex2f(960.0, 540.0);
+		glVertex2f(960.0, 340.0);
+	glEnd();
+
+	glColor3f(0, 0, 0);
+	glBegin(GL_QUADS);
+		glVertex2f(740.0, 320.0);
+		glVertex2f(740.0, 540.0);
+		glVertex2f(960.0, 540.0);
+		glVertex2f(960.0, 320.0);
+	glEnd();
+	
+	switch(Interactivity::getLevel()) {
+		case 1:
+			glTranslatef(905, 485, 0);
+			glScalef(20, 20, 1);
+			glRotatef(90, 1, 0, 0);
+			glRotatef(270, 0, 1, 0);
+			break;
+		case 2:
+			glTranslatef(925, 495, 0);
+			glScalef(15, 15, 1);
+			glRotatef(90, 1, 0, 0);
+			glRotatef(270, 0, 1, 0);
+			break;
+		case 3:
+			glTranslatef(935, 510, 0);
+			glScalef(12, 12, 1);
+			glRotatef(90, 1, 0, 0);
+			glRotatef(270, 0, 1, 0);
+			break;
+	}
+
+	Environment::drawBoard();	
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
+}
+
+// draws the player and calls the necessary logic functions
+void UserInterface::drawUI() {
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -140,54 +161,13 @@ void UserInterface::drawMap(){
 
 			glClear(GL_DEPTH_BUFFER_BIT);
 			glColor3f(0, 0, 0);
-			
-			glTranslatef(0, -490, 0);
-			glRasterPos2i(0, 0);
 
-			glDisable(GL_LIGHTING);
-			glColor3f(0, 0.509, 0.501);
-			glBegin(GL_QUADS);
-				glVertex2f(760.0, 340.0);
-				glVertex2f(760.0, 540.0);
-				glVertex2f(960.0, 540.0);
-				glVertex2f(960.0, 340.0);
-			glEnd();
-
-			glColor3f(0, 0, 0);
-			glBegin(GL_QUADS);
-				glVertex2f(740.0, 320.0);
-				glVertex2f(740.0, 540.0);
-				glVertex2f(960.0, 540.0);
-				glVertex2f(960.0, 320.0);
-			glEnd();
-			
-			if(Interactivity::getLevel() == 1){
-				glTranslatef(905, 485, 0);
-				glScalef(20, 20, 1);
-				glRotatef(90, 1, 0, 0);
-				glRotatef(270, 0, 1, 0);
-			}
-			else if(Interactivity::getLevel() == 2){
-				glTranslatef(925, 495, 0);
-				glScalef(15, 15, 1);
-				glRotatef(90, 1, 0, 0);
-				glRotatef(270, 0, 1, 0);
-			}
-			else if(Interactivity::getLevel() == 3){
-				glTranslatef(935, 510, 0);
-				glScalef(12, 12, 1);
-				glRotatef(90, 1, 0, 0);
-				glRotatef(270, 0, 1, 0);
-			}
-
-			Environment::drawBoard();	
-			glEnable(GL_LIGHTING);
-			glPopMatrix();		
+			drawLeft();
+			drawRight();
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();
-
 		glMatrixMode(GL_PROJECTION);
 	glDisable(GL_COLOR_MATERIAL);
 	glPopMatrix();
