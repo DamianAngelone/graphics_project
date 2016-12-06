@@ -142,7 +142,7 @@ void drawBorder() {
 	glPopAttrib();
 }
 
-void drawBoard() {
+void Environment::drawBoard() {
 	// Ignore lighting
 	glPushAttrib(GL_LIGHTING_BIT);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -273,7 +273,7 @@ void drawSand() {
 // Draws everything except the player/enemies
 void Environment::drawEnvironment(int step) {
 	drawSand();
-	drawBoard();
+	Environment::drawBoard();
 	drawBorder();
 	drawWater(step);
 }

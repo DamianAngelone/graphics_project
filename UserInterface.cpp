@@ -18,7 +18,7 @@ using namespace std;
 
 // Include project files
 #include "Interactivity.h"
-#include "Interactivity.h"
+#include "Environment.h"
 
 int score = 0;
 int gTime = 200;
@@ -139,12 +139,34 @@ void UserInterface::drawMap(){
 			glTranslatef(0, -490, 0);
 			glRasterPos2i(0, 0);
 
+			glColor3f(0, 0.509, 0.501);
 			glBegin(GL_QUADS);
-				glVertex2f(800.0, 380.0);
-				glVertex2f(800.0, 540.0);
+				glVertex2f(760.0, 340.0);
+				glVertex2f(760.0, 540.0);
 				glVertex2f(960.0, 540.0);
-				glVertex2f(960.0, 380.0);
-			 glEnd();
+				glVertex2f(960.0, 340.0);
+			glEnd();
+			
+			if(Interactivity::getLevel() == 1){
+				glTranslatef(830, 480, 0);
+				glScalef(20, 20, 1);
+				glRotatef(90, 1, 0, 0);
+				glRotatef(270, 0, 1, 0);
+			}
+			else if(Interactivity::getLevel() == 2){
+				glTranslatef(830, 480, 0);
+				glScalef(20, 20, 1);
+				glRotatef(90, 1, 0, 0);
+				glRotatef(270, 0, 1, 0);
+			}
+			else if(Interactivity::getLevel() == 3){
+				glTranslatef(830, 480, 0);
+				glScalef(20, 20, 1);
+				glRotatef(90, 1, 0, 0);
+				glRotatef(270, 0, 1, 0);
+			}
+			
+			Environment::drawBoard();			
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);
