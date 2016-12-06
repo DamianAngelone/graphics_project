@@ -43,6 +43,7 @@ Structure::point3D Player::getCoor() {
 
 // Change the player's orientation
 void Player::setRotation(int change) {
+
 	rot = change;
 }
 
@@ -145,6 +146,7 @@ void drawQubert() {
 			glPopMatrix();
 		glPopMatrix();
 
+
 		//left foot
 		glPushMatrix();
 			glColor3ub(244, 67, 54);
@@ -226,31 +228,34 @@ void Player::drawPlayer(bool step) {
 			offBlock();
 		if (canPhysics)				// not else because offBlock changes canPhysics
 			physics();				// If the player is not on a block, do physics
-		if (step && !canPhysics) {	// Move the player
+		if (Interactivity::getSpace() == 1 && !canPhysics) {	// Move the player
 			// Add the initial spot
 			if (!moved) {
 				Interactivity::pushPosition(displacement[0], displacement[2]);
 				moved = true;
 			}
 			// Move the player based on the orientation
-			switch(rot) {
-				case 0:		// Left
-					displacement[0] += JUMPSIZE;
-					displacement[1] -= JUMPSIZE;
-					break;
-				case 90:	// Backwards
-					displacement[1] -= JUMPSIZE;
-					displacement[2] -= JUMPSIZE;
-					break;
-				case 180:	// Right
-					displacement[0] -= JUMPSIZE;
-					displacement[1] += JUMPSIZE;
-					break;
-				case 270:	// Forwards
-					displacement[1] += JUMPSIZE;
-					displacement[2] += JUMPSIZE;
-					break;
-			}
+			//if(){
+				switch(rot) {
+					case 0:		// Left
+						displacement[0] += JUMPSIZE;
+						displacement[1] -= JUMPSIZE;
+						break;
+					case 90:	// Backwards
+						displacement[1] -= JUMPSIZE;
+						displacement[2] -= JUMPSIZE;
+						break;
+					case 180:	// Right
+						displacement[0] -= JUMPSIZE;
+						displacement[1] += JUMPSIZE;
+						break;
+					case 270:	// Forwards
+						displacement[1] += JUMPSIZE;
+						displacement[2] += JUMPSIZE;
+						break;
+				}
+			//}
+			Interactivity::setSpace(0);
 			// record the new position
 			Interactivity::pushPosition(displacement[0], displacement[2]);
 		}

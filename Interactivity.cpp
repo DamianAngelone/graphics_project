@@ -19,6 +19,7 @@ using namespace std;
 int level = 1;						// the level the game is on
 int playerBeenLength = 0;			// the level the game is on
 int blocks[3] = {3, 5, 7};			// Number of blocks in a row for each level
+int space = 0;
 
 float theta = 40;					// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
@@ -31,23 +32,39 @@ Structure::point3D playerBeen[50];
 
 Enemy Interactivity::enemy[3];
 
+int Interactivity::getSpace() {	 // Get the game level
+	
+	return space;
+}
+
+void Interactivity::setSpace(int n) {	 // Get the game level
+	
+	space = n;
+}
+
 int Interactivity::getLevel() {	 // Get the game level
+	
 	return level;
 }
 
 int Interactivity::getLength() {	// Get the number of blocks in a row
+	
 	return blocks[level - 1];
 }
 
 int Interactivity::getBeenTo() {	// Get the number of blocks in a row
+	
 	return playerBeenLength;
 }
+
 int Interactivity::getAmountOfBlocks(){
 
 	int len = Interactivity::getLength();
 	return (len * (len + 1))/2;
 }
+
 float Interactivity::getTheta() { // Get the horizontal angle of rotation
+	
 	return theta;
 }
 
@@ -68,6 +85,7 @@ Structure::point3D Interactivity::getCenter() { // Get 4-6 paramters of gluLookA
 }
 
 Structure::point3D* Interactivity::getPlayerBeen() {
+	
 	return playerBeen;
 }
 
@@ -145,6 +163,10 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 'h':
 			++level;
+			break;
+		case 32:
+			space = 1;
+			cout << "SPACE";
 			break;
 	}
 }

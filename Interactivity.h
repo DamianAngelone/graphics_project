@@ -8,6 +8,8 @@ class Interactivity {
 public:
 	static Enemy enemy[3];			// the enemy array, 2 enemies
 	static void draw(bool step);
+	static void setSpace(int n);	
+	static int getSpace();	
 	static int getLevel();						// Get the level
 	static int getLength();						// Get the number of blocks in a row
 	static float getTheta();					// Get the angle of rotation
