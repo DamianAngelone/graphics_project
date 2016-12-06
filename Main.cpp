@@ -94,7 +94,7 @@ void init() {
 	// No transparency
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
-
+	glEnable(GL_MULTISAMPLE_ARB);
 	// Lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -119,6 +119,7 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitWindowSize(WIDTH, HEIGHT);
 	glutInitWindowPosition(200, 200);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutCreateWindow("Project");
 	init();
 	glutMainLoop();
