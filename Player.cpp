@@ -160,10 +160,11 @@ void drawQubert() {
 			glTranslatef(-0.3, 0, 0);
 			gluCylinder(qobj, 0.15, 0.15, 2, 100, 100);
 			glPushMatrix();
+				glColor3ub(0, 0, 0);
 				glRotatef(-90, 1, 0, 0);
-				glScalef(1, 1, 1.5);
-				glTranslatef(0, -2.2, 0.15);
-				drawHalfSphere(100, 100, 0.3);
+				glScalef(1, 1, 3);
+				glTranslatef(0, -2.2, 0.1);
+				glutSolidCube(0.3);
 			glPopMatrix();
 		glPopMatrix();
 
@@ -174,10 +175,11 @@ void drawQubert() {
 			glTranslatef(0.3, 0, 0);
 			gluCylinder(qobj, 0.15, 0.15, 2, 100, 100);
 			glPushMatrix();
+				glColor3ub(0, 0, 0);
 				glRotatef(-90, 1, 0, 0);
-				glScalef(1, 1, 1.5);
-				glTranslatef(0, -2.2, 0.15);
-				drawHalfSphere(100, 100, 0.3);
+				glScalef(1, 1, 3);
+				glTranslatef(0, -2.2, 0.1);
+				glutSolidCube(0.3);
 			glPopMatrix();
 		glPopMatrix();
 	glPopMatrix();//body

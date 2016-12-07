@@ -196,7 +196,7 @@ void resetArray(int size) {
 void drawWater(int step) {
 	glPushMatrix();
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
-	glTranslatef(-8, -2, -8);
+	glTranslatef(-8, -3, -8);
 
 	int len = 2 * (Interactivity::getLength() + 4) + 8;
 
