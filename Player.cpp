@@ -195,7 +195,7 @@ void physics() {
 	// checks if game over, or if only a single life was lost
 	if (displacement[1] + velocity[1] < -9) {
 		hitSand = true;
-		Interactivity::decrLives();
+		Interactivity::setLives(-1);
 
 		if(Interactivity::getLives() == 0){
 			UserInterface::setGameOverState();

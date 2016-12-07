@@ -21,7 +21,7 @@ using namespace std;
 #include "Environment.h"
 
 int score = 0;
-int gTime = 200;
+int gTime = 50;
 bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
 
@@ -29,10 +29,12 @@ void UserInterface::incrScore(){
 
 	score += 1;
 }
-void UserInterface::decrScore(){
+void UserInterface::decrScore(int n){
 
-	if (score > 0)
-		score -= 1;
+	if ((score - n) >= 0)
+		score -= n;
+	else
+		score = 0;
 }
 int UserInterface::getScore(){
 
@@ -46,6 +48,11 @@ void UserInterface::decrTime(){
 int UserInterface::getTime(){
 
 	return gTime;
+}
+
+void UserInterface::setTime(){
+
+	gTime = 50;
 }
 
 bool UserInterface::getGameOverState(){
@@ -205,6 +212,7 @@ void drawRight() {
 	glEnable(GL_LIGHTING);
 	glPopMatrix();
 }
+
 
 // draws the player and calls the necessary logic functions
 void UserInterface::drawUI() {

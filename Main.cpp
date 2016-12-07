@@ -77,6 +77,11 @@ void display(void) {
 	if (clockTimer > 500)
 		clockTimer = 0;
 
+	if(UserInterface::getTime == 0){
+
+		UserInterface::setGameOverState();
+	}
+
 	glutSwapBuffers();
 }
 

@@ -38,9 +38,9 @@ int Interactivity::getLives() {	 // Get the game level
 	return lives;
 }
 
-void Interactivity::decrLives() {	 // Get the game level
+void Interactivity::setLives(int n) {	 // Get the game level
 	
-	lives -= 1;
+	lives += n;
 }
 
 int Interactivity::getSpace() {	 // Get the game level
@@ -130,7 +130,7 @@ void Interactivity::pushPosition(int x, int z) {
 		if (playerBeen[i].x == x
 			&& playerBeen[i].z == z) {
 			duplicate = true;
-			UserInterface::decrScore();
+			UserInterface::decrScore(1);
 			break;
 		}
 	}
@@ -158,6 +158,7 @@ void Interactivity::pushPosition(int x, int z) {
 			Interactivity::enemy[0].init(0);
 			Interactivity::enemy[1].init(1);
 			Interactivity::enemy[2].init(2);
+			UserInterface::setTime();
 		}
 	}
 }
@@ -206,11 +207,14 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				playerBeenLength = 0;
 				Player::setHitSand(false);
 				cameraAdjust();
+				Interactivity::setLives(3);
+
 			}
 
 			else if(UserInterface::getLevelState()){	//if level lost (but not game over)
 				UserInterface::setLevelState();			//restarts the level
 				Interactivity::setLevel(Interactivity::getLevel());
+				UserInterface::decrScore(15);
 				Player::reset();
 				Interactivity::enemy[0].init(0);
 				Interactivity::enemy[1].init(1);

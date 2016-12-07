@@ -11,7 +11,7 @@ public:
 	static void setSpace(int n);	
 	static int getSpace();	
 	static int getLives();	
-	static void decrLives();	
+	static void setLives(int n);	
 	static int getLevel();						// Get the level
 	static void setLevel(int n);
 	static int getLength();						// Get the number of blocks in a row
