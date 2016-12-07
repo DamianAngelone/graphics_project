@@ -94,7 +94,6 @@ void Enemy::draw() {
 				break;
 		}
 
-
 		//draw body
 		glutSolidCube(1);
 
