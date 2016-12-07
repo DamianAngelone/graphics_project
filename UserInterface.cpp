@@ -22,6 +22,7 @@ using namespace std;
 
 int score = 0;
 int gTime = 200;
+bool gameOverState = false;
 
 void UserInterface::incrScore(){
 
@@ -46,6 +47,16 @@ int UserInterface::getTime(){
 	return gTime;
 }
 
+bool UserInterface::getGameState(){
+
+	return gameOverState;
+}
+
+void UserInterface::setGameState(){
+
+	gameOverState = !gameOverState;
+}
+
 // Draws any text passed to it
 void drawText(string s) {
 	void * font = GLUT_BITMAP_HELVETICA_18;
@@ -57,6 +68,26 @@ void drawText(string s) {
 	    glutPostRedisplay();
     }
 }
+
+void UserInterface::gameOver(){
+
+	char buf1[5];
+	double temp1 = UserInterface::getScore();
+	snprintf(buf1, sizeof(buf1), "%f", temp1);
+	string finalScore(buf1);
+
+	string s[2];
+	s[0] = "Game Over";
+	s[1] = "Final Score: " + finalScore;
+	s[2] = "Press SPACE to restart.";
+
+	int v = sizeof(s)/24; // number of strings to draw
+    for(int i = 0; i < 3; i++) {
+    	glRasterPos2i(10, ((-i * 20) + 30));
+  		drawText(s[i]);
+  	}
+}
+
 
 void drawLeft() {
 	char buf1[5];
@@ -164,6 +195,9 @@ void UserInterface::drawUI() {
 
 			drawLeft();
 			drawRight();
+
+			if(!(Interactivity::getLives()))
+				UserInterface::gameOver();
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);

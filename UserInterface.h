@@ -11,6 +11,9 @@ public:
 	static int getScore();		// Gets global score.
 	static void decrTime();		// Decrease global time.
 	static int getTime();   	// Gets global time.
+	static void gameOver();
+	static void setGameState();
+	static bool getGameState();
 };
 
 #endif

@@ -58,6 +58,11 @@ int Interactivity::getLevel() {	 // Get the game level
 	return level;
 }
 
+void Interactivity::setLevel(){
+
+	level = 1;
+}
+
 int Interactivity::getLength() {	// Get the number of blocks in a row
 	
 	return blocks[level - 1];
@@ -140,7 +145,7 @@ void Interactivity::pushPosition(int x, int z) {
 				playerBeen[i].x = 0;
 				playerBeen[i].z = 0;
 			}
-			
+
 			playerBeenLength = 0;
 			Player::reset();
 			cameraAdjust();
@@ -180,6 +185,12 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 32:
 			space = 1;
+
+			if(UserInterface::getGameState()){
+				UserInterface::setGameState();
+				Interactivity::setLevel();
+			}
+
 			break;
 	}
 }
