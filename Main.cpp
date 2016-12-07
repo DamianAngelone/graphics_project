@@ -32,10 +32,10 @@ const int STEPSPEED = 1000;
 int step = 0;			// When to make the game step
 int clockTimer = 0;
 int timesUp = false;
+int skyWidth, skyHeight, skyMaxi;	// For the texture
 GLuint skyBoxTexture[1];
-int width, height, maxi;	// For the texture
 
-GLubyte* image;
+GLubyte* skyImage;
 
 void skybox() {
 	glMatrixMode(GL_PROJECTION);
@@ -145,57 +145,6 @@ void redraw(int i) {
 	}
 }
 
-GLubyte* LoadPPM(char* file, int* width, int* height, int* maxi) {
-    GLubyte* img;
-    FILE *fd;
-    int n, m;
-    int  k, nm;
-    char c;
-    int i;
-    char b[100];
-    float s;
-    int red, green, blue;
-    
-    /* first open file and check if it's an ASCII PPM (indicated by P3 at the start) */
-    fd = fopen(file, "r");
-    fscanf(fd,"%[^\n] ",b);
-    if (b[0] != 'P' || b[1] != '3') {
-        printf("%s is not a PPM file!\n",file);
-        exit(0);
-    }
-    fscanf(fd, "%c", &c);
-    
-    /* next, skip past the comments - any line starting with #*/
-    while (c == '#') {
-        fscanf(fd, "%[^\n] ", b);
-        fscanf(fd, "%c", &c);
-    }
-    ungetc(c,fd);
-    
-    /* now get the dimensions and maxi colour value from the image */
-    fscanf(fd, "%d %d %d", &n, &m, &k);
-        
-    /* calculate number of pixels and allocate storage for this */
-    nm = n * m;
-    img = (GLubyte*)malloc(3 * sizeof(GLuint) * nm);
-    s = 255.0 / k;
-    
-    /* for every pixel, grab the read green and blue values, storing them in the image data array */
-    for(i=0; i<nm; i++) {
-        fscanf(fd, "%d %d %d", &red, &green, &blue);
-        img[3 * nm - 3 * i - 3] = red * s;
-        img[3 * nm - 3 * i - 2] = green * s;
-        img[3 * nm - 3 * i - 1] = blue * s;
-    }
-    
-    /* finally, set the "return parameters" (width, height, maxi) and return the image array */
-    *width = n;
-    *height = m;
-    *maxi = k;
-    
-    return img;
-}
-
 void init() {
 	// No transparency
 	glDepthFunc(GL_LESS);
@@ -221,16 +170,17 @@ void init() {
     glEnable(GL_TEXTURE_2D);
     glGenTextures(2, skyBoxTexture);
     
-    /* Set the image parameters*/
+    /* Set the skyImage parameters*/
     glBindTexture(GL_TEXTURE_2D, skyBoxTexture[0]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     
-    /*Get and save image*/
-    image = LoadPPM("mat.ppm", &width, &height, &maxi);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, image);
+    /*Get and save skyImage*/
+    skyImage = Interactivity::loadPPM("mat.ppm", &skyWidth, &skyHeight, &skyMaxi);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, skyImage);
+   	Environment::setTextures();
     
     glMatrixMode(GL_TEXTURE);
 

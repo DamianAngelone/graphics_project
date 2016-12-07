@@ -23,8 +23,27 @@ using namespace std;
 bool getWaterHeight = true;
 bool getSandHeight = true;
 
+int brickWidth, brickHeight, brickMaxi;	// For the texture
+GLuint brickTexture[1];
+
 float waterHeightMap[100][100];
 float sandHeightMap[100][100];
+
+GLubyte* brickImage;
+
+void Environment::setTextures() {
+	glGenTextures(2, brickTexture);
+    
+    /* Set the brickImage parameters*/
+    glBindTexture(GL_TEXTURE_2D, brickTexture[0]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	brickImage = Interactivity::loadPPM("brick.ppm", &brickWidth, &brickHeight, &brickMaxi);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, brickWidth, brickHeight, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, brickImage);
+}
 
 void createWaves(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
@@ -87,58 +106,56 @@ void drawBorder() {
 	glEnable(GL_COLOR_MATERIAL);
 
 	int len = 2 * (Interactivity::getLength() + 4) + 8;
-
+	glEnable(GL_TEXTURE_2D); 
+	glDisable(GL_LIGHTING);
+    glBindTexture(GL_TEXTURE_2D, brickTexture[0]);
+	glColor4f(1, 1, 1, 1);
 	switch (Interactivity::getLevel()) {
 		case 1:
-			glColor3ub(244, 67, 54); //red colour
 			glPushMatrix();
-			glTranslatef(-8,-6,3);
-			glScalef(0.5,13,len);
-			glutSolidCube(1);
+				glTranslatef(-8, -6, 3);
+				glScalef(0.5, 13, len);
+				glutSolidCube(1);
 			glPopMatrix();
 			
-			glColor3ub(244, 67, 54); //red colour
 			glPushMatrix();
-			glRotatef(90,0,1,0);
-			glTranslatef(-14,-6,3);
-			glScalef(0.5,13,len);
-			glutSolidCube(1);
+				glRotatef(90, 0, 1, 0);
+				glTranslatef(-14, -6, 3);
+				glScalef(0.5, 13, len);
+				glutSolidCube(1);
 			glPopMatrix();
 			break;
 		case 2:
-			glColor3ub(244, 67, 54); //red colour
 			glPushMatrix();
-			glTranslatef(-8,-6,5);
-			glScalef(0.5,13,len);
-			glutSolidCube(1);
+				glTranslatef(-8, -6, 5);
+				glScalef(0.5, 13, len);
+				glutSolidCube(1);
 			glPopMatrix();
 			
-			glColor3ub(244, 67, 54); //red colour
 			glPushMatrix();
-			glRotatef(90,0,1,0);
-			glTranslatef(-18,-6,5);
-			glScalef(0.5,13,len);
-			glutSolidCube(1);
+				glRotatef(90, 0, 1, 0);
+				glTranslatef(-18, -6, 5);
+				glScalef(0.5, 13, len);
+				glutSolidCube(1);
 			glPopMatrix();
 			break;
 		case 3:
-			glColor3ub(244, 67, 54); //red colour
 			glPushMatrix();
-			glTranslatef(-8,-6,7);
-			glScalef(0.5,13,len);
-			glutSolidCube(1);
+				glTranslatef(-8, -6, 7);
+				glScalef(0.5, 13, len);
+				glutSolidCube(1);
 			glPopMatrix();
 			
-			glColor3ub(244, 67, 54); //red colour
 			glPushMatrix();
-			glRotatef(90,0,1,0);
-			glTranslatef(-22,-6,7);
-			glScalef(0.5,13,len);
-			glutSolidCube(1);
+				glRotatef(90, 0, 1, 0);
+				glTranslatef(-22, -6, 7);
+				glScalef(0.5, 13, len);
+				glutSolidCube(1);
 			glPopMatrix();
 			break;
 	}
-	
+	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
 	glDisable(GL_COLOR_MATERIAL);
 	glPopAttrib();
 }

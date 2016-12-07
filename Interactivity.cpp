@@ -16,12 +16,13 @@ using namespace std;
 #include "Player.h"
 #include "UserInterface.h"
 
+bool enemyCollision = false;
+
 int level = 1;						// the level the game is on
 int lives = 3;
 int playerBeenLength = 0;			// the level the game is on
 int blocks[3] = {3, 5, 7};			// Number of blocks in a row for each level
 int space = 0;
-bool enemyCollision = false;
 
 float theta = 40;					// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
@@ -302,4 +303,55 @@ void Interactivity::printInstructions() {
 	cout << "S               Turn the character backwards" << endl;
 	cout << "D               Turn the character right" << endl;
 	cout << "-----------------------------------"  << endl;
+}
+
+GLubyte* Interactivity::loadPPM(char* file, int* width, int* height, int* maxi) {
+    GLubyte* img;
+    FILE *fd;
+    int n, m;
+    int  k, nm;
+    char c;
+    int i;
+    char b[100];
+    float s;
+    int red, green, blue;
+    
+    /* first open file and check if it's an ASCII PPM (indicated by P3 at the start) */
+    fd = fopen(file, "r");
+    fscanf(fd,"%[^\n] ", b);
+    if (b[0] != 'P' || b[1] != '3') {
+        printf("%s is not a PPM file!\n",file);
+        exit(0);
+    }
+    fscanf(fd, "%c", &c);
+    
+    /* next, skip past the comments - any line starting with #*/
+    while (c == '#') {
+        fscanf(fd, "%[^\n] ", b);
+        fscanf(fd, "%c", &c);
+    }
+    ungetc(c, fd);
+    
+    /* now get the dimensions and maxi colour value from the image */
+    fscanf(fd, "%d %d %d", &n, &m, &k);
+        
+    /* calculate number of pixels and allocate storage for this */
+    nm = n * m;
+    img = (GLubyte*)malloc(3 * sizeof(GLuint) * nm);
+    s = 255.0 / k;
+    
+    /* for every pixel, grab the read green and blue values, storing them in the image data array */
+    for(i=0; i<nm; i++) {
+        fscanf(fd, "%d %d %d", &red, &green, &blue);
+        img[3 * nm - 3 * i - 3] = red * s;
+        img[3 * nm - 3 * i - 2] = green * s;
+        img[3 * nm - 3 * i - 1] = blue * s;
+    }
+    
+    /* finally, set the "return parameters" (width, height, maxi) and return the image array */
+    *width = n;
+    *height = m;
+    *maxi = k;
+    
+    return img;
 }
