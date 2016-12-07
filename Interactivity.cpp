@@ -58,9 +58,9 @@ int Interactivity::getLevel() {	 // Get the game level
 	return level;
 }
 
-void Interactivity::setLevel(){
+void Interactivity::setLevel(int n){
 
-	level = 1;
+	level = n;
 }
 
 int Interactivity::getLength() {	// Get the number of blocks in a row
@@ -138,6 +138,8 @@ void Interactivity::pushPosition(int x, int z) {
 	int len = Interactivity::getLength();
 	// Check if its a not a duplicate spot and doesn't go past bounds
 	if (!duplicate &&	// not a duplicate
+		x/2 > -1 &&	// bounds
+		x/2 > -1 &&	// bounds
 		x/2 < len &&	// further edge
 		z/2 < len &&	// further edge
 		x != z + 2) {	// dont count inside jump out of bounds
@@ -146,7 +148,7 @@ void Interactivity::pushPosition(int x, int z) {
 		
 		UserInterface::incrScore();
 		int numOfBlocks = Interactivity::getAmountOfBlocks();
-		if (playerBeenLength == numOfBlocks) {
+		if (playerBeenLength == numOfBlocks) {				//finished level
 			++level;
 			resetPlayerBeen();
 
@@ -189,18 +191,34 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 32:
 			space = 1;
+			break;
+		case 'R':
+		case 'r':
 
-			if(UserInterface::getGameState()){
-				UserInterface::setGameState();
-				Interactivity::setLevel();
+			if(UserInterface::getGameOverState()){	//if game over
+				UserInterface::setGameOverState();	//disable game over (start game again)
+				Interactivity::setLevel(1);
 				Player::reset();
 				Interactivity::enemy[0].init(0);
 				Interactivity::enemy[1].init(1);
 				Interactivity::enemy[2].init(2);
 				resetPlayerBeen();
+				playerBeenLength = 0;
+				Player::setHitSand(false);
+				cameraAdjust();
 			}
 
-			break;
+			else if(UserInterface::getLevelState()){	//if level lost (but not game over)
+				UserInterface::setLevelState();			//restarts the level
+				Interactivity::setLevel(Interactivity::getLevel());
+				Player::reset();
+				Interactivity::enemy[0].init(0);
+				Interactivity::enemy[1].init(1);
+				Interactivity::enemy[2].init(2);
+				resetPlayerBeen();
+				playerBeenLength = 0;
+				Player::setHitSand(false);
+			}
 	}
 }
 

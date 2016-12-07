@@ -13,7 +13,7 @@ public:
 	static int getLives();	
 	static void decrLives();	
 	static int getLevel();						// Get the level
-	static void setLevel();
+	static void setLevel(int n);
 	static int getLength();						// Get the number of blocks in a row
 	static float getTheta();					// Get the angle of rotation
 	static int getBeenTo();						// Get amount of blocks visited in the current level

@@ -22,7 +22,8 @@ using namespace std;
 
 int score = 0;
 int gTime = 200;
-bool gameOverState = false;
+bool gameOverState = false;					//game lost
+bool gameLevelState = false;				//level lost
 
 void UserInterface::incrScore(){
 
@@ -47,14 +48,24 @@ int UserInterface::getTime(){
 	return gTime;
 }
 
-bool UserInterface::getGameState(){
+bool UserInterface::getGameOverState(){
 
 	return gameOverState;
 }
 
-void UserInterface::setGameState(){
+void UserInterface::setGameOverState(){
 
 	gameOverState = !gameOverState;
+}
+
+bool UserInterface::getLevelState(){
+
+	return gameLevelState;
+}
+
+void UserInterface::setLevelState(){
+
+	gameLevelState = !gameLevelState;
 }
 
 // Draws any text passed to it
@@ -76,18 +87,36 @@ void UserInterface::gameOver(){
 	snprintf(buf1, sizeof(buf1), "%f", temp1);
 	string finalScore(buf1);
 
-	string s[2];
+	string s[3];
 	s[0] = "Game Over";
 	s[1] = "Final Score: " + finalScore;
-	s[2] = "Press SPACE to restart.";
+	s[2] = "Press 'R' to restart game.";
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
-    	glRasterPos2i(10, ((-i * 20) + 30));
+    	glRasterPos2i(400, ((-i * 20) - 70));
   		drawText(s[i]);
   	}
 }
 
+void UserInterface::levelLost(){
+
+	char buf1[5];
+	double temp1 = Interactivity::getLives();
+	snprintf(buf1, sizeof(buf1), "%f", temp1);
+	string lifeTotal(buf1);
+
+	string s[3];
+	s[0] = "You Died";
+	s[1] = "Current Lives: " + lifeTotal;
+	s[2] = "Press 'R' to restart level.";
+
+	int v = sizeof(s)/24; // number of strings to draw
+    for(int i = 0; i < 3; i++) {
+    	glRasterPos2i(400, ((-i * 20) - 70));
+  		drawText(s[i]);
+  	}
+}
 
 void drawLeft() {
 	char buf1[5];
@@ -196,8 +225,11 @@ void UserInterface::drawUI() {
 			drawLeft();
 			drawRight();
 
-			if(!(Interactivity::getLives()))
+			if(UserInterface::getGameOverState())
 				UserInterface::gameOver();
+
+			else if(UserInterface::getLevelState())
+				UserInterface::levelLost();
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);

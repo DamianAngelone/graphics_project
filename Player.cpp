@@ -19,6 +19,7 @@ using namespace std;
 // Include project files
 #include "Environment.h"
 #include "Interactivity.h"
+#include "UserInterface.h"
 
 bool canPhysics = false;					// If the player should enter freefall
 bool moved = false;							// To add the initial spot
@@ -46,6 +47,11 @@ Structure::point3D Player::getCoor() {
 void Player::setRotation(int change) {
 
 	rot = change;
+}
+
+void Player::setHitSand(bool n){
+
+	hitSand = n;
 }
 
 // Reset the player's position
@@ -184,10 +190,19 @@ void physics() {
 	int x, z;
 	x = floor(displacement[0] + velocity[0] + 0.5);
 	z = floor(displacement[2] + velocity[2] + 0.5);
+ 	
  	// check to see if it has touched the sand 
+	// checks if game over, or if only a single life was lost
 	if (displacement[1] + velocity[1] < -9) {
 		hitSand = true;
 		Interactivity::decrLives();
+
+		if(Interactivity::getLives() == 0){
+			UserInterface::setGameOverState();
+		}
+		else{
+			UserInterface::setLevelState();
+		}
 	} 
 	else {
 		velocity[0] = acceleration[0] + velocity[0];

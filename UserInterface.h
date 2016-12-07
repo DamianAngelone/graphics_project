@@ -12,8 +12,11 @@ public:
 	static void decrTime();		// Decrease global time.
 	static int getTime();   	// Gets global time.
 	static void gameOver();
-	static void setGameState();
-	static bool getGameState();
+	static void levelLost();
+	static void setGameOverState();
+	static bool getGameOverState();
+	static void setLevelState();
+	static bool getLevelState();
 };
 
 #endif
