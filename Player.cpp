@@ -23,7 +23,7 @@ using namespace std;
 
 bool canPhysics = false;					// If the player should enter freefall
 bool moved = false;							// To add the initial spot
-bool hitSand = false;						// To add the initial spot
+bool stopped = false;						// To add the initial spot
 bool gameOver = false;
 
 const int JUMPSIZE = 2;
@@ -45,13 +45,11 @@ Structure::point3D Player::getCoor() {
 
 // Change the player's orientation
 void Player::setRotation(int change) {
-
 	rot = change;
 }
 
-void Player::setHitSand(bool n){
-
-	hitSand = n;
+void Player::setStopped(bool b) {
+	stopped = b;
 }
 
 // Reset the player's position
@@ -196,15 +194,13 @@ void physics() {
  	// check to see if it has touched the sand 
 	// checks if game over, or if only a single life was lost
 	if (displacement[1] + velocity[1] < -9) {
-		hitSand = true;
+		stopped = true;
 		Interactivity::setLives(-1);
 
-		if(Interactivity::getLives() == 0){
+		if(Interactivity::getLives() == 0)
 			UserInterface::setGameOverState();
-		}
-		else{
+		else
 			UserInterface::setLevelState();
-		}
 	} 
 	else {
 		velocity[0] = acceleration[0] + velocity[0];
@@ -241,7 +237,7 @@ void offBlock() {
 
 // draws the player and calls the necessary logic functions
 void Player::drawPlayer(bool step) {
-	if (!hitSand) {
+	if (!stopped) {
 		if (!canPhysics)			// Check if the player is on a block
 			offBlock();
 		if (canPhysics)				// not else because offBlock changes canPhysics

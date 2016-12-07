@@ -67,18 +67,22 @@ void display(void) {
 		UserInterface::drawUI();
 
 	glPopMatrix();
+	
+	if (Interactivity::getLevel() > 1 && Interactivity::getSpace() == 0)
+		Interactivity::checkIntersections();
 		
 	if (clockTimer > 500)
 		UserInterface::decrTime();
 		
-	if (step > STEPSPEED)
+	if (step > STEPSPEED) {		// time to reset
 		step = 0;
+		// Check to see if the player is on the same block as an enemy
+	}
 
 	if (clockTimer > 500)
 		clockTimer = 0;
 
-	if(UserInterface::getTime == 0){
-
+	if (UserInterface::getTime() == 0) {
 		UserInterface::setGameOverState();
 	}
 
@@ -99,7 +103,7 @@ void init() {
 	// No transparency
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE_ARB);
+	glEnable(GL_MULTISAMPLE_ARB);	// anti-aliasing
 	// Lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);

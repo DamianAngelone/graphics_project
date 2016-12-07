@@ -7,21 +7,25 @@
 class Interactivity {
 public:
 	static Enemy enemy[4];			// the enemy array, 2 enemies
+	
 	static void draw(bool step);
 	static void setSpace(int n);	
+	static void setLevel(int n);
+	static void checkIntersections();			// Check to see if the player is on the same block as an enemy
+	static void setLives(int n);	
+	
 	static int getSpace();	
 	static int getLives();	
-	static void setLives(int n);	
 	static int getLevel();						// Get the level
-	static void setLevel(int n);
 	static int getLength();						// Get the number of blocks in a row
-	static float getTheta();					// Get the angle of rotation
 	static int getBeenTo();						// Get amount of blocks visited in the current level
 	static int getAmountOfBlocks();             // Get amount of blocks in current level.
 
+	static float getTheta();					// Get the angle of rotation
+	
 	static Structure::point3D getEye();			// The first 3 paramters of gluLookAt
-	static Structure::point3D getCenter();			// The 4-6 parameters of gluLookAt
-	static Structure::point3D* getPlayerBeen();		// Get what spots the player has been to
+	static Structure::point3D getCenter();		// The 4-6 parameters of gluLookAt
+	static Structure::point3D* getPlayerBeen();	// Get what spots the player has been to
 	/**
 		Record that the player has landed on a spot
 		@param x  -> The x position of the object

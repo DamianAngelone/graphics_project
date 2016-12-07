@@ -9,7 +9,7 @@ public:
 	static void setRotation(int change);	// Set the rotation of the player
 	static void reset();					// Reset the player's position
 	static void drawPlayer(bool step);		// Draw the player
-	static void setHitSand(bool n);
+	static void setStopped(bool b);			// If the player has hit the sand/enemy
 };
 
 #endif

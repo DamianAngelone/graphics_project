@@ -21,7 +21,6 @@ using namespace std;
 #include "Interactivity.h"
 
 const int JUMPSIZE = 2;
-const float cols[6][3] = { {1,0,0}, {0,1,1}, {1,1,0}, {0,1,0}, {0,0,1}, {1,0,1} };
 
 GLUquadric* qObj = gluNewQuadric();
 
@@ -29,6 +28,7 @@ void Enemy::init(int id) {
 	ID = id;
 	enemyRot = 2;
 	enemyMoved = false;
+	// set the position based on the ID
 	switch(ID) {
 		case 0:
 			enemyDisp[0] = 8;
@@ -37,7 +37,7 @@ void Enemy::init(int id) {
 			break;
 		case 1:
 			enemyDisp[0] = 0;
-			enemyDisp[1] = ((Interactivity::getLength() - 1) * 2) + 1.5;
+			enemyDisp[1] = (Interactivity::getLength() * 2) + 1.5;
 			enemyDisp[2] = Interactivity::getLength() * 2;
 			break;
 		case 2:
@@ -62,6 +62,7 @@ void Enemy::setRotation(int change) {
 	enemyRot = change;
 }
 
+// Checks if the next step is on a block still.
 bool inBounds(int x, int z) {
 	int len = Interactivity::getLength() * 2;
 	return x > -1 &&
@@ -71,6 +72,7 @@ bool inBounds(int x, int z) {
 		   x != z + 2;  	// dont count inside jump out of bounds
 }
 
+// Draw the model of the players
 void Enemy::draw() {
 	float origin[3] = {0, 0, 0};
 	glPushMatrix();
@@ -230,7 +232,7 @@ void Enemy::draw() {
 
 // draws the player and calls the necessary logic functions
 void Enemy::drawEnemy(bool step) {
-	if (step) {	// Move the player
+	if (step && Interactivity::getSpace() == 0) {	// Move the player
 		bool findRotate = false;
 		while (!findRotate) {
 			enemyRot = rand() % 4;

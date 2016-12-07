@@ -33,55 +33,71 @@ Structure::point3D playerBeen[50];
 
 Enemy Interactivity::enemy[4];
 
-int Interactivity::getLives() {	 // Get the game level
-	
+int Interactivity::getLives() {		 // Get the game level
 	return lives;
 }
 
-void Interactivity::setLives(int n) {	 // Get the game level
-	
+void Interactivity::setLives(int n) {	 // Set the number of lives
 	lives += n;
 }
 
-int Interactivity::getSpace() {	 // Get the game level
-	
+// 0 - cannot move, 1 - can move
+int Interactivity::getSpace() {		 // Get the space state (can move or restart)
 	return space;
 }
 
-void Interactivity::setSpace(int n) {	 // Get the game level
-	
+void Interactivity::setSpace(int n) {	 // Set the space state (can move or restart)
 	space = n;
 }
 
-int Interactivity::getLevel() {	 // Get the game level
-	
+int Interactivity::getLevel() {	 	// Get the game level
 	return level;
 }
 
-void Interactivity::setLevel(int n){
-
+void Interactivity::setLevel(int n) {	// Set the game level
 	level = n;
 }
 
 int Interactivity::getLength() {	// Get the number of blocks in a row
-	
 	return blocks[level - 1];
 }
 
-int Interactivity::getBeenTo() {	// Get the number of blocks in a row
-	
+int Interactivity::getBeenTo() {	// Get the number of blocks the player has been to
 	return playerBeenLength;
 }
 
-int Interactivity::getAmountOfBlocks(){
-
+int Interactivity::getAmountOfBlocks() {	// Get the number of blocks
 	int len = Interactivity::getLength();
-	return (len * (len + 1))/2;
+	return (len * (len + 1)) / 2;
 }
 
-float Interactivity::getTheta() { // Get the horizontal angle of rotation
-	
+float Interactivity::getTheta() { 	// Get the horizontal angle of rotation
 	return theta;
+}
+
+// Check to see if the player is on the same block as an enemy
+void Interactivity::checkIntersections() {
+	Structure::point3D enemy0 = Interactivity::enemy[0].getCoor();
+	Structure::point3D enemy1 = Interactivity::enemy[1].getCoor();
+	Structure::point3D enemy2 = Interactivity::enemy[2].getCoor();
+	Structure::point3D player = Player::getCoor();
+	// if the player and the enemy are on the same block
+	// level 2 has 2 enemies and level 3 has 3 enemies
+	if (level == 2 &&
+	   ((player.x == enemy0.x && player.z == enemy0.z) ||
+	   (player.x == enemy1.x && player.z == enemy1.z))) {
+	   		Interactivity::setLives(-1);
+			UserInterface::setLevelState();
+			Player::setStopped(true);
+	}
+	else if (level == 3 &&
+		    ((player.x == enemy0.x && player.z == enemy0.z) ||
+			(player.x == enemy1.x && player.z == enemy1.z) ||
+			(player.x == enemy2.x && player.z == enemy2.z))) {
+			Interactivity::setLives(-1);
+			UserInterface::setLevelState();
+			Player::setStopped(true);
+	}
 }
 
 Structure::point3D Interactivity::getEye() { // Get first 3 paramters of gluLookAt
@@ -101,7 +117,6 @@ Structure::point3D Interactivity::getCenter() { // Get 4-6 paramters of gluLookA
 }
 
 Structure::point3D* Interactivity::getPlayerBeen() {
-	
 	return playerBeen;
 }
 
@@ -113,7 +128,7 @@ void cameraAdjust() {
 	center[2] = Interactivity::getLength() * 2 + 8;
 }
 
-void resetPlayerBeen() {
+void resetPlayerBeen() {	// Rest the playerBeen array
 	for (int i = 0; i < playerBeenLength; i++) {
 		playerBeen[i].x = 0;
 		playerBeen[i].z = 0;
@@ -151,7 +166,6 @@ void Interactivity::pushPosition(int x, int z) {
 		if (playerBeenLength == numOfBlocks) {				//finished level
 			++level;
 			resetPlayerBeen();
-
 			playerBeenLength = 0;
 			Player::reset();
 			cameraAdjust();
@@ -164,7 +178,6 @@ void Interactivity::pushPosition(int x, int z) {
 }
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {
-	
 	switch (key) {
 		case 'q':	// Quit the program
 		case 'Q':
@@ -195,9 +208,8 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 'R':
 		case 'r':
-
-			if(UserInterface::getGameOverState()){	//if game over
-				UserInterface::setGameOverState();	//disable game over (start game again)
+			if (UserInterface::getGameOverState()) {	//if game over
+				UserInterface::setGameOverState();		//disable game over (start game again)
 				Interactivity::setLevel(1);
 				Player::reset();
 				Interactivity::enemy[0].init(0);
@@ -205,13 +217,11 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				Interactivity::enemy[2].init(2);
 				resetPlayerBeen();
 				playerBeenLength = 0;
-				Player::setHitSand(false);
+				Player::setStopped(false);
 				cameraAdjust();
 				Interactivity::setLives(3);
-
 			}
-
-			else if(UserInterface::getLevelState()){	//if level lost (but not game over)
+			else if (UserInterface::getLevelState()) {	//if level lost (but not game over)
 				UserInterface::setLevelState();			//restarts the level
 				Interactivity::setLevel(Interactivity::getLevel());
 				UserInterface::decrScore(15);
@@ -221,8 +231,9 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				Interactivity::enemy[2].init(2);
 				resetPlayerBeen();
 				playerBeenLength = 0;
-				Player::setHitSand(false);
+				Player::setStopped(false);
 			}
+			break;
 	}
 }
 

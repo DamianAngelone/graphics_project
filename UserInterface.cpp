@@ -26,52 +26,48 @@ bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
 
 void UserInterface::incrScore(){
-
 	score += 1;
 }
-void UserInterface::decrScore(int n){
 
+void UserInterface::decrScore(int n){
 	if ((score - n) >= 0)
 		score -= n;
 	else
 		score = 0;
 }
+
 int UserInterface::getScore(){
 
 	return score;
 }
+
 void UserInterface::decrTime(){
 
 	if (gTime > 0)
 		gTime -= 1;
 }
-int UserInterface::getTime(){
 
+int UserInterface::getTime(){
 	return gTime;
 }
 
 void UserInterface::setTime(){
-
 	gTime = 50;
 }
 
 bool UserInterface::getGameOverState(){
-
 	return gameOverState;
 }
 
 void UserInterface::setGameOverState(){
-
 	gameOverState = !gameOverState;
 }
 
 bool UserInterface::getLevelState(){
-
 	return gameLevelState;
 }
 
 void UserInterface::setLevelState(){
-
 	gameLevelState = !gameLevelState;
 }
 
@@ -154,7 +150,7 @@ void drawLeft() {
     s[0] = "Current Level: " + level;
     s[1] = "Blocks Left: " + blocksLeft;
     s[2] = "Score: " + scoreTot;
-    s[3] = "Time Left: " + currTime;
+    s[3] = "Time Left: " + currTime + " s";
     s[4] = "Lives Left: " + currLives;
 
 	// Render each string
