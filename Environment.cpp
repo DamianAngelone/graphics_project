@@ -20,6 +20,9 @@ using namespace std;
 #include "Interactivity.h"
 #include "UserInterface.h"
 
+float Fishes[3][6] = {{4,-6,0,0,30,0},{7,-4,0,0,-20,0},{6,-3,0,0,90,0}};
+int InitFishPosit = 0;
+
 bool getWaterHeight = true;
 bool getSandHeight = true;
 
@@ -288,10 +291,119 @@ void drawSand() {
 	glPopMatrix();
 }
 
+
+
+void InitFishPosition(void){
+	//srand(time(0));
+	int len = Interactivity::getLength()*2;
+	for(int i = 0 ; i < 3 ; i++){
+		
+		Fishes[i][0] = rand()%6 + len;
+		Fishes[i][4] = rand()%360 ; 
+	}
+
+	InitFishPosit = 1 ;
+
+
+}
+
+void drawFish(int n)
+{	
+	glPushMatrix();
+
+	glRotatef((n == 1 ? 1 : -1) * Fishes[n][4], 0, 1, 0);
+	glTranslatef(Fishes[n][0],Fishes[n][1],0);
+
+	glPushMatrix();
+	glRotatef((n == 1 ? 180 : 0), 0, 1, 0);
+	//glRotatef(-Fishes[n][4], 0, 1, 0);
+	//glRotatef(Fishes[n][4], 0, 1, 0);
+	glScalef(0.5,0.5,0.5);
+	//draw body
+	glColor3f(0,0,1);
+	glScalef(1,1,1.5);
+	glutSolidSphere(1, 100, 100);
+	
+	//right eye
+	glPushMatrix();
+	glScalef(1,1,0.66);
+	glTranslatef(-0.35,0.3,1.1);	
+	glColor3f(1,1,1);
+	glutSolidSphere(0.4, 100, 100);
+
+	glPushMatrix();
+	glTranslatef(0,0,0.3);
+	glColor3f(0,0,0);
+	glutSolidSphere(0.2,100,100);
+
+	glPopMatrix();
+	glPopMatrix();
+	
+	//left eye
+	glPushMatrix();
+	glScalef(1,1,0.66);
+	glTranslatef(0.35,0.3,1.1);	
+	glColor3f(1,1,1);
+	glutSolidSphere(0.4, 100, 100);
+
+	glPushMatrix();
+	glTranslatef(0,0,0.3);
+	glColor3f(0,0,0);
+	glutSolidSphere(0.2,100,100);
+	glPopMatrix();
+	glPopMatrix();
+
+	glPushMatrix();
+	glColor3f(0,0,1);
+	glScalef(0.8,0.8,0.8);
+	
+
+	glTranslatef(0,0,-2);
+	int flip = rand()%2;
+	glRotatef((flip == 1? 20 : -20),0,1,0);
+	glutSolidCone(1, 1, 100, 100);
+	glPopMatrix();
+	glPopMatrix();
+	
+
+	
+	glPopMatrix();//body
+}
+
+void renderFish(int step){
+	if(InitFishPosit == 0) {
+		InitFishPosition();		
+	}	
+	else{
+		int len = Interactivity::getLength();
+		glPushMatrix();
+		glScalef(0.7, 0.7,0.7);
+		if (step % 1 == 0) {	// the waves
+			for(int i  = 0; i < 3 ; i++){
+				//moveFish(i);
+				glPushMatrix();
+		//glTranslatef(-8,0,-8);
+		glTranslatef(len,0,len);
+				Fishes[i][4]+=1;
+				drawFish(i);
+				glPopMatrix();
+
+			}
+			//createWaves(3, len);
+		}
+		glPopMatrix();
+	}
+
+}
+
 // Draws everything except the player/enemies
 void Environment::drawEnvironment(int step) {
 	drawSand();
 	Environment::drawBoard();
 	drawBorder();
+	
+	glDisable(GL_LIGHTING);
+	renderFish(step);
+	glEnable(GL_LIGHTING);
 	drawWater(step);
 }
