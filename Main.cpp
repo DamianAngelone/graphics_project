@@ -58,11 +58,11 @@ void display(void) {
 		glRotatef(Interactivity::getTheta(), 0, 1, 0);
 
 		Player::drawPlayer(step > STEPSPEED);
-		if (Interactivity::getLevel() > 1) {
+		if (Interactivity::getLevel() > 1 && !UserInterface::getFinishedLevelState()) {
 			Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
 			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
 		}
-		if (Interactivity::getLevel() == 3)
+		if (Interactivity::getLevel() == 3 && !UserInterface::getFinishedLevelState())
 			Interactivity::enemy[2].drawEnemy(step > STEPSPEED);
 		Environment::drawEnvironment(step);
 		UserInterface::drawUI();
@@ -83,7 +83,7 @@ void display(void) {
 	if (clockTimer > 500)
 		clockTimer = 0;
 
-	if ((UserInterface::getTime() == 0) && !timesUp) {
+	if ((UserInterface::getTime() == 0) && !timesUp && !UserInterface::calculatingScore()) {
 		UserInterface::setGameOverState();
 		timesUp = !timesUp;
 	}

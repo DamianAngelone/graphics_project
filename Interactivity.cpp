@@ -179,20 +179,15 @@ void Interactivity::pushPosition(int x, int z) {
 		UserInterface::incrScore();
 		int numOfBlocks = Interactivity::getAmountOfBlocks();
 		if (playerBeenLength == numOfBlocks) {				//finished level
-			++level;
-			resetPlayerBeen();
-			playerBeenLength = 0;
-			Player::reset();
-			cameraAdjust();
-			Interactivity::enemy[0].init(0);
-			Interactivity::enemy[1].init(1);
-			Interactivity::enemy[2].init(2);
-			UserInterface::setTime();
+
+			UserInterface::setFinishedLevelState();
+
 		}
 	}
 }
 
 void Interactivity::keyboard(unsigned char key, int x, int y) {
+	
 	switch (key) {
 		case 'q':	// Quit the program
 		case 'Q':
@@ -219,7 +214,8 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			++level;
 			break;
 		case 32:
-			space = 1;
+			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock())
+				space = 1;
 			break;
 		case 'R':
 		case 'r':
@@ -251,6 +247,20 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				Player::setStopped(false);
 				enemyCollision = false;
 				UserInterface::setTime();
+			}
+
+			else if (UserInterface::getFinishedLevelState()) {
+				++level;
+				resetPlayerBeen();
+				playerBeenLength = 0;
+				Player::reset();
+				cameraAdjust();
+				UserInterface::setFinishedLevelState();
+				Interactivity::enemy[0].init(0);
+				Interactivity::enemy[1].init(1);
+				Interactivity::enemy[2].init(2);
+				UserInterface::setTime();
+				UserInterface::setCalculatingScore(false);
 			}
 			break;
 	}

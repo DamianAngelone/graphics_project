@@ -18,6 +18,7 @@ using namespace std;
 
 // Include project files
 #include "Interactivity.h"
+#include "UserInterface.h"
 
 bool getWaterHeight = true;
 bool getSandHeight = true;
@@ -205,7 +206,7 @@ void drawWater(int step) {
 		createWaves(3, len);
 	}
 
-	if (step % 40 == 0) {	// the waves
+	if ((step % 40 == 0 && !UserInterface::calculatingScore())) {	// the waves
 		resetArray(len);
 		createWaves(3, len);
 	}

@@ -14,6 +14,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <unistd.h>
 using namespace std;
 
 // Include project files
@@ -21,9 +22,11 @@ using namespace std;
 #include "Environment.h"
 
 int score = 0;
-int gTime = 5;
+int gTime = 50;
 bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
+bool finishedLevelState = false;			//level won
+bool safeToDecreaseTime = false;
 
 void UserInterface::incrScore(){
 	score += 1;
@@ -63,12 +66,28 @@ void UserInterface::setGameOverState(){
 	gameOverState = !gameOverState;
 }
 
+bool UserInterface::getFinishedLevelState(){
+	return finishedLevelState;
+}
+
+void UserInterface::setFinishedLevelState(){
+	finishedLevelState = !finishedLevelState;
+}
+
 bool UserInterface::getLevelState(){
 	return gameLevelState;
 }
 
 void UserInterface::setLevelState(){
 	gameLevelState = !gameLevelState;
+}
+
+bool UserInterface::calculatingScore(){
+	return safeToDecreaseTime;
+}
+
+void UserInterface::setCalculatingScore(bool m){
+	safeToDecreaseTime = m;
 }
 
 // Draws any text passed to it
@@ -83,7 +102,31 @@ void drawText(string s) {
     }
 }
 
+void drawTextTitles(string s) {
+	void * font = GLUT_BITMAP_HELVETICA_18;
+	for (string::iterator i = s.begin(); i != s.end(); ++i) {
+	    char c = *i;
+	    if(c == '.')
+	    	break;
+	    glutBitmapCharacter(font, c);
+	    glutPostRedisplay();
+    }
+}
+
+void calculateScore(){
+
+	usleep(5000);
+	UserInterface::setCalculatingScore(true);
+	UserInterface::decrTime();
+	UserInterface::incrScore();
+}
+
 void UserInterface::finishedLevel(){
+  	
+  	for(int i = 0; i < UserInterface::getTime(); i++){
+
+  		calculateScore();	
+	}
 
 	char buf1[5];
 	char buf2[5];
@@ -91,7 +134,7 @@ void UserInterface::finishedLevel(){
 	
 	double temp1 = Interactivity::getLevel();
 	double temp2 = UserInterface::getScore();
-	double temp3 = UserInterface::getScore();
+	double temp3 = Interactivity::getLives();
 	
 	snprintf(buf1, sizeof(buf1), "%f", temp1);
 	snprintf(buf2, sizeof(buf2), "%f", temp2);
@@ -110,7 +153,7 @@ void UserInterface::finishedLevel(){
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 4; i++) {
     	glRasterPos2i(400, ((-i * 20) - 70));
-  		drawText(s[i]);
+  		drawTextTitles(s[i]);
   	}
 }
 
@@ -129,7 +172,7 @@ void UserInterface::gameOver(){
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
     	glRasterPos2i(400, ((-i * 20) - 70));
-  		drawText(s[i]);
+  		drawTextTitles(s[i]);
   	}
 }
 
@@ -147,8 +190,8 @@ void UserInterface::levelLost(){
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
-    	glRasterPos2i(400, ((-i * 20) - 70));
-  		drawText(s[i]);
+    	glRasterPos2i(390, ((-i * 20) - 80));
+  		drawTextTitles(s[i]);
   	}
 }
 
@@ -265,6 +308,9 @@ void UserInterface::drawUI() {
 
 			else if(UserInterface::getLevelState())
 				UserInterface::levelLost();
+
+			else if(UserInterface::getFinishedLevelState())
+				UserInterface::finishedLevel();
 
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);

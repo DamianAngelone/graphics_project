@@ -25,6 +25,7 @@ bool canPhysics = false;					// If the player should enter freefall
 bool moved = false;							// To add the initial spot
 bool stopped = false;						// To add the initial spot
 bool gameOver = false;
+bool currOffBlock = false;
 
 const int JUMPSIZE = 2;
 int rot = 270;								// The rotation angle
@@ -41,6 +42,11 @@ Structure::point3D Player::getCoor() {
 	position.y = displacement[1];
 	position.z = displacement[2];
 	return position;
+}
+
+bool Player::currentlyOffBlock(){
+
+	return currOffBlock;
 }
 
 // Change the player's orientation
@@ -211,11 +217,17 @@ void physics() {
 
 // Checks if the player is on a block
 void offBlock() {
+
+	currOffBlock = false;
+
 	if (displacement[0] == 2 * Interactivity::getLength() ||	// far edges
 		displacement[2] == 2 * Interactivity::getLength() ||
 		displacement[0] < 0 || displacement[2] < 0 ||		// close edges
 		// going left/down "into" the board with no block
 		displacement[0] == displacement[2] + 2) {
+
+		currOffBlock = true; 
+
 		canPhysics = true;
 		acceleration[1] = -0.2;
 		switch (rot) {
@@ -237,7 +249,7 @@ void offBlock() {
 
 // draws the player and calls the necessary logic functions
 void Player::drawPlayer(bool step) {
-	if (!stopped) {
+	if (!stopped && !UserInterface::getFinishedLevelState()) {
 		if (!canPhysics)			// Check if the player is on a block
 			offBlock();
 		if (canPhysics)				// not else because offBlock changes canPhysics

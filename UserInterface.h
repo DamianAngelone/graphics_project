@@ -19,6 +19,10 @@ public:
 	static bool getGameOverState();
 	static void setLevelState();
 	static bool getLevelState();
+	static void setFinishedLevelState();
+	static bool getFinishedLevelState();
+	static bool calculatingScore();
+	static void setCalculatingScore(bool n);
 };
 
 #endif
