@@ -113,6 +113,10 @@ void Interactivity::checkIntersections() {
 				UserInterface::setLevelState();
 			
 	}
+	else if (level > 3){
+
+		UserInterface::setEndGameState();
+	}
 }
 
 Structure::point3D Interactivity::getEye() { // Get first 3 paramters of gluLookAt
@@ -214,7 +218,7 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			++level;
 			break;
 		case 32:
-			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock())
+			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock() && !UserInterface::getGameOverState())
 				space = 1;
 			break;
 		case 'R':
@@ -261,6 +265,21 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				UserInterface::setTime();
 				UserInterface::setCalculatingScore(false);
 			}
+			if (UserInterface::getEndGameState()) {
+				UserInterface::setGameOverState();		//disable game over (start game again)
+				Interactivity::setLevel(1);
+				Player::reset();
+				Interactivity::enemy[0].init(0);
+				Interactivity::enemy[1].init(1);
+				Interactivity::enemy[2].init(2);
+				resetPlayerBeen();
+				playerBeenLength = 0;
+				Player::setStopped(false);
+				enemyCollision = false;
+				cameraAdjust();
+				Interactivity::setLives(3);
+				UserInterface::setTime();
+			}	
 			break;
 	}
 }

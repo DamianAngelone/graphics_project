@@ -27,6 +27,7 @@ bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
 bool finishedLevelState = false;			//level won
 bool safeToDecreaseTime = false;
+bool endGame = false;
 
 void UserInterface::incrScore(){
 	score += 1;
@@ -79,6 +80,13 @@ bool UserInterface::getLevelState(){
 }
 
 void UserInterface::setLevelState(){
+	endGame = !endGame;
+}
+bool UserInterface::getEndGameState(){
+	return endGame;
+}
+
+void UserInterface::setEndGameState(){
 	gameLevelState = !gameLevelState;
 }
 
@@ -165,9 +173,16 @@ void UserInterface::gameOver(){
 	string finalScore(buf1);
 
 	string s[3];
-	s[0] = "Game Over";
-	s[1] = "Final Score: " + finalScore;
-	s[2] = "Press 'R' to restart game.";
+	if(endGame){
+		s[0] = "Game Completed";
+		s[1] = "Final Score: " + finalScore;
+		s[2] = "Press 'R' to restart game.";
+	}
+	else{
+		s[0] = "Game Over";
+		s[1] = "Final Score: " + finalScore;
+		s[2] = "Press 'R' to restart game.";
+	}
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
@@ -282,7 +297,6 @@ void drawRight() {
 	glEnable(GL_LIGHTING);
 	glPopMatrix();
 }
-
 
 // draws the player and calls the necessary logic functions
 void UserInterface::drawUI() {
