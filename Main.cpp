@@ -31,6 +31,7 @@ const int HEIGHT = 540;
 const int STEPSPEED = 1000;
 int step = 0;			// When to make the game step
 int clockTimer = 0;
+int timesUp = false;
 
 void display(void) {
 	glClearColor(95.0/255, 195.0/255, 240.0/255, 0);
@@ -82,8 +83,9 @@ void display(void) {
 	if (clockTimer > 500)
 		clockTimer = 0;
 
-	if (UserInterface::getTime() == 0) {
+	if ((UserInterface::getTime() == 0) && !timesUp) {
 		UserInterface::setGameOverState();
+		timesUp = !timesUp;
 	}
 
 	glutSwapBuffers();

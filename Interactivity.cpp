@@ -21,6 +21,7 @@ int lives = 3;
 int playerBeenLength = 0;			// the level the game is on
 int blocks[3] = {3, 5, 7};			// Number of blocks in a row for each level
 int space = 0;
+bool enemyCollision = false;
 
 float theta = 40;					// The angle of rotation
 // float array instead of point3D because you can't initialize a struct up here
@@ -85,18 +86,32 @@ void Interactivity::checkIntersections() {
 	// level 2 has 2 enemies and level 3 has 3 enemies
 	if (level == 2 &&
 	   ((player.x == enemy0.x && player.z == enemy0.z) ||
-	   (player.x == enemy1.x && player.z == enemy1.z))) {
+	   (player.x == enemy1.x && player.z == enemy1.z)) && !enemyCollision) {
+	   		
+	   		enemyCollision = true;
 	   		Interactivity::setLives(-1);
-			UserInterface::setLevelState();
 			Player::setStopped(true);
+
+			if(Interactivity::getLives() == 0)
+				UserInterface::setGameOverState();
+			else
+				UserInterface::setLevelState();
+			
 	}
 	else if (level == 3 &&
 		    ((player.x == enemy0.x && player.z == enemy0.z) ||
 			(player.x == enemy1.x && player.z == enemy1.z) ||
-			(player.x == enemy2.x && player.z == enemy2.z))) {
+			(player.x == enemy2.x && player.z == enemy2.z)) && !enemyCollision) {
+			
+			enemyCollision = true;
 			Interactivity::setLives(-1);
-			UserInterface::setLevelState();
 			Player::setStopped(true);
+			
+			if(Interactivity::getLives() == 0)
+				UserInterface::setGameOverState();
+			else
+				UserInterface::setLevelState();
+			
 	}
 }
 
@@ -218,8 +233,10 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				resetPlayerBeen();
 				playerBeenLength = 0;
 				Player::setStopped(false);
+				enemyCollision = false;
 				cameraAdjust();
 				Interactivity::setLives(3);
+				UserInterface::setTime();
 			}
 			else if (UserInterface::getLevelState()) {	//if level lost (but not game over)
 				UserInterface::setLevelState();			//restarts the level
@@ -232,6 +249,8 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				resetPlayerBeen();
 				playerBeenLength = 0;
 				Player::setStopped(false);
+				enemyCollision = false;
+				UserInterface::setTime();
 			}
 			break;
 	}

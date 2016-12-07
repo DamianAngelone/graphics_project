@@ -14,6 +14,7 @@ public:
 	static void setTime(); 
 	static void gameOver();
 	static void levelLost();
+	static void finishedLevel();
 	static void setGameOverState();
 	static bool getGameOverState();
 	static void setLevelState();

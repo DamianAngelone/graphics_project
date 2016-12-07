@@ -21,7 +21,7 @@ using namespace std;
 #include "Environment.h"
 
 int score = 0;
-int gTime = 50;
+int gTime = 5;
 bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
 
@@ -81,6 +81,37 @@ void drawText(string s) {
 	    glutBitmapCharacter(font, c);
 	    glutPostRedisplay();
     }
+}
+
+void UserInterface::finishedLevel(){
+
+	char buf1[5];
+	char buf2[5];
+	char buf3[5];
+	
+	double temp1 = Interactivity::getLevel();
+	double temp2 = UserInterface::getScore();
+	double temp3 = UserInterface::getScore();
+	
+	snprintf(buf1, sizeof(buf1), "%f", temp1);
+	snprintf(buf2, sizeof(buf2), "%f", temp2);
+	snprintf(buf3, sizeof(buf3), "%f", temp3);
+
+	string currLevel(buf1);
+	string currScore(buf2);
+	string currLives(buf3);
+
+	string s[4];
+	s[0] = "Level " + currLevel + " completed!";
+	s[1] = "Current Score: " + currScore;
+	s[2] = "Current Lives: " + currLives;
+	s[3] = "Press 'R' to continue to next level.";
+
+	int v = sizeof(s)/24; // number of strings to draw
+    for(int i = 0; i < 4; i++) {
+    	glRasterPos2i(400, ((-i * 20) - 70));
+  		drawText(s[i]);
+  	}
 }
 
 void UserInterface::gameOver(){
