@@ -145,10 +145,10 @@ void drawRight() {
 
 	glColor3f(0, 0, 0);
 	glBegin(GL_QUADS);
-		glVertex2f(740.0, 320.0);
-		glVertex2f(740.0, 540.0);
+		glVertex2f(750.0, 330.0);
+		glVertex2f(750.0, 540.0);
 		glVertex2f(960.0, 540.0);
-		glVertex2f(960.0, 320.0);
+		glVertex2f(960.0, 330.0);
 	glEnd();
 	
 	switch(Interactivity::getLevel()) {

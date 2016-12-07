@@ -113,6 +113,13 @@ void cameraAdjust() {
 	center[2] = Interactivity::getLength() * 2 + 8;
 }
 
+void resetPlayerBeen() {
+	for (int i = 0; i < playerBeenLength; i++) {
+		playerBeen[i].x = 0;
+		playerBeen[i].z = 0;
+	}
+}
+
 void Interactivity::pushPosition(int x, int z) {
 	Structure::point3D point;
 	point.x = x;
@@ -141,10 +148,7 @@ void Interactivity::pushPosition(int x, int z) {
 		int numOfBlocks = Interactivity::getAmountOfBlocks();
 		if (playerBeenLength == numOfBlocks) {
 			++level;
-			for (int i = 0; i < playerBeenLength; i++) {
-				playerBeen[i].x = 0;
-				playerBeen[i].z = 0;
-			}
+			resetPlayerBeen();
 
 			playerBeenLength = 0;
 			Player::reset();
@@ -189,6 +193,11 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			if(UserInterface::getGameState()){
 				UserInterface::setGameState();
 				Interactivity::setLevel();
+				Player::reset();
+				Interactivity::enemy[0].init(0);
+				Interactivity::enemy[1].init(1);
+				Interactivity::enemy[2].init(2);
+				resetPlayerBeen();
 			}
 
 			break;
