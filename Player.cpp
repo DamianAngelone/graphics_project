@@ -140,6 +140,7 @@ void drawQubert() {
 		glPopMatrix();
 		
 		// nose
+		glDisable(GL_CULL_FACE);
 		glPushMatrix();
 			glColor3ub(244, 67, 54);
 			gluCylinder(qobj, 0.35, 0.55, 2, 100, 100);
@@ -156,6 +157,7 @@ void drawQubert() {
 				glColor3ub(244, 67, 54);
 			glPopMatrix();
 		glPopMatrix();
+		glEnable(GL_CULL_FACE);
 
 		//left foot
 		glPushMatrix();

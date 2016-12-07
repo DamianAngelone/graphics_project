@@ -20,7 +20,7 @@ using namespace std;
 #include "Interactivity.h"
 #include "UserInterface.h"
 
-float Fishes[3][6] = {{4,-6,0,0,30,0},{7,-4,0,0,-20,0},{6,-3,0,0,90,0}};
+float Fishes[3][6] = {{4,-9,0,0,30,0}, {7,-5,0,0,-20,0}, {6,-3,0,0,90,0}};
 int InitFishPosit = 0;
 
 bool getWaterHeight = true;
@@ -360,7 +360,7 @@ void drawFish(int n)
 
 	glTranslatef(0,0,-2);
 	int flip = rand()%2;
-	glRotatef((flip == 1? 20 : -20),0,1,0);
+	glRotatef((flip == 1? 10 : -10),0,1,0);
 	glutSolidCone(1, 1, 100, 100);
 	glPopMatrix();
 	glPopMatrix();
@@ -384,7 +384,7 @@ void renderFish(int step){
 				glPushMatrix();
 		//glTranslatef(-8,0,-8);
 		glTranslatef(len,0,len);
-				Fishes[i][4]+=1;
+				Fishes[i][4] += 0.7;
 				drawFish(i);
 				glPopMatrix();
 
