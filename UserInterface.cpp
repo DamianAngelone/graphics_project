@@ -145,14 +145,14 @@ void UserInterface::finishedLevel(){
 	string currLives(buf3);
 
 	string s[4];
-	s[0] = "Level " + currLevel + " completed!";
+	s[0] = "You Beat Level " + currLevel;
 	s[1] = "Current Score: " + currScore;
 	s[2] = "Current Lives: " + currLives;
 	s[3] = "Press 'R' to continue to next level.";
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 4; i++) {
-    	glRasterPos2i(400, ((-i * 20) - 70));
+    	glRasterPos2i(350, ((-i * 20) - 70));
   		drawTextTitles(s[i]);
   	}
 }
@@ -171,7 +171,7 @@ void UserInterface::gameOver(){
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
-    	glRasterPos2i(400, ((-i * 20) - 70));
+    	glRasterPos2i(350, ((-i * 20) - 70));
   		drawTextTitles(s[i]);
   	}
 }
@@ -190,7 +190,7 @@ void UserInterface::levelLost(){
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
-    	glRasterPos2i(390, ((-i * 20) - 80));
+    	glRasterPos2i(350, ((-i * 20) - 70));
   		drawTextTitles(s[i]);
   	}
 }

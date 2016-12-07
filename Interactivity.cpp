@@ -248,7 +248,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				enemyCollision = false;
 				UserInterface::setTime();
 			}
-
 			else if (UserInterface::getFinishedLevelState()) {
 				++level;
 				resetPlayerBeen();
