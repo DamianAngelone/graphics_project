@@ -292,7 +292,7 @@ void Interactivity::special(int key, int x, int y) {
 				theta += 5;
 			break;
  		case GLUT_KEY_RIGHT:	// Rotate right
-			if (theta > -75)
+			if (theta > -55)
 				theta -= 5;
  			break;
  		case GLUT_KEY_UP:		// Move camera upwards
