@@ -295,10 +295,10 @@ void drawSand() {
 
 void InitFishPosition(void){
 	//srand(time(0));
-	int len = Interactivity::getLength()*2;
+	
 	for(int i = 0 ; i < 3 ; i++){
 		
-		Fishes[i][0] = rand()%6 + len;
+		Fishes[i][0] = rand()%6;
 		Fishes[i][4] = rand()%360 ; 
 	}
 
@@ -308,10 +308,11 @@ void InitFishPosition(void){
 }
 
 void drawFish(int n) {	
+	int len = Interactivity::getLength()*2;
 	glPushMatrix();
 
 	glRotatef((n == 1 ? 1 : -1) * Fishes[n][4], 0, 1, 0);
-	glTranslatef(Fishes[n][0],Fishes[n][1],0);
+	glTranslatef(Fishes[n][0]+len,Fishes[n][1],0);
 
 	glPushMatrix();
 	glRotatef((n == 1 ? 180 : 0), 0, 1, 0);
