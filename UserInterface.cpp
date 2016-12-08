@@ -350,22 +350,22 @@ void UserInterface::drawUI() {
 				//UserInterface::setIntroState();
 			}
 
+			else{
+				drawLeft();
+				drawRight();
 
-			drawLeft();
-			drawRight();
+				if(UserInterface::getWinGameState())
+					UserInterface::gameOver();
+				
+				else if(UserInterface::getGameOverState())
+					UserInterface::gameOver();
 
-			if(UserInterface::getWinGameState())
-				UserInterface::gameOver();
-			
-			else if(UserInterface::getGameOverState())
-				UserInterface::gameOver();
+				else if(UserInterface::getLevelState())
+					UserInterface::levelLost();
 
-			else if(UserInterface::getLevelState())
-				UserInterface::levelLost();
-
-			else if(UserInterface::getFinishedLevelState())
-				UserInterface::finishedLevel();
-
+				else if(UserInterface::getFinishedLevelState())
+					UserInterface::finishedLevel();
+			}
 		  	// Making sure we can render 3D again
 			glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();

@@ -96,42 +96,48 @@ void display(void) {
 	// Scene
 	float lightPos[] = {eye.x, eye.y, eye.z, 1};
  	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
-	glPushMatrix();
-		// Rotation of the camera affects the whole game world
-		glRotatef(Interactivity::getTheta(), 0, 1, 0);
-
-		Player::drawPlayer(step > STEPSPEED);
-		// Draw the enemies
-		if (Interactivity::getLevel() > 1 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState()) {
-			Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
-			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
-		}
-		if (Interactivity::getLevel() == 3 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState())
-			Interactivity::enemy[2].drawEnemy(step > STEPSPEED);
-		Environment::drawEnvironment(step);
-		UserInterface::drawUI();
-
-	glPopMatrix();
 	
-	// Check to see if the player is on the same block as an enemy
-	if (Interactivity::getLevel() > 1 && Interactivity::getSpace() == 0)
-		Interactivity::checkIntersections();
-		
-	if (clockTimer > 500)
-		UserInterface::decrTime();
-		
-	if (step > STEPSPEED)		// time to reset
-		step = 0;
+ 	if(UserInterface::getIntroState()){
+ 		UserInterface::drawUI();
+ 	}
 
-	if (clockTimer > 500)
-		clockTimer = 0;
+	else if(!UserInterface::getIntroState()){
 
-	if ((UserInterface::getTime() == 0) && !timesUp && !UserInterface::calculatingScore()) {
-		UserInterface::setGameOverState();
-		timesUp = !timesUp;
+		glPushMatrix();
+			// Rotation of the camera affects the whole game world
+			glRotatef(Interactivity::getTheta(), 0, 1, 0);
+
+			Player::drawPlayer(step > STEPSPEED);
+			// Draw the enemies
+			if (Interactivity::getLevel() > 1 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState()) {
+				Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
+				Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
+			}
+			if (Interactivity::getLevel() == 3 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState())
+				Interactivity::enemy[2].drawEnemy(step > STEPSPEED);
+			Environment::drawEnvironment(step);
+			UserInterface::drawUI();
+
+		glPopMatrix();
+		
+		// Check to see if the player is on the same block as an enemy
+		if (Interactivity::getLevel() > 1 && Interactivity::getSpace() == 0)
+			Interactivity::checkIntersections();
+			
+		if (clockTimer > 500)
+			UserInterface::decrTime();
+			
+		if (step > STEPSPEED)		// time to reset
+			step = 0;
+
+		if (clockTimer > 500)
+			clockTimer = 0;
+
+		if ((UserInterface::getTime() == 0) && !timesUp && !UserInterface::calculatingScore()) {
+			UserInterface::setGameOverState();
+			timesUp = !timesUp;
+		}
 	}
-
 	glutSwapBuffers();
 }
 
