@@ -307,8 +307,7 @@ void InitFishPosition(void){
 
 }
 
-void drawFish(int n)
-{	
+void drawFish(int n) {	
 	glPushMatrix();
 
 	glRotatef((n == 1 ? 1 : -1) * Fishes[n][4], 0, 1, 0);
@@ -374,22 +373,30 @@ void renderFish(int step){
 	if(InitFishPosit == 0) {
 		InitFishPosition();		
 	}	
-	else{
+	else {
 		int len = Interactivity::getLength();
 		glPushMatrix();
-		glScalef(0.7, 0.7,0.7);
-		if (step % 1 == 0) {	// the waves
+		glScalef(0.7, 0.7, 0.7);
+		if (step % 1 == 0) {
+			// draw each fish
 			for(int i  = 0; i < 3 ; i++){
-				//moveFish(i);
 				glPushMatrix();
-		//glTranslatef(-8,0,-8);
-		glTranslatef(len,0,len);
-				Fishes[i][4] += 0.7;
+				glTranslatef(len,0,len);
+				switch(i) {	// set the speeds
+					case 0:
+						Fishes[i][4] += 1;	// rotation speed
+						break;
+					case 1:
+						Fishes[i][4] += 0.3;	// rotation speed
+						break;
+					case 2:
+						Fishes[i][4] += 0.6;	// rotation speed
+						break;
+				}
 				drawFish(i);
 				glPopMatrix();
 
 			}
-			//createWaves(3, len);
 		}
 		glPopMatrix();
 	}

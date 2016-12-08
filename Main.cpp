@@ -28,7 +28,7 @@ bool pause = false;		// if the game is paused
 
 const int WIDTH = 960;
 const int HEIGHT = 540;
-const int STEPSPEED = 1000;
+const int STEPSPEED = 500;
 int step = 0;			// When to make the game step
 int clockTimer = 0;
 int timesUp = false;
