@@ -231,15 +231,18 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			incrLevel();
 			break;
 		case 32:
-			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock())
+			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock() && !UserInterface::getIntroState())
 				space = 1;
 			break;
 		case 'R':
 		case 'r':
 			if (UserInterface::getGameOverState()) {	//if game over
 
-				if(UserInterface::getWinGameState())
+				if(UserInterface::getWinGameState()){
 					UserInterface::setWinGameState();
+					UserInterface::decrScore(UserInterface::getScore());
+					Interactivity::setLives(-Interactivity::getLives());
+				}
 
 				UserInterface::setGameOverState();		//disable game over (start game again)
 				Interactivity::setLevel(1);
