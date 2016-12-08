@@ -227,7 +227,7 @@ void offBlock() {
 		currOffBlock = true; 
 
 		canPhysics = true;
-		acceleration[1] = -0.2;
+		acceleration[1] = -0.35;
 		switch (rot) {
 			case 0:		// Left
 				acceleration[0] = 0.05;

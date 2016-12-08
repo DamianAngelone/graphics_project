@@ -116,17 +116,26 @@ void drawBorder() {
 	switch (Interactivity::getLevel()) {
 		case 1:
 			glPushMatrix();
-				glTranslatef(-8, -6, 3);
+				//glTranslatef(-8, -6, 3);
 				glScalef(0.5, 13, len);
-				glutSolidCube(1);
+				glBegin(GL_QUADS);
+				    glTexCoord3f(0.0,0, 0.0);
+				    glVertex3f(0.0, 0.0, 0.0);
+				    glTexCoord3f(0,1.0, 0.0);
+				    glVertex3f(0, 1.0, 0.0);
+				    glTexCoord3f(0,1.0, 1.0);
+				    glVertex3f(0, 1, 1.0);
+				    glTexCoord3f(0,0.0, 1.0);
+				    glVertex3f(0.0, 0, 1.0);
+			    glEnd();
 			glPopMatrix();
 			
-			glPushMatrix();
-				glRotatef(90, 0, 1, 0);
-				glTranslatef(-14, -6, 3);
-				glScalef(0.5, 13, len);
-				glutSolidCube(1);
-			glPopMatrix();
+			// glPushMatrix();
+			// 	glRotatef(90, 0, 1, 0);
+			// 	glTranslatef(-14, -6, 3);
+			// 	glScalef(0.5, 13, len);
+			// 	glutSolidCube(1);
+			// glPopMatrix();
 			break;
 		case 2:
 			glPushMatrix();
@@ -298,8 +307,8 @@ void InitFishPosition(void){
 	
 	for(int i = 0 ; i < 3 ; i++){
 		
-		Fishes[i][0] = rand()%6;
-		Fishes[i][4] = rand()%360 ; 
+		Fishes[i][0] = rand() % 5;
+		Fishes[i][4] = rand() % 360 ; 
 	}
 
 	InitFishPosit = 1 ;
@@ -316,8 +325,6 @@ void drawFish(int n) {
 
 	glPushMatrix();
 	glRotatef((n == 1 ? 180 : 0), 0, 1, 0);
-	//glRotatef(-Fishes[n][4], 0, 1, 0);
-	//glRotatef(Fishes[n][4], 0, 1, 0);
 	glScalef(0.5,0.5,0.5);
 	//draw body
 	glColor3f(0,0,1);
@@ -357,15 +364,12 @@ void drawFish(int n) {
 	glColor3f(0,0,1);
 	glScalef(0.8,0.8,0.8);
 	
-
 	glTranslatef(0,0,-2);
 	int flip = rand()%2;
 	glRotatef((flip == 1? 10 : -10),0,1,0);
 	glutSolidCone(1, 1, 100, 100);
 	glPopMatrix();
 	glPopMatrix();
-	
-
 	
 	glPopMatrix();//body
 }

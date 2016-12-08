@@ -29,18 +29,22 @@ bool pause = false;		// if the game is paused
 const int WIDTH = 960;
 const int HEIGHT = 540;
 const int STEPSPEED = 500;
+const int ENEMYSPEED = 200;
 int step = 0;			// When to make the game step
-int clockTimer = 0;
+int enemyStep = 0;		// When to make the enemy step on level 3
+int clockTimer = 0;		// For the HUD timer
 int timesUp = false;
 int skyWidth, skyHeight, skyMaxi;	// For the texture
 GLuint skyBoxTexture[1];
 
 GLubyte* skyImage;
 
+// Got started with: 
+// https://www.opengl.org/discussion_boards/showthread.php/176629-Background-image-behind-3D-scene
 void skybox() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0, WIDTH, 0, HEIGHT, -1, 1);
+	gluOrtho2D(0, WIDTH, 0, HEIGHT);
 	glPushMatrix();
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
@@ -54,14 +58,14 @@ void skybox() {
 	glColor4f(1, 1, 1, 1);
 
     glBegin(GL_QUADS);
-	    glTexCoord2d(0.0, 0.0);
-	    glVertex2d(0.0, 0.0);
-	    glTexCoord2d(1.0, 0.0);
-	    glVertex2d(WIDTH, 0.0);
-	    glTexCoord2d(1.0, 1.0);
-	    glVertex2d(WIDTH, HEIGHT);
-	    glTexCoord2d(0.0, 1.0);
-	    glVertex2d(0.0, HEIGHT);
+	    glTexCoord2f(0.0, 0.0);
+	    glVertex2f(0.0, 0.0);
+	    glTexCoord2f(1.0, 0.0);
+	    glVertex2f(WIDTH, 0.0);
+	    glTexCoord2f(1.0, 1.0);
+	    glVertex2f(WIDTH, HEIGHT);
+	    glTexCoord2f(0.0, 1.0);
+	    glVertex2f(0.0, HEIGHT);
     glEnd();
 
     glDisable(GL_TEXTURE_2D);
@@ -101,20 +105,25 @@ void display(void) {
  		UserInterface::drawUI();
  	}
 
-	else if(!UserInterface::getIntroState()){
+		else if(!UserInterface::getIntroState()){
 
-		glPushMatrix();
+			glPushMatrix();
 			// Rotation of the camera affects the whole game world
 			glRotatef(Interactivity::getTheta(), 0, 1, 0);
 
 			Player::drawPlayer(step > STEPSPEED);
 			// Draw the enemies
-			if (Interactivity::getLevel() > 1 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState()) {
+			if (Interactivity::getLevel() == 2 &&
+				!UserInterface::getFinishedLevelState() &&
+				!UserInterface::getWinGameState()) {
 				Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
-				Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
 			}
-			if (Interactivity::getLevel() == 3 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState())
-				Interactivity::enemy[2].drawEnemy(step > STEPSPEED);
+			else if (Interactivity::getLevel() == 3 &&
+				!UserInterface::getFinishedLevelState() &&
+				!UserInterface::getWinGameState()) {
+				Interactivity::enemy[0].drawEnemy(enemyStep > ENEMYSPEED);
+				Interactivity::enemy[1].drawEnemy(enemyStep > ENEMYSPEED);
+			}
 			Environment::drawEnvironment(step);
 			UserInterface::drawUI();
 
@@ -124,14 +133,14 @@ void display(void) {
 		if (Interactivity::getLevel() > 1 && Interactivity::getSpace() == 0)
 			Interactivity::checkIntersections();
 			
-		if (clockTimer > 500)
-			UserInterface::decrTime();
-			
-		if (step > STEPSPEED)		// time to reset
+		if (step > STEPSPEED) {		// time to reset
 			step = 0;
-
-		if (clockTimer > 500)
 			clockTimer = 0;
+			UserInterface::decrTime();
+		}
+
+		if (enemyStep > ENEMYSPEED)
+			enemyStep = 0;
 
 		if ((UserInterface::getTime() == 0) && !timesUp && !UserInterface::calculatingScore()) {
 			UserInterface::setGameOverState();
@@ -147,6 +156,7 @@ void redraw(int i) {
 		glutPostRedisplay();
 		step += 17;
 		clockTimer += 17;
+		enemyStep += 17;
 		glutTimerFunc(17, redraw, 0);
 	}
 }
