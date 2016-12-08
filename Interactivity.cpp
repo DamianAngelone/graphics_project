@@ -282,6 +282,11 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				UserInterface::setTime();
 				UserInterface::setCalculatingScore(false);
 			}
+			else if (UserInterface::getIntroState()) {
+				UserInterface::setIntroState();
+
+
+			}
 			break;
 	}
 }

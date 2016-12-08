@@ -23,6 +23,8 @@ public:
 	static bool getWinGameState();
 	static void setFinishedLevelState();
 	static bool getFinishedLevelState();
+	static void setIntroState();
+	static bool getIntroState();
 	static bool calculatingScore();
 	static void setCalculatingScore(bool n);
 };

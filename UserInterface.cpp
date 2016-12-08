@@ -28,6 +28,7 @@ bool gameLevelState = false;				//level lost
 bool finishedLevelState = false;			//level won
 bool safeToDecreaseTime = false;
 bool wonGame = false;
+bool intro = true;
 
 void UserInterface::incrScore(){
 	score += 1;
@@ -91,6 +92,13 @@ void UserInterface::setLevelState(){
 	gameLevelState = !gameLevelState;
 }
 
+bool UserInterface::getIntroState(){
+	return intro;
+}
+
+void UserInterface::setIntroState(){
+	intro = !intro;
+}
 
 bool UserInterface::calculatingScore(){
 	return safeToDecreaseTime;
@@ -300,6 +308,25 @@ void drawRight() {
 	glPopMatrix();
 }
 
+void drawIntro(){
+
+	string s[9];
+	s[0] = "Welcome to Q*bert!";
+	s[1] = "Here are the rules:";
+	s[2] = "Controls are found in terminal.";
+	s[3] = "By stepping on a block for the first time it will change colour, and you'll gain 1.";
+	s[4] = "If you step on a block that has already been stepped on, you lose 1 point.";
+	s[5] = "You lose a life by jumping off the ledge, or touching an enemy, resulting in -15 points.";
+	s[6] = "A Game Over occurs when either yourun out of lives or run out of time.";
+	s[7] = "Whatever time you have left upon level completion will be added to your score.";
+	s[8] = "Press 'R' to continue to start.";
+
+	int v = sizeof(s)/24; // number of strings to draw
+    for(int i = 0; i < 9; i++) {
+    	glRasterPos2i(10, ((-i * 20) + 30));
+  		drawText(s[i]);
+  	}
+}
 
 // draws the player and calls the necessary logic functions
 void UserInterface::drawUI() {
@@ -316,6 +343,13 @@ void UserInterface::drawUI() {
 
 			glClear(GL_DEPTH_BUFFER_BIT);
 			glColor3f(0, 0, 0);
+
+
+			if(UserInterface::getIntroState()){
+				drawIntro();
+				//UserInterface::setIntroState();
+			}
+
 
 			drawLeft();
 			drawRight();
