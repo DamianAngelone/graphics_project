@@ -27,6 +27,7 @@ bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
 bool finishedLevelState = false;			//level won
 bool safeToDecreaseTime = false;
+bool wonGame = false;
 
 void UserInterface::incrScore(){
 	score += 1;
@@ -66,6 +67,14 @@ void UserInterface::setGameOverState(){
 	gameOverState = !gameOverState;
 }
 
+bool UserInterface::getWinGameState(){
+	return wonGame;
+}
+
+void UserInterface::setWinGameState(){
+	wonGame = !wonGame;
+}
+
 bool UserInterface::getFinishedLevelState(){
 	return finishedLevelState;
 }
@@ -81,6 +90,7 @@ bool UserInterface::getLevelState(){
 void UserInterface::setLevelState(){
 	gameLevelState = !gameLevelState;
 }
+
 
 bool UserInterface::calculatingScore(){
 	return safeToDecreaseTime;
@@ -115,7 +125,7 @@ void drawTextTitles(string s) {
 
 void calculateScore(){
 
-	usleep(5000);
+	usleep(2000);
 	UserInterface::setCalculatingScore(true);
 	UserInterface::decrTime();
 	UserInterface::incrScore();
@@ -163,11 +173,18 @@ void UserInterface::gameOver(){
 	double temp1 = UserInterface::getScore();
 	snprintf(buf1, sizeof(buf1), "%f", temp1);
 	string finalScore(buf1);
-
 	string s[3];
-	s[0] = "Game Over";
-	s[1] = "Final Score: " + finalScore;
-	s[2] = "Press 'R' to restart game.";
+
+	if(wonGame){
+		s[0] = "Game Complete";
+		s[1] = "Final Score: " + finalScore;
+		s[2] = "Press 'R' to restart game.";
+	}
+	else{
+		s[0] = "Game Over";
+		s[1] = "Final Score: " + finalScore;
+		s[2] = "Press 'R' to restart game.";
+	}
 
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 3; i++) {
@@ -303,7 +320,10 @@ void UserInterface::drawUI() {
 			drawLeft();
 			drawRight();
 
-			if(UserInterface::getGameOverState())
+			if(UserInterface::getWinGameState())
+				UserInterface::gameOver();
+			
+			else if(UserInterface::getGameOverState())
 				UserInterface::gameOver();
 
 			else if(UserInterface::getLevelState())

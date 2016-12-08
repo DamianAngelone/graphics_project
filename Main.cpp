@@ -103,11 +103,11 @@ void display(void) {
 
 		Player::drawPlayer(step > STEPSPEED);
 		// Draw the enemies
-		if (Interactivity::getLevel() > 1 && !UserInterface::getFinishedLevelState()) {
+		if (Interactivity::getLevel() > 1 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState()) {
 			Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
 			Interactivity::enemy[1].drawEnemy(step > STEPSPEED);
 		}
-		if (Interactivity::getLevel() == 3 && !UserInterface::getFinishedLevelState())
+		if (Interactivity::getLevel() == 3 && !UserInterface::getFinishedLevelState() && !UserInterface::getWinGameState())
 			Interactivity::enemy[2].drawEnemy(step > STEPSPEED);
 		Environment::drawEnvironment(step);
 		UserInterface::drawUI();

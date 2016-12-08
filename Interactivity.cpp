@@ -56,6 +56,16 @@ int Interactivity::getLevel() {	 	// Get the game level
 	return level;
 }
 
+void Interactivity::incrLevel() {	 	// Get the game level
+	if(level + 1 <= 3)
+		level++;
+	else{
+		UserInterface::setGameOverState();
+		UserInterface::setWinGameState();
+	}
+
+}
+
 void Interactivity::setLevel(int n) {	// Set the game level
 	level = n;
 }
@@ -179,9 +189,15 @@ void Interactivity::pushPosition(int x, int z) {
 		
 		UserInterface::incrScore();
 		int numOfBlocks = Interactivity::getAmountOfBlocks();
-		if (playerBeenLength == numOfBlocks) {				//finished level
+		if ((playerBeenLength == numOfBlocks)) {				//finished level
 
-			UserInterface::setFinishedLevelState();
+			if(Interactivity::getLevel() == 3){
+				UserInterface::setWinGameState();
+				UserInterface::setGameOverState();
+			}
+
+			else
+				UserInterface::setFinishedLevelState();
 
 		}
 	}
@@ -212,7 +228,7 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			Player::setRotation(180);
 			break;
 		case 'h':
-			++level;
+			incrLevel();
 			break;
 		case 32:
 			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock())
@@ -221,6 +237,10 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 		case 'R':
 		case 'r':
 			if (UserInterface::getGameOverState()) {	//if game over
+
+				if(UserInterface::getWinGameState())
+					UserInterface::setWinGameState();
+
 				UserInterface::setGameOverState();		//disable game over (start game again)
 				Interactivity::setLevel(1);
 				Player::reset();
@@ -250,7 +270,7 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				UserInterface::setTime();
 			}
 			else if (UserInterface::getFinishedLevelState()) {
-				++level;
+				Interactivity::incrLevel();
 				resetPlayerBeen();
 				playerBeenLength = 0;
 				Player::reset();

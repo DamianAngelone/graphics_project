@@ -21,6 +21,7 @@ public:
 	static void draw(bool step);
 	static void setSpace(int n);	
 	static void setLevel(int n);
+	static void incrLevel();
 	static void checkIntersections();			// Check to see if the player is on the same block as an enemy
 	static void setLives(int n);				// Set the number of lives the player has
 	static GLubyte* loadPPM(char* file, int* width, int* height, int* maxi);	// Load a ppm file
