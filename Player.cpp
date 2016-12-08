@@ -162,7 +162,7 @@ void drawQubert() {
 			glTranslatef(-0.3, 0, 0);
 			gluCylinder(qobj, 0.15, 0.15, 2, 100, 100);
 			glPushMatrix();
-				glColor3ub(0, 0, 0);
+				glColor3ub(244, 67, 54);
 				glRotatef(-90, 1, 0, 0);
 				glScalef(1, 1, 3);
 				glTranslatef(0, -2.2, 0.1);
@@ -177,7 +177,7 @@ void drawQubert() {
 			glTranslatef(0.3, 0, 0);
 			gluCylinder(qobj, 0.15, 0.15, 2, 100, 100);
 			glPushMatrix();
-				glColor3ub(0, 0, 0);
+				glColor3ub(244, 67, 54);
 				glRotatef(-90, 1, 0, 0);
 				glScalef(1, 1, 3);
 				glTranslatef(0, -2.2, 0.1);
