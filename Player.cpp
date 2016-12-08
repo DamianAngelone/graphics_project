@@ -152,10 +152,6 @@ void drawQubert() {
 
 			glColor3f(0, 0, 0);
 			gluCylinder(qobj, 0.2, 0.35, 2, 100, 100);
-			glPushMatrix();
-				glTranslatef(0, 0, 1.5);
-				glColor3ub(244, 67, 54);
-			glPopMatrix();
 		glPopMatrix();
 		glEnable(GL_CULL_FACE);
 

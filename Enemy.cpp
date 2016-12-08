@@ -74,9 +74,12 @@ bool inBounds(int x, int z) {
 
 // Draw the model of the players
 void Enemy::draw() {
+	//glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
+
 	float origin[3] = {0, 0, 0};
 	glPushMatrix();
-		glScalef(0.7, 0.7, 0.7);
+		glScalef(0.55, 0.55, 0.55);
 		glTranslatef(0, 1, 0);
 		// Rotate the body to the correct orientation
 		switch (enemyRot) {
@@ -95,139 +98,138 @@ void Enemy::draw() {
 		}
 
 		//draw body
-		glutSolidCube(1);
-
-		//draw buttons
-		glPushMatrix();
-			glTranslatef(0, 0.35, 0.5);
-			glColor3f(0, 0, 0);
-			glutSolidSphere(0.1, 10, 10);
-		glPopMatrix();
-
-		glPushMatrix();
-			glTranslatef(0, 0.15, 0.5);
-			glColor3f(0, 0, 0);
-			glutSolidSphere(0.1, 10, 10);
-		glPopMatrix();
-
-		glPushMatrix();
-			glTranslatef(0, -0.05, 0.5);
-			glColor3f(0, 0, 0);
-			glutSolidSphere(0.1, 10, 10);
-		glPopMatrix();
-
-		glPushMatrix();
-			//translate relative to body, and draw head
-			glTranslatef(0, 1.25, 0);
-			glColor3f(1,1,1);
-			//gluCylinder(qObj,1,1,2,100,100);
-			glutSolidSphere(0.5, 16, 16);
+		glColor3f(0.5,0.2,1);
+		glutSolidSphere(1,100,100);
+			glPushMatrix();
+				glColor3f(1, 1, 1);
+				glTranslatef(-0.3,0.4,0.6);
+				glutSolidSphere(0.4, 100, 100);
+				//pupil
+				glPushMatrix();
+					glColor3f(0, 0, 0);
+					glTranslatef(0, 0.1, 0.25);
+					glutSolidSphere(0.2, 100, 100);
+				glPopMatrix();
+			glPopMatrix();
+			// other eye
+			glPushMatrix();
+				glColor3f(1, 1, 1);
+				glTranslatef(0.3, 0.4, 0.6);
+				glutSolidSphere(0.4, 100, 100);
+				glPushMatrix();
+					glColor3f(0, 0, 0);
+					glTranslatef(0, 0.1, 0.25);
+					glutSolidSphere(0.2, 100, 100);
+				glPopMatrix();
+			glPopMatrix();
 			
-			//translate and draw right eye
-			glPushMatrix();
-				glTranslatef(0.2, 0.15, 0.45);
-				glColor3f(0,0,0);
-				glutSolidSphere(0.1, 10, 10);
-			glPopMatrix();
-
-			//translate and draw left eye
-			glPushMatrix();
-				glTranslatef(-0.2, 0.15, 0.45);
-				glColor3f(0,0,0);
-				glutSolidSphere(0.1, 10, 10);
-			glPopMatrix();
-
-			//translate and draw nose
-			glPushMatrix();
-				glTranslatef(0, 0, 0.5);
-				glColor3f(1,0.4,0);
-				glutSolidSphere(0.1, 10, 10);
-			glPopMatrix();
-		glPopMatrix();//Head
-		
-		//right arm shoulder	
-		glPushMatrix();
-			glTranslatef(-0.5,0.6,0);	
-			glColor3f(1,0.4,0);
-			glutSolidSphere(0.3, 30, 30);
-			//right arm
+			// EAR1
+			glDisable(GL_CULL_FACE);
 			glPushMatrix();
 				glRotatef(-90,0,1,0);
-				glRotatef(45,1,0,0);	
-				//glTranslatef(0,0,0);
-				glColor3f(0,0,1);
-				gluCylinder(qObj,0.2,0.2,0.7,100,100);
-				//right hand
-				glPushMatrix();
-					glTranslatef(0,0,0.9);
-					glColor3f(1,1,1);
-					glutSolidSphere(0.3, 30, 30);
+				glRotatef(-45,1,0,0);
+				glColor3f(0.5, 0.2, 1);
+				gluCylinder(qObj, 0.35, 0.55, 2, 100, 100);
+				glPushMatrix(); //disc
+					glTranslatef(0, 0, 2);
+					glColor3f(0.5, 0.2, 1);
+					gluDisk(qObj, 0.35, 0.55, 100, 100);
 				glPopMatrix();
-			glPopMatrix();
-		glPopMatrix();
-		
-		//left arm shoulder	
-		glPushMatrix();
-			glTranslatef(0.5,0.6,0);	
-			glColor3f(1,0.4,0);
-			glutSolidSphere(0.3, 30, 30);
-			//left arm
-			glPushMatrix();
-			//glTranslatef(0.2,0,0);
-				glColor3f(0.8,0.6,0.7);
-				glRotatef(90,0,1,0);
-				glRotatef(45,1,0,0);
-				glColor3f(0,0,1);
-				gluCylinder(qObj,0.2,0.2,1,100,100);
-				//left hand
-				glPushMatrix();
-					glTranslatef(0,0,0.9);
-					glColor3f(1,1,1);
-					glutSolidSphere(0.3, 30, 30);
-				glPopMatrix();
-			glPopMatrix();
-		glPopMatrix();
-		
-		//leg join	
-		glPushMatrix();
-			glTranslatef(0.3,-1,0);	
-			glColor3f(1,0.4,0);
-			glutSolidSphere(0.2, 30, 30);
-			//left leg
-			glPushMatrix();
-				glTranslatef(0,-0.1,0);
-				glRotatef(90,1,0,0);
-				glColor3f(0,0,1);
-				gluCylinder(qObj,0.15,0.15,1.5,100,100);
-				//left feet
-				glPushMatrix();
-					glTranslatef(0.1,0.15,1.5);
-					glRotatef(-35,0,0,1);
-					glutSolidCube(1);
-				glPopMatrix();
-			glPopMatrix();
-		glPopMatrix();	
 
-		//right join	
-		glPushMatrix();
-			glTranslatef(-0.3,-1,0);	
-			glColor3f(1,0.4,0);
-			glutSolidSphere(0.2, 30, 30);
-			//right leg
+				glColor3f(0, 0, 0);
+				gluCylinder(qObj, 0.2, 0.35, 2, 100, 100);
+
+			glPopMatrix();
+			glEnable(GL_CULL_FACE);
+
+			// EAR2
+			glDisable(GL_CULL_FACE);
 			glPushMatrix();
-				glTranslatef(0,-0.1,0);
-				glRotatef(90,1,0,0);
-				glColor3f(0,0,1);
-				gluCylinder(qObj,0.15,0.15,1.5,100,100);
-				//right feet
+				glRotatef(90,0,1,0);
+				glRotatef(-45,1,0,0);
+				glColor3f(0.5, 0.2, 1);
+				gluCylinder(qObj, 0.35, 0.55, 2, 100, 100);
+				glPushMatrix(); //disc
+					glTranslatef(0, 0, 2);
+					glColor3f(0.5, 0.2, 1);
+					gluDisk(qObj, 0.35, 0.55, 100, 100);
+				glPopMatrix();
+
+				glColor3f(0, 0, 0);
+				gluCylinder(qObj, 0.2, 0.35, 2, 100, 100);
+
+			glPopMatrix();
+			glEnable(GL_CULL_FACE);
+
+			//left foot front
+			glPushMatrix();
+				glColor3f(0.5, 0.2, 1);
+				glRotatef(70, 1, 0, 0);
+				glRotatef(-20,0,1,0);
+				glTranslatef(-0.3, 0, 0);
+				gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
 				glPushMatrix();
-					glTranslatef(-0.1,0.15,1.5);
-					glRotatef(35,0,0,1);
-					glutSolidCube(1);
+				
+					glRotatef(-90, 1, 0, 0);
+
+					glTranslatef(0, -2.0, 0.1);
+					glutSolidSphere(0.5,100,100);
 				glPopMatrix();
 			glPopMatrix();
-		glPopMatrix();	
+
+			//left foot back
+			glPushMatrix();
+				glColor3f(0.5, 0.2, 1);
+				glRotatef(180,0,1,0);
+				glRotatef(70, 1, 0, 0);
+				glRotatef(-20,0,1,0);
+				glTranslatef(-0.3, 0, 0);
+				gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+				glPushMatrix();
+				
+					glRotatef(-90, 1, 0, 0);
+
+					glTranslatef(0, -2.0, 0.1);
+					glutSolidSphere(0.5,100,100);
+				glPopMatrix();
+			glPopMatrix();
+
+			//right foot front
+			glPushMatrix();
+				glColor3f(0.5, 0.2, 1);
+				glRotatef(70, 1, 0, 0);
+				glRotatef(20,0,1,0);
+				glTranslatef(0.3, 0, 0);
+				gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+				glPushMatrix();
+				
+					glRotatef(-90, 1, 0, 0);
+
+					glTranslatef(0, -2.0, 0.1);
+					glutSolidSphere(0.5,100,100);
+				glPopMatrix();
+			glPopMatrix();
+
+			//right foot back
+			glPushMatrix();
+				glColor3f(0.5, 0.2, 1);
+				glRotatef(180,0,1,0);
+				glRotatef(70, 1, 0, 0);
+				glRotatef(20,0,1,0);
+				glTranslatef(0.3, 0, 0);
+				gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+				glPushMatrix();
+				
+					glRotatef(-90, 1, 0, 0);
+
+					glTranslatef(0, -2.0, 0.1);
+					glutSolidSphere(0.5,100,100);
+				glPopMatrix();
+			glPopMatrix();
+
 	glPopMatrix();
+	glDisable(GL_COLOR_MATERIAL);
+
 }
 
 // draws the player and calls the necessary logic functions
