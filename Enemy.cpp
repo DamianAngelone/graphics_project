@@ -66,8 +66,7 @@ void Enemy::setRotation(int change) {
 bool inBounds(int x, int z) {
 	int len = Interactivity::getLength() * 2;
 	// Don't want them to go top left corner or 0, 0
-	cout << len << " " << len << endl;
-	if (x == len && z == len || x == 0 && z == 0)
+	if (x == len - 2 && z == len -2 || x == 0 && z == 0)
 		return false;
 	return x > -1 &&
 		   z > -1 &&
