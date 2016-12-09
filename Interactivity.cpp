@@ -33,7 +33,7 @@ float center[] = {Interactivity::getLength(), 0, Interactivity::getLength() * 2 
 
 Structure::point3D playerBeen[50];
 
-Enemy Interactivity::enemy[3];
+Enemy Interactivity::enemy[2];
 
 int Interactivity::getLives() {		 // Get the game level
 	return lives;
@@ -63,7 +63,6 @@ void Interactivity::incrLevel() {	 	// Get the game level
 		UserInterface::setGameOverState();
 		UserInterface::setWinGameState();
 	}
-
 }
 
 void Interactivity::setLevel(int n) {	// Set the game level
@@ -91,13 +90,11 @@ float Interactivity::getTheta() { 	// Get the horizontal angle of rotation
 void Interactivity::checkIntersections() {
 	Structure::point3D enemy0 = Interactivity::enemy[0].getCoor();
 	Structure::point3D enemy1 = Interactivity::enemy[1].getCoor();
-	Structure::point3D enemy2 = Interactivity::enemy[2].getCoor();
 	Structure::point3D player = Player::getCoor();
 	// if the player and the enemy are on the same block
 	// level 2 has 2 enemies and level 3 has 3 enemies
 	if (level == 2 &&
-	   ((player.x == enemy0.x && player.z == enemy0.z) ||
-	   (player.x == enemy1.x && player.z == enemy1.z)) && !enemyCollision) {
+	   ((player.x == enemy0.x && player.z == enemy0.z) && !enemyCollision)) {
 	   		
 	   		enemyCollision = true;
 	   		Interactivity::setLives(-1);
@@ -111,8 +108,7 @@ void Interactivity::checkIntersections() {
 	}
 	else if (level == 3 &&
 	    ((player.x == enemy0.x && player.z == enemy0.z) ||
-		(player.x == enemy1.x && player.z == enemy1.z) ||
-		(player.x == enemy2.x && player.z == enemy2.z)) && !enemyCollision) {
+		(player.x == enemy1.x && player.z == enemy1.z) && !enemyCollision)) {
 		
 		enemyCollision = true;
 		Interactivity::setLives(-1);
@@ -249,7 +245,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				Player::reset();
 				Interactivity::enemy[0].init(0);
 				Interactivity::enemy[1].init(1);
-				Interactivity::enemy[2].init(2);
 				resetPlayerBeen();
 				playerBeenLength = 0;
 				Player::setStopped(false);
@@ -266,7 +261,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				Player::reset();
 				Interactivity::enemy[0].init(0);
 				Interactivity::enemy[1].init(1);
-				Interactivity::enemy[2].init(2);
 				resetPlayerBeen();
 				playerBeenLength = 0;
 				Player::setStopped(false);
@@ -282,7 +276,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				UserInterface::setFinishedLevelState();
 				Interactivity::enemy[0].init(0);
 				Interactivity::enemy[1].init(1);
-				Interactivity::enemy[2].init(2);
 				UserInterface::setTime();
 				UserInterface::setCalculatingScore(false);
 			}
