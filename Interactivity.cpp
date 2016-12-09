@@ -33,7 +33,7 @@ float center[] = {Interactivity::getLength(), 0, Interactivity::getLength() * 2 
 
 Structure::point3D playerBeen[50];
 
-Enemy Interactivity::enemy[4];
+Enemy Interactivity::enemy[3];
 
 int Interactivity::getLives() {		 // Get the game level
 	return lives;

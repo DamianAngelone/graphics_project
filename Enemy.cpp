@@ -40,11 +40,6 @@ void Enemy::init(int id) {
 			enemyDisp[1] = (Interactivity::getLength() * 2) + 1.5;
 			enemyDisp[2] = Interactivity::getLength() * 2;
 			break;
-		case 2:
-			enemyDisp[0] = 6;
-			enemyDisp[1] = 1.5;
-			enemyDisp[2] = 6;
-			break;
 	}
 }
 
