@@ -196,6 +196,12 @@ void UserInterface::gameOver(){
 	string s[3];
 
 	if(wonGame){
+		
+		for(int i = 0; i < UserInterface::getTime(); i++){
+
+  			calculateScore();	
+		}
+
 		s[0] = "Game Complete";
 		s[1] = "Final Score: " + finalScore;
 		s[2] = "Press 'R' to restart game.";
