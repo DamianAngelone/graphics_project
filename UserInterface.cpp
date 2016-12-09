@@ -21,14 +21,39 @@ using namespace std;
 #include "Interactivity.h"
 #include "Environment.h"
 
-int score = 0;
-int gTime = 50;
 bool gameOverState = false;					//game lost
 bool gameLevelState = false;				//level lost
 bool finishedLevelState = false;			//level won
 bool safeToDecreaseTime = false;
 bool wonGame = false;
 bool intro = true;
+bool initalScore = true;
+
+int score = 0;
+int highScore = 0;
+int gTime = 50;
+
+char filename[50] = "highscore.txt";					// filename
+
+FILE *fp;							// The file to save/load from
+
+void UserInterface::readHighScore() {	// set the highscore
+	fp = fopen(filename, "r");
+	char buf[3];
+	fscanf(fp, "%s", buf);
+	sscanf(buf, "%d", &highScore);
+	fclose(fp);
+}
+
+void UserInterface::writeHighScore() {
+	if (score > highScore) {
+		fp = fopen(filename, "w+");
+		char printLen[3];
+	 	snprintf(printLen, sizeof(printLen), "%d", score);
+	    fputs(printLen, fp);
+	    fclose(fp);
+	}
+}
 
 void UserInterface::incrScore(){
 	score += 1;

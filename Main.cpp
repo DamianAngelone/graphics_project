@@ -231,6 +231,7 @@ void redraw(int i) {
 }
 // Initialize all starting values
 void init() {
+	UserInterface::readHighScore();
 	// No transparency
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
