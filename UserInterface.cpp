@@ -310,19 +310,22 @@ void drawRight() {
 
 void drawIntro(){
 
-	string s[9];
+	string s[12];
 	s[0] = "Welcome to Q*bert!";
-	s[1] = "Here are the rules:";
-	s[2] = "Controls are found in terminal.";
-	s[3] = "By stepping on a block for the first time it will change colour, and you'll gain 1.";
-	s[4] = "If you step on a block that has already been stepped on, you lose 1 point.";
-	s[5] = "You lose a life by jumping off the ledge, or touching an enemy, resulting in -15 points.";
-	s[6] = "A Game Over occurs when either yourun out of lives or run out of time.";
-	s[7] = "Whatever time you have left upon level completion will be added to your score.";
-	s[8] = "Press 'R' to continue to start.";
+	s[1] = " ";
+	s[2] = "Here are the rules:";
+	s[3] = " ";
+	s[4] = "-Controls are found in terminal.";
+	s[5] = "-By stepping on a block for the first time it will change colour, and you'll gain 1;";
+	s[6] = "-If you step on a block that has already been stepped on, you lose 1 point;";
+	s[7] = "-You lose a life by jumping off the ledge, or touching an enemy, resulting in -15 points;";
+	s[8] = "-A Game Over occurs when either yourun out of lives or run out of time;";
+	s[9] = "-Whatever time you have left upon level completion will be added to your score;";
+	s[10] = " ";
+	s[11] = "Press 'R' to continue to start!";
 
 	int v = sizeof(s)/24; // number of strings to draw
-    for(int i = 0; i < 9; i++) {
+    for(int i = 0; i < 12; i++) {
     	glRasterPos2i(10, ((-i * 20) + 30));
   		drawText(s[i]);
   	}
