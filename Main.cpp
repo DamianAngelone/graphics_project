@@ -25,49 +25,51 @@ using namespace std;
 #include "Enemy.h"
 #include "UserInterface.h"
 
-bool pause = false;		// if the game is paused
-bool fromIntro = false;
+bool pause = false;				// If the game is paused
+bool fromIntro = false;			// If game is currently in the intro 
 
-const int WIDTH = 960;
-const int HEIGHT = 540;
-const int STEPSPEED = 500;
+const int WIDTH = 960;			// Width of the screen
+const int HEIGHT = 540;			// Length of the screen
+const int STEPSPEED = 500;		// Sets enemy movement speed
 const int ENEMYSPEED = 300;
-int step = 0;			// When to make the game step
-int enemyStep = 0;		// When to make the enemy step on level 3
-int clockTimer = 0;		// For the HUD timer
-int timesUp = false;
-int skyWidth, skyHeight, skyMaxi;	// For the texture
-GLuint skyBoxTexture[2];
+int step = 0;					// When to make the game step
+int enemyStep = 0;				// When to make the enemy step on level 3
+int clockTimer = 0;				// For the HUD timer
+int timesUp = false;				// If game runs out of time
+int skyWidth, skyHeight, skyMaxi;	// For the textures (intro, sky, & walls)
+GLuint skyBoxTexture[2];			// For sky textures
 
-GLubyte* skyImage0;
-GLubyte* skyImage1;
+GLubyte* skyImage0;			//Intro texture
+GLubyte* skyImage1;			//Sky texture
 
 /* Used for the mouse functions */
-int xOrigin = 0;					// the x origin for mouse dragging
-int yOrigin = 0;	
-float angle = 0.0f;					
-float angle2 = 0.0f;
-float lx = 0.0f, lz = 0.0f;
-float deltaAngle = 0.0f;
-float deltaAngle2 = 0.0f;
+int xOrigin = 0;			// The x origin for mouse dragging
+int yOrigin = 0;			// The y origin for mouse dragging
+float angle = 0.0f;				// X angle for mouse dragging	
+float angle2 = 0.0f;			// Y angle for mouse dragging
+float lx = 0.0f, lz = 0.0f;		// Variabels for altering glLookAt()
+float deltaAngle = 0.0f;		// X angle variable (horizontal)
+float deltaAngle2 = 0.0f;		// X angle variable (vertical)
 
+/* Callback for when the mouse clicks */
 void mouse(int btn, int state, int x, int y) {
-	int mouseX = x;
+	// Sets coordinates of where the mouse was clicked
+	int mouseX = x; 
 	int mouseY = 540 - y;
-	//if the left button is being used
+	// If the left button is being used
 	if(btn == GLUT_LEFT_BUTTON){
-		//if the left button is being released.
+		// If the left button is being released
 		if(state == GLUT_UP){
-			//reset current mouse angle and disallows mouseMouse from running.
+			// Reset current mouse angle and disallows mouseMouse from running
 			lx = 0;
 			lz = 0;
 			angle = 0;
 			xOrigin = -1;
 			yOrigin = -1;
 		}
-		//if the left button is being pressed.
+		// If the left button is being pressed
 		else {
-			//sets current x,y coordinate of the mouseas the cooridinates to be used for calculation.
+			// Sets current x-/y- coordinates of the mouse as the cooridinates to be used for calculation
 			xOrigin = x;
 			yOrigin = y;
 		}
@@ -76,9 +78,9 @@ void mouse(int btn, int state, int x, int y) {
 
 /* Callback for when the mouse is moving */
 void mouseMove(int x, int y) {
-	//if the left button is being pressed (no released).
+	// If the left button is being pressed (no released).
 	if (xOrigin >= 0) {
-		//calculates the the distance the camera will move when the mouse is moved.
+		// Calculates the the distance the camera will move when the mouse is moved.
 		deltaAngle = (x - xOrigin) * 0.001f;
 		deltaAngle2 = (y - yOrigin) * 0.001f;
 		lx = sin(angle - deltaAngle) * 70;
@@ -86,6 +88,7 @@ void mouseMove(int x, int y) {
 	}
 }
 
+/* Draws the texture for the intro and sky */
 // Got started with: 
 // https://www.opengl.org/discussion_boards/showthread.php/176629-Background-image-behind-3D-scene
 void skybox() {
@@ -105,6 +108,7 @@ void skybox() {
     	skyBoxTexture[UserInterface::getIntroState() ? 1 : 0]);
 	glColor4f(1, 1, 1, 1);
 
+	// Draws the quad that the texture is drawn on
     glBegin(GL_QUADS);
 	    glTexCoord2f(0.0, 0.0);
 	    glVertex2f(0.0, 0.0);
@@ -126,11 +130,14 @@ void skybox() {
 	gluPerspective(90, WIDTH / HEIGHT, 1, 400);
 }
 
+/* Callback for when the program draws */
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Draw textures
 	skybox();
 
+	// Screen attributes 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -148,10 +155,11 @@ void display(void) {
 	float lightPos[] = {eye.x, eye.y, eye.z, 1};
  	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	
+	// Draws the UI if the intro isn't currently happening
  	if(UserInterface::getIntroState()){
  		UserInterface::drawUI();
  	}
-
+ 	// If no intro is occuring, draw the intro texture and display it's text
 	else {
 		if (!fromIntro) {
 			fromIntro = true;
@@ -160,7 +168,7 @@ void display(void) {
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		    /*Get and save skyImage0*/
+		    // Gets and saves skyImage0
 		    skyImage0 = Interactivity::loadPPM("mat.ppm", &skyWidth, &skyHeight, &skyMaxi);
 		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
 	                 GL_UNSIGNED_BYTE, skyImage0);
@@ -169,38 +177,40 @@ void display(void) {
 		glPushMatrix();
 			// Rotation of the camera affects the whole game world
 			glRotatef(Interactivity::getTheta(), 0, 1, 0);
-
+			// Draw player
 			Player::drawPlayer(step > STEPSPEED);
-			// Draw the enemies
+			// Draw the enemies for level 2
 			if (Interactivity::getLevel() == 2 &&
 				!UserInterface::getFinishedLevelState() &&
 				!UserInterface::getWinGameState()) {
 				Interactivity::enemy[0].drawEnemy(step > STEPSPEED);
 			}
+			// Draw the enemies for level 3
 			else if (Interactivity::getLevel() == 3 &&
 				!UserInterface::getFinishedLevelState() &&
 				!UserInterface::getWinGameState()) {
 				Interactivity::enemy[0].drawEnemy(enemyStep > ENEMYSPEED);
 				Interactivity::enemy[1].drawEnemy(enemyStep > ENEMYSPEED);
 			}
+			// Draw the environment
 			Environment::drawEnvironment(step);
+			// Draw the game UI
 			UserInterface::drawUI();
-
 		glPopMatrix();
-		
+
 		// Check to see if the player is on the same block as an enemy
 		if (Interactivity::getLevel() > 1 && Interactivity::getSpace() == 0)
 			Interactivity::checkIntersections();
-			
-		if (step > STEPSPEED) {		// time to reset
+		// Whenever this clock completes a cylce the in-game decreases in value 	
+		if (step > STEPSPEED) {		
 			step = 0;
 			clockTimer = 0;
 			UserInterface::decrTime();
 		}
-
+		// Whenever this clock completes a cylce the enemies move and the global 
 		if (enemyStep > ENEMYSPEED)
 			enemyStep = 0;
-
+		// Check if the in-game clock hasfun out of time
 		if ((UserInterface::getTime() == 0) && !timesUp && !UserInterface::calculatingScore()) {
 			UserInterface::setGameOverState();
 			timesUp = !timesUp;
@@ -219,7 +229,7 @@ void redraw(int i) {
 		glutTimerFunc(17, redraw, 0);
 	}
 }
-
+// Initialize all starting values
 void init() {
 	// No transparency
 	glDepthFunc(GL_LESS);
@@ -231,39 +241,34 @@ void init() {
 	float lightColour[] = {1.0, 0.9215, 0.2509, 1};	// #FFEB3B
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
 	glShadeModel(GL_FLAT);
-
 	// Callbacks
 	glutDisplayFunc(display);
 	glutKeyboardFunc(Interactivity::keyboard);
 	glutSpecialFunc(Interactivity::special);
 	glutMouseFunc(mouse);
-	glutMotionFunc(mouseMove);  //registers "mouseMove" as the motion callback function.
-
+	glutMotionFunc(mouseMove);  
+	// Sets up camera with proper matrix mode
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(90, WIDTH / HEIGHT, 1, 400);
 	srand(time(0));
-
-	/* TEXTURES */
+	// Textures
     glEnable(GL_TEXTURE_2D);
     glGenTextures(2, skyBoxTexture);
-    
-    /* Set the skyImage0 parameters*/
+    // Set the skyImage0 parameters
     glBindTexture(GL_TEXTURE_2D, skyBoxTexture[1]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    
-	/*Get and save skyImage0*/
+    // Gets and saves skyImage0
     skyImage1 = Interactivity::loadPPM("start.ppm", &skyWidth, &skyHeight, &skyMaxi);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, skyImage1);
    	Environment::setTextures();
-    
     glMatrixMode(GL_TEXTURE);
-
+    // Default call
 	redraw(0);
 }
-
+// The main function (contains callbacks, window proeprties, and all display initializations)
 int main(int argc, char** argv) {
 	Interactivity::printInstructions();
 	glutInit(&argc, argv);
