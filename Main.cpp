@@ -127,7 +127,6 @@ void skybox() {
 }
 
 void display(void) {
-	//glClearColor(95.0/255, 195.0/255, 240.0/255, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	skybox();
