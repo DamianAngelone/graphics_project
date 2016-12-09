@@ -44,6 +44,7 @@ Structure::point3D Player::getCoor() {
 	position.z = displacement[2];
 	return position;
 }
+
 /* Keeps track if player is off the block (lose a life) */
 bool Player::currentlyOffBlock(){
 

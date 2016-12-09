@@ -10,7 +10,7 @@ public:
 	static void reset();					// Reset the player's position
 	static void drawPlayer(bool step);		// Draw the player
 	static void setStopped(bool b);			// If the player has hit the sand/enemy
-	static bool currentlyOffBlock();
+	static bool currentlyOffBlock();		// Checks if the player is currently off 
 };
 
 #endif

@@ -6,8 +6,8 @@
 class Environment {
 public:	
 	static void drawEnvironment(int step);	// Get x, y, z of where the player is
-	static void drawBoard();
-	static void setTextures();
+	static void drawBoard();	//Draws the board the game takes place on
+	static void setTextures();		//Draws the textures on the wall
 };
 
 #endif

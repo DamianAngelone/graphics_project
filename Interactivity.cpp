@@ -232,58 +232,57 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 'R':
 		case 'r':
-			if (UserInterface::getGameOverState()) {	//if game over
-
-				if(UserInterface::getWinGameState()){
-					UserInterface::setWinGameState();
-					UserInterface::decrScore(UserInterface::getScore());
-					Interactivity::setLives(-Interactivity::getLives());
+			if (UserInterface::getGameOverState()) {	// If the game is in Game Over state
+				if(UserInterface::getWinGameState()){	// If the player won only
+					UserInterface::setWinGameState();	// Turns off Game Won state
+					UserInterface::decrScore(UserInterface::getScore());	// Reset score to zero
+					Interactivity::setLives(-Interactivity::getLives());	// Reset lives to 3
 				}
-
-				UserInterface::setGameOverState();		//disable game over (start game again)
-				Interactivity::setLevel(1);
-				Player::reset();
-				Interactivity::enemy[0].init(0);
-				Interactivity::enemy[1].init(1);
-				resetPlayerBeen();
-				playerBeenLength = 0;
-				Player::setStopped(false);
-				UserInterface::decrScore(UserInterface::getScore());
-				enemyCollision = false;
-				cameraAdjust();
-				Interactivity::setLives(3);
-				UserInterface::setTime();
+				// If the player won or lost
+				UserInterface::setGameOverState();		// Disable game over (to start game again)
+				Interactivity::setLevel(1);				// Set level to 1
+				Player::reset();						// Reset player position
+				Interactivity::enemy[0].init(0);		// Reset Enemy 1
+				Interactivity::enemy[1].init(1);		// Reset Enemy 2
+				resetPlayerBeen();						// Reset player position
+				playerBeenLength = 0;					// Reset block parameters
+				Player::setStopped(false);				
+				UserInterface::decrScore(UserInterface::getScore());	//Decrease the score to zero
+				enemyCollision = false;			// Resets enemy interactions
+				cameraAdjust();					// Reset camera
+				Interactivity::setLives(3);		// Reset lives
+				UserInterface::setTime();		// Reset in-game time
 			}
-			else if (UserInterface::getLevelState()) {	//if level lost (but not game over)
-				UserInterface::setLevelState();			//restarts the level
-				Interactivity::setLevel(Interactivity::getLevel());
-				UserInterface::decrScore(15);
-				Player::reset();
-				Interactivity::enemy[0].init(0);
-				Interactivity::enemy[1].init(1);
-				resetPlayerBeen();
-				playerBeenLength = 0;
-				Player::setStopped(false);
-				enemyCollision = false;
-				UserInterface::setTime();
+			else if (UserInterface::getLevelState()) {	// If the game is in Level Lost state (but not in Game Over)
+				UserInterface::setLevelState();			// Restarts the level
+				Interactivity::setLevel(Interactivity::getLevel()); // Keeps game on same level (until Finished Level or Game Over) 
+				UserInterface::decrScore(15);		//Decrease score by 15
+				Player::reset();					// Reset player position
+				Interactivity::enemy[0].init(0);	// Reset Enemy 1
+				Interactivity::enemy[1].init(1);	// Reset Enemy 2
+				resetPlayerBeen();					// Turns off Intro state
+				playerBeenLength = 0;				// Reset block parameters
+				Player::setStopped(false);			// Resets environment interactions
+				enemyCollision = false;				// Resets enemy interactions
+				UserInterface::setTime();	// Reset in-game time
 			}
-			else if (UserInterface::getFinishedLevelState()) {
-				Interactivity::incrLevel();
-				resetPlayerBeen();
-				playerBeenLength = 0;
-				Player::reset();
-				cameraAdjust();
-				UserInterface::setFinishedLevelState();
-				Interactivity::enemy[0].init(0);
-				Interactivity::enemy[1].init(1);
-				UserInterface::setTime();
-				UserInterface::setCalculatingScore(false);
+			else if (UserInterface::getFinishedLevelState()) {  // If the game is in Level Finished state
+				Interactivity::incrLevel();						// Increase level by 1
+				resetPlayerBeen();								// Reset player position
+				playerBeenLength = 0;							// Reset block parameters
+				Player::reset();								// Reset player position
+				cameraAdjust();									// Adjust camera angle according to next level
+				UserInterface::setFinishedLevelState();			// Turns off Finished Level state
+				Interactivity::enemy[0].init(0);				// Reset Enemy 1
+				Interactivity::enemy[1].init(1);				// Reset Enemy 2
+				UserInterface::setTime();						// Reset in-game time
+				UserInterface::setCalculatingScore(false);		// Stop calculating the end-of-level score
 			}
-			else if (UserInterface::getIntroState()) {
-				UserInterface::setIntroState();
+			else if (UserInterface::getIntroState()) { // If the game is in Intro state 
+				UserInterface::setIntroState();	//Turns off Intro state
 			}
 			break;
-		case 't':	// reset the camera
+		case 't':	// Reset the camera
 		case 'T':
 			eye[0] = Interactivity::getLength();
 			eye[1] = Interactivity::getLength() * 3;
