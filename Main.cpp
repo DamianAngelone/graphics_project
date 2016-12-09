@@ -42,7 +42,7 @@ GLuint skyBoxTexture[2];			// For sky textures
 GLubyte* skyImage0;			//Intro texture
 GLubyte* skyImage1;			//Sky texture
 
-/* Used for the mouse functions */
+// Used for the mouse functions
 int xOrigin = 0;			// The x origin for mouse dragging
 int yOrigin = 0;			// The y origin for mouse dragging
 float angle = 0.0f;				// X angle for mouse dragging	
