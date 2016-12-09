@@ -20,10 +20,11 @@ using namespace std;
 #include "Environment.h"
 #include "Interactivity.h"
 
-const int JUMPSIZE = 2;
+const int JUMPSIZE = 2;	// same jump size as the enemy.
 
 GLUquadric* qObj = gluNewQuadric();
 
+// Initialize an enemy to the board
 void Enemy::init(int id) {
 	ID = id;
 	enemyRot = 2;
@@ -35,7 +36,7 @@ void Enemy::init(int id) {
 			enemyDisp[1] = 1.5;
 			enemyDisp[2] = 8;
 			break;
-		case 1:
+		case 1:	// on the top point
 			enemyDisp[0] = 0;
 			enemyDisp[1] = (Interactivity::getLength() * 2) + 1.5;
 			enemyDisp[2] = Interactivity::getLength() * 2;
@@ -57,14 +58,14 @@ void Enemy::setRotation(int change) {
 	enemyRot = change;
 }
 
-// Checks if the next step is on a block still.
+// Checks if the next step is on a block.
 bool inBounds(int x, int z) {
 	int len = Interactivity::getLength() * 2;
 	// Don't want them to go top left corner or 0, 0
 	if (x == len - 2 && z == len -2 || x == 0 && z == 0)
 		return false;
-	return x > -1 &&
-		   z > -1 &&
+	return x > -1 &&		// off the most right edge
+		   z > -1 &&		// off the closest edge to the screen
 		   x < len &&		// further edge
 		   z < len &&		// further edge
 		   x != z + 2;  	// dont count inside jump out of bounds
@@ -72,7 +73,7 @@ bool inBounds(int x, int z) {
 
 // Draw the model of the players
 void Enemy::draw() {
-	glPushAttrib(GL_LIGHTING_BIT);
+	glPushAttrib(GL_LIGHTING_BIT);	// stop materials from affecting other objects
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
@@ -95,6 +96,7 @@ void Enemy::draw() {
 			glRotatef(0, 0, 1, 0);
 			break;
 	}
+	// set the mateiral values
 	float amb[3];
 	float diff[3];
 	float spec[3];
@@ -110,6 +112,7 @@ void Enemy::draw() {
 	spec[1] = 0.328634;
 	spec[2] = 0.346435;
 	spec[3] = 1;
+	// apply the material
 	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
@@ -141,8 +144,8 @@ void Enemy::draw() {
 			glPopMatrix();
 		glPopMatrix();
 		
-		// EAR1
-		glDisable(GL_CULL_FACE);
+		// ear 1
+		glDisable(GL_CULL_FACE);// fix for see-through inside
 		glPushMatrix();
 			glScalef(0.5, 1, 1);
 			glRotatef(-90,0,1,0);
@@ -160,8 +163,8 @@ void Enemy::draw() {
 		glPopMatrix();
 		glEnable(GL_CULL_FACE);
 
-		// EAR2
-		glDisable(GL_CULL_FACE);
+		// ear 2
+		glDisable(GL_CULL_FACE);// fix for see-through inside
 		glPushMatrix();
 			glScalef(0.5, 1, 1);
 			glRotatef(90,0,1,0);
@@ -179,13 +182,14 @@ void Enemy::draw() {
 		glPopMatrix();
 		glEnable(GL_CULL_FACE);
 
-		//left foot front
+		//left leg front
 		glPushMatrix();
 			glColor3ub(120, 120, 120);		// grey
 			glRotatef(70, 1, 0, 0);
 			glRotatef(-20,0,1,0);
 			glTranslatef(-0.3, 0, 0);
 			gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+			//foot
 			glPushMatrix();
 				glRotatef(-90, 1, 0, 0);
 				glColor3ub(0, 0, 0);
@@ -194,7 +198,7 @@ void Enemy::draw() {
 			glPopMatrix();
 		glPopMatrix();
 
-		//left foot back
+		//left leg back
 		glPushMatrix();
 			glColor3ub(120, 120, 120);		// grey
 			glRotatef(180,0,1,0);
@@ -202,6 +206,7 @@ void Enemy::draw() {
 			glRotatef(-20,0,1,0);
 			glTranslatef(-0.3, 0, 0);
 			gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+			//foot
 			glPushMatrix();
 				glRotatef(-90, 1, 0, 0);
 				glColor3ub(0, 0, 0);
@@ -210,13 +215,14 @@ void Enemy::draw() {
 			glPopMatrix();
 		glPopMatrix();
 
-		//right foot front
+		//right leg front
 		glPushMatrix();
 			glColor3ub(120, 120, 120);		// grey
 			glRotatef(70, 1, 0, 0);
 			glRotatef(20,0,1,0);
 			glTranslatef(0.3, 0, 0);
 			gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+			//foot
 			glPushMatrix();
 				glRotatef(-90, 1, 0, 0);
 				glColor3ub(0, 0, 0);
@@ -225,7 +231,7 @@ void Enemy::draw() {
 			glPopMatrix();
 		glPopMatrix();
 
-		//right foot back
+		//right leg back
 		glPushMatrix();
 			glColor3ub(120, 120, 120);		// grey
 			glRotatef(180,0,1,0);
@@ -233,6 +239,7 @@ void Enemy::draw() {
 			glRotatef(20,0,1,0);
 			glTranslatef(0.3, 0, 0);
 			gluCylinder(qObj, 0.20, 0.4, 2, 100, 100);
+			//foot
 			glPushMatrix();
 				glRotatef(-90, 1, 0, 0);
 				glColor3ub(0, 0, 0);
@@ -241,6 +248,7 @@ void Enemy::draw() {
 			glPopMatrix();
 		glPopMatrix();
 	glPopMatrix();
+
 	glDisable(GL_COLOR_MATERIAL);
 	glPopAttrib();
 }
@@ -249,7 +257,7 @@ void Enemy::draw() {
 void Enemy::drawEnemy(bool step) {
 	if (step && Interactivity::getSpace() == 0) {	// Move the player
 		bool findRotate = false;
-		while (!findRotate) {
+		while (!findRotate) {	// Get the new random position
 			enemyRot = rand() % 4;
 			switch(enemyRot) {
 				case 0:		// Left
@@ -289,9 +297,8 @@ void Enemy::drawEnemy(bool step) {
 				enemyDisp[2] += JUMPSIZE;
 				break;
 		}
-		// record the new position
-		//Interactivity::pushPosition(enemyDisp[0], enemyDisp[2]);
 	}
+	// Draw the enemy
 	glPushMatrix();
 		glTranslatef(enemyDisp[0], 
 			         enemyDisp[1],

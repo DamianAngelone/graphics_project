@@ -11,8 +11,9 @@ Textures (10%)
 Advanced Camera Controls (5%)
 Writing to a File (High scores) (5%)
 
+Type make to compile/run
 You must press r/R to start the game.
 
 Please DO NOT delete highscore.txt
 
-Youtube link:
+Youtube link (much faster on a mac):

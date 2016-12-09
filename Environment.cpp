@@ -51,14 +51,14 @@ void Environment::setTextures() {
 }
 
 /* Creates the real-time waves for water */
+// terrain algorithm from assigment 2
 void createWaves(int iterations, int size) {
 	// Will run for how many hills was specified by the user. 
-	for(int i = 0; i < iterations; i++){
-
+	for(int i = 0; i < iterations; i++) {
 		int center_X = rand() % size; 			// Water Grid (x) midpoint of circle                      
 	    int center_Z = rand() % size;			// Water Grid (z) midpoint of circle
-	    float terrainCircleSize = 35; 				// Random radius of circle
-	    int randomHeight = (rand() % 1) + 1;		// Random height for slope   
+	    float terrainCircleSize = 35; 			// Random radius of circle
+	    int randomHeight = (rand() % 1) + 1;	// Random height for slope   
 	    
 	    // Will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
@@ -69,7 +69,7 @@ void createWaves(int iterations, int size) {
                 float totalDistance = sqrtf((distanceFromX * distanceFromX) + (distanceFromZ * distanceFromZ));
                 float pd = (totalDistance * 2) / terrainCircleSize;
 
-                if (fabs(pd) <= 1.0){
+                if (fabs(pd) <= 1.0) {
                 	waterHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
                 }
             }
@@ -78,6 +78,7 @@ void createWaves(int iterations, int size) {
 }
 
 /* Sets up slopes for sand */
+// algorithm from assignment 2
 void createSlopes(int iterations, int size) {
 	// Will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
@@ -107,6 +108,7 @@ void createSlopes(int iterations, int size) {
 void drawWall() {
 	glColor4f(1, 1, 1, 1);
 	glScalef(0.112, 0.034, 0);
+	// 2D flat surface in a 3d space
 	glBegin(GL_QUADS);
 	    glTexCoord3f(0, 0, 0);
 	    glVertex3f(0, 0, 0);
@@ -121,10 +123,11 @@ void drawWall() {
 
 /* Draws the wall mesh */
 void drawBorder() {
+	// enable textures and disable lighting
 	glEnable(GL_TEXTURE_2D); 
 	glDisable(GL_LIGHTING);
     glBindTexture(GL_TEXTURE_2D, brickTexture[0]);
-	
+	// set the transformation values
 	float trans[5][3];
 	trans[0][0] = -8.3;
 	trans[0][1] = -6;
@@ -186,19 +189,36 @@ void drawBorder() {
 
 /* Draws the baord that the game takes place on */
 void Environment::drawBoard() {
-	// Ignore lighting
-	glPushAttrib(GL_LIGHTING_BIT);
+	glPushAttrib(GL_LIGHTING_BIT);	// so materials dont affect other objects
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
-	// Material lighting settings
-	float m_specular[] = {0.1, 0.1, 0.1, 1};
-	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
+	// Set the material values and apply it to the blocks
+	float amb[4];	// cyan rubber
+	float spec[4];
+	float diff[4];
+	amb[0] = 0;
+	amb[1] = 0.5;
+	amb[2] = 0.5;
+	amb[3] = 1;
+	diff[0] = 0.4;
+	diff[1] = 0.5;
+	diff[2] = 0.5;
+	diff[3] = 1;
+	spec[0] = 0.04;
+	spec[1] = 0.7;
+	spec[2] = 0.7;
+	spec[3] = 1;
+	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
+	glMaterialf(GL_FRONT, GL_SHININESS, 0.78125);
 	// Length of the board for the current level
 	int len = Interactivity::getLength();
 	// Colours for the board.
 	unsigned char blue[] = {33, 150, 243};
 	unsigned char yellow[] = {255, 235, 59};
-	Structure::point3D* beenTo = Interactivity::getPlayerBeen(); // If the player visits the block
+	// If the player visits the block
+	Structure::point3D* beenTo = Interactivity::getPlayerBeen();
 	// Checks all block in the current level
 	for(int i = 0; i < len; ++i) {
 		for(int j = 0; j < len - i; ++j) {
@@ -253,14 +273,13 @@ void drawWater(int step) {
 		createWaves(3, 30);
 	}
 	// Material to make water plane look like water
-	float m_ambient[] = {0, 0.509, 0.501, 0.75};
+	float m_ambient[] = {0, 0.509, 1, 0.75};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
 	float m_diff[] = {0, 0.509, 0.501, 0.75};
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diff);
 	float m_specular[] = {0, 0.501, 0.501, 0.75};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
-	float m_shiny = 0.25f;
-	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
+	glMaterialf(GL_FRONT, GL_SHININESS, 0.1);
 
 	// Draws the water plane
 	for(int i = 0; i < 30; i++){
@@ -289,12 +308,26 @@ void drawSand() {
 		getSandHeight = !getSandHeight;
 		createSlopes(2, 30);
 	}
-	float amb[] = {0.6274, 0.3216, 0.1764, 1};
+	// set the material values and apply it
+	float amb[4];
+	float spec[4];
+	float diff[4];
+	amb[0] = 0.19225;
+	amb[1] = 0.19225;
+	amb[2] = 0.19225;
+	amb[3] = 1;
+	diff[0] = 0.50754;
+	diff[1] = 0.50754;
+	diff[2] = 0.50754;
+	diff[3] = 1;
+	spec[0] = 0.508274;
+	spec[1] = 0.508274;
+	spec[2] = 0.508274;
+	spec[3] = 1;
 	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
-	float diff[] = {0.6274, 0.3216, 0.1764, 1};
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
-	float spec[] = {0.6274, 0.3216, 0.1764, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
+	glMaterialf(GL_FRONT, GL_SHININESS, 0.4);
 	// Draws the sand plane
 	for(int i = 0; i < 30; i++) {
 		for(int j = 0; j < 30; j++) {
@@ -313,17 +346,38 @@ void drawSand() {
 
 /* Initializes where the fish will start */
 void InitFishPosition(void){
-	for(int i = 0 ; i < 3 ; i++){
+	for(int i = 0; i < 3; i++) {
 		Fishes[i][0] = rand() % 5;
-		Fishes[i][4] = rand() % 360 ; 
+		Fishes[i][4] = rand() % 360; 
 	}
-	InitFishPosit = 1 ;
+	InitFishPosit = 1;
 }
 
 /* Draws the fish to the scene */
-void drawFish(int n) {	
-	int len = Interactivity::getLength()*2;
-	
+void drawFish(int n) {
+	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
+	int len = Interactivity::getLength() * 2;
+	// set the material values and apply it
+	float amb[4];	// silver
+	float spec[4];
+	float diff[4];
+	amb[0] = 0.19225;
+	amb[1] = 0.19225;
+	amb[2] = 0.19225;
+	amb[3] = 1;
+	diff[0] = 0.50754;
+	diff[1] = 0.50754;
+	diff[2] = 0.50754;
+	diff[3] = 1;
+	spec[0] = 0.508274;
+	spec[1] = 0.508274;
+	spec[2] = 0.508274;
+	spec[3] = 1;
+	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
+	glMaterialf(GL_FRONT, GL_SHININESS, 0.4);
+	// Start drawing
 	glPushMatrix();
 		glRotatef((n == 1 ? 1 : -1) * Fishes[n][4], 0, 1, 0);
 		glTranslatef(Fishes[n][0]+len,Fishes[n][1],0);
@@ -372,12 +426,14 @@ void drawFish(int n) {
 				glutSolidCone(1, 1, 100, 100);
 			glPopMatrix();
 		glPopMatrix();
-		
 	glPopMatrix();
+	glPopAttrib();
 }
 
 /* Gives the fish movement during the game */
-void renderFish(int step){
+void renderFish(int step) {
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
 	// Initialize fish position
 	if(InitFishPosit == 0) {
 		InitFishPosition();		
@@ -391,7 +447,7 @@ void renderFish(int step){
 			for(int i  = 0; i < 3 ; i++){
 				glPushMatrix();
 				glTranslatef(len,0,len);
-				switch(i) {	// set the speeds
+				switch(i) {		// set the speeds
 					case 0:
 						Fishes[i][4] += 1;	// rotation speed
 						break;
@@ -408,16 +464,17 @@ void renderFish(int step){
 		}
 		glPopMatrix();
 	}
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 /* Draws everything except for the player and the enemies */
 void Environment::drawEnvironment(int step) {
+	// draw in an order of:
+	// 1. opaque objects (back drawn first)
+	// 2. Translucent objects
 	drawSand();
 	Environment::drawBoard();
 	drawBorder();
-	// Sets up lighting accordingly
-	glDisable(GL_LIGHTING);
 	renderFish(step);
-	glEnable(GL_LIGHTING);
 	drawWater(step);
 }
