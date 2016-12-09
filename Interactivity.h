@@ -61,6 +61,7 @@ public:
 	**/
 	static void special(int key, int x, int y);
 	static void printInstructions();			// Prints the instructions to the console
+
 };
 
 #endif

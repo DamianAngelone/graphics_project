@@ -223,9 +223,6 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 		case 'D':
 			Player::setRotation(180);
 			break;
-		case 'h':
-			incrLevel();
-			break;
 		case 32:
 			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock() && !UserInterface::getIntroState())
 				space = 1;
@@ -324,6 +321,7 @@ void Interactivity::printInstructions() {
 	cout << "A               Turn the character left" << endl;
 	cout << "S               Turn the character backwards" << endl;
 	cout << "D               Turn the character right" << endl;
+	cout << "SPACE           Jump in current direction" << endl;
 	cout << "-----------------------------------"  << endl;
 }
 

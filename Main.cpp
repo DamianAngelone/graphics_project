@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <cmath>
 using namespace std;
 
 // Include project files
@@ -40,6 +41,50 @@ GLuint skyBoxTexture[2];
 
 GLubyte* skyImage0;
 GLubyte* skyImage1;
+
+/* Used for the mouse functions */
+int xOrigin = 0;					// the x origin for mouse dragging
+int yOrigin = 0;	
+float angle = 0.0f;					
+float angle2 = 0.0f;
+float lx = 0.0f, lz = 0.0f;
+float deltaAngle = 0.0f;
+float deltaAngle2 = 0.0f;
+
+void mouse(int btn, int state, int x, int y) {
+	int mouseX = x;
+	int mouseY = 540 - y;
+	//if the left button is being used
+	if(btn == GLUT_LEFT_BUTTON){
+		//if the left button is being released.
+		if(state == GLUT_UP){
+			//reset current mouse angle and disallows mouseMouse from running.
+			lx = 0;
+			lz = 0;
+			angle = 0;
+			xOrigin = -1;
+			yOrigin = -1;
+		}
+		//if the left button is being pressed.
+		else {
+			//sets current x,y coordinate of the mouseas the cooridinates to be used for calculation.
+			xOrigin = x;
+			yOrigin = y;
+		}
+	}
+}
+
+/* Callback for when the mouse is moving */
+void mouseMove(int x, int y) {
+	//if the left button is being pressed (no released).
+	if (xOrigin >= 0) {
+		//calculates the the distance the camera will move when the mouse is moved.
+		deltaAngle = (x - xOrigin) * 0.001f;
+		deltaAngle2 = (y - yOrigin) * 0.001f;
+		lx = sin(angle - deltaAngle) * 70;
+		lz = sin(angle - deltaAngle2) * 90;
+	}
+}
 
 // Got started with: 
 // https://www.opengl.org/discussion_boards/showthread.php/176629-Background-image-behind-3D-scene
@@ -97,7 +142,7 @@ void display(void) {
 	// Camera
 	Structure::point3D eye = Interactivity::getEye();
 	Structure::point3D center = Interactivity::getCenter();
-	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, 0, 1, 0);
+	gluLookAt(eye.x, eye.y, eye.z, center.x + lx, center.y, center.z + lz, 0, 1, 0);
 	glShadeModel(GL_SMOOTH);
 
 	// Scene
@@ -192,6 +237,8 @@ void init() {
 	glutDisplayFunc(display);
 	glutKeyboardFunc(Interactivity::keyboard);
 	glutSpecialFunc(Interactivity::special);
+	glutMouseFunc(mouse);
+	glutMotionFunc(mouseMove);  //registers "mouseMove" as the motion callback function.
 
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(90, WIDTH / HEIGHT, 1, 400);
