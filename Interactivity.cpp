@@ -223,8 +223,11 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 		case 'D':
 			Player::setRotation(180);
 			break;
-		case 32:
-			if(!UserInterface::getFinishedLevelState() && !UserInterface::getLevelState() && !Player::currentlyOffBlock() && !UserInterface::getIntroState())
+		case 32:	// Space
+			if(!UserInterface::getFinishedLevelState() &&
+				!UserInterface::getLevelState() &&
+				!Player::currentlyOffBlock() &&
+				!UserInterface::getIntroState())
 				space = 1;
 			break;
 		case 'R':
@@ -278,9 +281,17 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			}
 			else if (UserInterface::getIntroState()) {
 				UserInterface::setIntroState();
-
-
 			}
+			break;
+		case 't':	// reset the camera
+		case 'T':
+			eye[0] = Interactivity::getLength();
+			eye[1] = Interactivity::getLength() * 3;
+			eye[2] = -12;
+			center[0] = Interactivity::getLength();
+			center[1] = 0;
+			center[2] = Interactivity::getLength() * 2 + 8;
+			theta = 40;
 			break;
 	}
 }
@@ -322,6 +333,9 @@ void Interactivity::printInstructions() {
 	cout << "S               Turn the character backwards" << endl;
 	cout << "D               Turn the character right" << endl;
 	cout << "SPACE           Jump in current direction" << endl;
+	cout << "T               Reset the camera" << endl;
+	cout << "R               Press when prompted" << endl;
+	cout << "MOUSE MOVEMENT  Move the camera around" << endl;
 	cout << "-----------------------------------"  << endl;
 }
 
