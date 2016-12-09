@@ -77,6 +77,7 @@ void createWaves(int iterations, int size) {
 	//createNormals();
 }
 
+// slopes for the sand
 void createSlopes(int iterations, int size) {
 	//will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
@@ -103,73 +104,83 @@ void createSlopes(int iterations, int size) {
 	//createNormals();
 }
 
-void drawBorder() {
-	glPushAttrib(GL_LIGHTING_BIT);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
+void drawWall() {
+	glColor4f(1, 1, 1, 1);
+	glScalef(0.112, 0.034, 0);
+	glBegin(GL_QUADS);
+	    glTexCoord3f(0, 0, 0);
+	    glVertex3f(0, 0, 0);
+	    glTexCoord3f(1, 0, 0);
+	    glVertex3f(265, 0, 0);
+	    glTexCoord3f(1, 1, 0);
+	    glVertex3f(265, 398, 0);
+	    glTexCoord3f(0, 1, 0);
+	    glVertex3f(0, 398, 0);
+    glEnd();
+}
 
-	int len = 2 * (Interactivity::getLength() + 4) + 8;
+void drawBorder() {
 	glEnable(GL_TEXTURE_2D); 
 	glDisable(GL_LIGHTING);
     glBindTexture(GL_TEXTURE_2D, brickTexture[0]);
-	glColor4f(1, 1, 1, 1);
-	switch (Interactivity::getLevel()) {
-		case 1:
-			glPushMatrix();
-				//glTranslatef(-8, -6, 3);
-				glScalef(0.5, 13, len);
-				glBegin(GL_QUADS);
-				    glTexCoord3f(0.0,0, 0.0);
-				    glVertex3f(0.0, 0.0, 0.0);
-				    glTexCoord3f(0,1.0, 0.0);
-				    glVertex3f(0, 1.0, 0.0);
-				    glTexCoord3f(0,1.0, 1.0);
-				    glVertex3f(0, 1, 1.0);
-				    glTexCoord3f(0,0.0, 1.0);
-				    glVertex3f(0.0, 0, 1.0);
-			    glEnd();
-			glPopMatrix();
-			
-			// glPushMatrix();
-			// 	glRotatef(90, 0, 1, 0);
-			// 	glTranslatef(-14, -6, 3);
-			// 	glScalef(0.5, 13, len);
-			// 	glutSolidCube(1);
-			// glPopMatrix();
-			break;
-		case 2:
-			glPushMatrix();
-				glTranslatef(-8, -6, 5);
-				glScalef(0.5, 13, len);
-				glutSolidCube(1);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glRotatef(90, 0, 1, 0);
-				glTranslatef(-18, -6, 5);
-				glScalef(0.5, 13, len);
-				glutSolidCube(1);
-			glPopMatrix();
-			break;
-		case 3:
-			glPushMatrix();
-				glTranslatef(-8, -6, 7);
-				glScalef(0.5, 13, len);
-				glutSolidCube(1);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glRotatef(90, 0, 1, 0);
-				glTranslatef(-22, -6, 7);
-				glScalef(0.5, 13, len);
-				glutSolidCube(1);
-			glPopMatrix();
-			break;
-	}
+	
+	float trans[5][3];
+	trans[0][0] = -8.3;
+	trans[0][1] = -6;
+	trans[0][2] = 7.4;
+
+	trans[1][0] = -8;
+	trans[1][1] = -13;
+	trans[1][2] = 21.5;
+
+	trans[2][0] = -8.6;
+	trans[2][1] = -13;
+	trans[2][2] = -8;
+
+	trans[3][0] = 7;
+	trans[3][1] = -6;
+	trans[3][2] = 22.5;
+
+	trans[4][0] = 22;
+	trans[4][1] = -13;
+	trans[4][2] = 21.95;
+
+	// right block
+	glPushMatrix();
+		glColor3ub(194, 117, 87);
+		glTranslatef(trans[0][0], trans[0][1], trans[0][2]);
+		glScalef(0.5, 13, 30.7);
+		glutSolidCube(1);
+	glPopMatrix();
+	// right wall 1
+	glPushMatrix();
+		glTranslatef(trans[1][0], trans[1][1], trans[1][2]);
+		glRotatef(90, 0, 1, 0);
+		drawWall();
+	glPopMatrix();
+	// right wall 2
+	glPushMatrix();
+		glTranslatef(trans[2][0], trans[2][1], trans[2][2]);
+		glRotatef(270, 0, 1, 0);
+		drawWall();
+	glPopMatrix();
+	// infront block
+	glPushMatrix();
+		glColor3ub(194, 117, 87);
+		glTranslatef(trans[3][0], trans[3][1], trans[3][2]);
+		glRotatef(90, 0, 1, 0);
+		glScalef(0.5, 13, 30);
+		glutSolidCube(1);
+	glPopMatrix();
+	// wall infront
+	glPushMatrix();
+		glTranslatef(trans[4][0], trans[4][1], trans[4][2]);
+		glRotatef(180, 0, 1, 0);
+		drawWall();
+	glPopMatrix();
+
 	glDisable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
-	glDisable(GL_COLOR_MATERIAL);
-	glPopAttrib();
 }
 
 void Environment::drawBoard() {
@@ -228,16 +239,14 @@ void drawWater(int step) {
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
 	glTranslatef(-8, -3, -8);
 
-	int len = 2 * (Interactivity::getLength() + 4) + 8;
-
 	if (getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
-		createWaves(3, len);
+		createWaves(3, 30);
 	}
 
 	if ((step % 40 == 0 && !UserInterface::calculatingScore())) {	// the waves
-		resetArray(len);
-		createWaves(3, len);
+		resetArray(30);
+		createWaves(3, 30);
 	}
 
 	//material to make water plane look like water.
@@ -251,8 +260,8 @@ void drawWater(int step) {
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
 
 	// draws the water plane.
-	for(int i = 0; i < len; i++){
-		for(int j = 0; j < len; j++){
+	for(int i = 0; i < 30; i++){
+		for(int j = 0; j < 30; j++){
 			glBegin(GL_QUAD_STRIP);
 			glNormal3f(0, 1, 0);
 
@@ -272,10 +281,9 @@ void drawSand() {
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
 	glTranslatef(-8, -12, -8);
 
-	int len = 2 * (Interactivity::getLength() + 4) + 8;
 	if(getSandHeight) {		// Initial load
 		getSandHeight = !getSandHeight;
-		createSlopes(2, len);
+		createSlopes(2, 30);
 	}
 	float amb[] = {0.6274, 0.3216, 0.1764, 1};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
@@ -285,8 +293,8 @@ void drawSand() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 
 	//draws the sand plane.
-	for(int i = 0; i < len; i++) {
-		for(int j = 0; j < len; j++) {
+	for(int i = 0; i < 30; i++) {
+		for(int j = 0; j < 30; j++) {
 			glBegin(GL_QUAD_STRIP);
 			glNormal3f(0, 1, 0);
 			glVertex3f(i    , sandHeightMap[i][j + 1],     j + 1);
@@ -364,6 +372,7 @@ void drawFish(int n) {
 	glColor3f(0,0,1);
 	glScalef(0.8,0.8,0.8);
 	
+	// tail
 	glTranslatef(0,0,-2);
 	int flip = rand()%2;
 	glRotatef((flip == 1? 10 : -10),0,1,0);
