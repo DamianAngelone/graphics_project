@@ -45,7 +45,7 @@ void Environment::setTextures() {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     // Loads in the .ppm file for textures
-	brickImage = Interactivity::loadPPM("brick.ppm", &brickWidth, &brickHeight, &brickMaxi);
+	brickImage = Interactivity::loadPPM("images/brick.ppm", &brickWidth, &brickHeight, &brickMaxi);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, brickWidth, brickHeight, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, brickImage);
 }
@@ -215,7 +215,7 @@ void Environment::drawBoard() {
 	// Length of the board for the current level
 	int len = Interactivity::getLength();
 	// Colours for the board.
-	unsigned char blue[] = {33, 150, 243};
+	unsigned char blue[] = {0, 20, 113};
 	unsigned char yellow[] = {255, 235, 59};
 	// If the player visits the block
 	Structure::point3D* beenTo = Interactivity::getPlayerBeen();

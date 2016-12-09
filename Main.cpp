@@ -169,7 +169,7 @@ void display(void) {
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		    // Gets and saves skyImage0
-		    skyImage0 = Interactivity::loadPPM("mat.ppm", &skyWidth, &skyHeight, &skyMaxi);
+		    skyImage0 = Interactivity::loadPPM("images/mat.ppm", &skyWidth, &skyHeight, &skyMaxi);
 		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
 	                 GL_UNSIGNED_BYTE, skyImage0);
 		}
@@ -261,7 +261,7 @@ void init() {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     // Gets and saves skyImage0
-    skyImage1 = Interactivity::loadPPM("start.ppm", &skyWidth, &skyHeight, &skyMaxi);
+    skyImage1 = Interactivity::loadPPM("images/start.ppm", &skyWidth, &skyHeight, &skyMaxi);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, skyImage1);
    	Environment::setTextures();
