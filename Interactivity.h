@@ -16,7 +16,8 @@
 
 class Interactivity {
 public:
-	static Enemy enemy[4];			// the enemy array, 2 enemies
+	static Enemy enemy[3];			// the enemy array, 2 enemies
+	
 	static void draw(bool step);
 	static void setSpace(int n);	
 	static void setLevel(int n);
