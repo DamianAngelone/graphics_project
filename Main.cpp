@@ -25,6 +25,7 @@ using namespace std;
 #include "UserInterface.h"
 
 bool pause = false;		// if the game is paused
+bool fromIntro = false;
 
 const int WIDTH = 960;
 const int HEIGHT = 540;
@@ -35,9 +36,10 @@ int enemyStep = 0;		// When to make the enemy step on level 3
 int clockTimer = 0;		// For the HUD timer
 int timesUp = false;
 int skyWidth, skyHeight, skyMaxi;	// For the texture
-GLuint skyBoxTexture[1];
+GLuint skyBoxTexture[2];
 
-GLubyte* skyImage;
+GLubyte* skyImage0;
+GLubyte* skyImage1;
 
 // Got started with: 
 // https://www.opengl.org/discussion_boards/showthread.php/176629-Background-image-behind-3D-scene
@@ -54,7 +56,8 @@ void skybox() {
 
 	// Draw the skybox
 	glEnable(GL_TEXTURE_2D); 
-    glBindTexture(GL_TEXTURE_2D, skyBoxTexture[0]);
+    glBindTexture(GL_TEXTURE_2D,
+    	skyBoxTexture[UserInterface::getIntroState() ? 1 : 0]);
 	glColor4f(1, 1, 1, 1);
 
     glBegin(GL_QUADS);
@@ -105,9 +108,21 @@ void display(void) {
  		UserInterface::drawUI();
  	}
 
-		else if(!UserInterface::getIntroState()){
+	else {
+		if (!fromIntro) {
+			fromIntro = true;
+			glBindTexture(GL_TEXTURE_2D, skyBoxTexture[0]);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-			glPushMatrix();
+		    /*Get and save skyImage0*/
+		    skyImage0 = Interactivity::loadPPM("mat.ppm", &skyWidth, &skyHeight, &skyMaxi);
+		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
+	                 GL_UNSIGNED_BYTE, skyImage0);
+		}
+
+		glPushMatrix();
 			// Rotation of the camera affects the whole game world
 			glRotatef(Interactivity::getTheta(), 0, 1, 0);
 
@@ -186,16 +201,16 @@ void init() {
     glEnable(GL_TEXTURE_2D);
     glGenTextures(2, skyBoxTexture);
     
-    /* Set the skyImage parameters*/
-    glBindTexture(GL_TEXTURE_2D, skyBoxTexture[0]);
+    /* Set the skyImage0 parameters*/
+    glBindTexture(GL_TEXTURE_2D, skyBoxTexture[1]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     
-    /*Get and save skyImage*/
-    skyImage = Interactivity::loadPPM("mat.ppm", &skyWidth, &skyHeight, &skyMaxi);
+	/*Get and save skyImage0*/
+    skyImage1 = Interactivity::loadPPM("start.ppm", &skyWidth, &skyHeight, &skyMaxi);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, skyWidth, skyHeight, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, skyImage);
+                 GL_UNSIGNED_BYTE, skyImage1);
    	Environment::setTextures();
     
     glMatrixMode(GL_TEXTURE);

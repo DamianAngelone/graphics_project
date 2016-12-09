@@ -110,18 +110,18 @@ void Interactivity::checkIntersections() {
 			
 	}
 	else if (level == 3 &&
-		    ((player.x == enemy0.x && player.z == enemy0.z) ||
-			(player.x == enemy1.x && player.z == enemy1.z) ||
-			(player.x == enemy2.x && player.z == enemy2.z)) && !enemyCollision) {
-			
-			enemyCollision = true;
-			Interactivity::setLives(-1);
-			Player::setStopped(true);
-			
-			if(Interactivity::getLives() == 0)
-				UserInterface::setGameOverState();
-			else
-				UserInterface::setLevelState();
+	    ((player.x == enemy0.x && player.z == enemy0.z) ||
+		(player.x == enemy1.x && player.z == enemy1.z) ||
+		(player.x == enemy2.x && player.z == enemy2.z)) && !enemyCollision) {
+		
+		enemyCollision = true;
+		Interactivity::setLives(-1);
+		Player::setStopped(true);
+		
+		if(Interactivity::getLives() == 0)
+			UserInterface::setGameOverState();
+		else
+			UserInterface::setLevelState();
 			
 	}
 }
