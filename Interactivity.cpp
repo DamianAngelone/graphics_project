@@ -253,6 +253,7 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 				resetPlayerBeen();
 				playerBeenLength = 0;
 				Player::setStopped(false);
+				UserInterface::decrScore(UserInterface::getScore());
 				enemyCollision = false;
 				cameraAdjust();
 				Interactivity::setLives(3);
