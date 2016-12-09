@@ -20,75 +20,76 @@ using namespace std;
 #include "Interactivity.h"
 #include "UserInterface.h"
 
+// Parameters for fish position
 float Fishes[3][6] = {{4,-9,0,0,30,0}, {7,-5,0,0,-20,0}, {6,-3,0,0,90,0}};
 int InitFishPosit = 0;
-
+// Keeps track if fish collide with water/sand path 
 bool getWaterHeight = true;
 bool getSandHeight = true;
-
-int brickWidth, brickHeight, brickMaxi;	// For the texture
+// Used to texture bricks
+int brickWidth, brickHeight, brickMaxi;	
 GLuint brickTexture[1];
-
+// Sets up the grids for water/sand
 float waterHeightMap[100][100];
 float sandHeightMap[100][100];
-
+// Used for brick textures
 GLubyte* brickImage;
 
+/* Sets up textures for bricks */
 void Environment::setTextures() {
 	glGenTextures(2, brickTexture);
     
-    /* Set the brickImage parameters*/
+    // Set the brickImage parameters
     glBindTexture(GL_TEXTURE_2D, brickTexture[0]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    // Loads in the .ppm file for textures
 	brickImage = Interactivity::loadPPM("brick.ppm", &brickWidth, &brickHeight, &brickMaxi);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, brickWidth, brickHeight, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, brickImage);
 }
 
+/* Creates the real-time waves for water */
 void createWaves(int iterations, int size) {
-	//will run for how many hills was specified by the user. 
+	// Will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
 
-		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
-	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
-	    float terrainCircleSize = 35; 				//random radius of circle (1-5)
-	    int randomHeight = (rand() % 1) + 1;		//random height for slope (1-5)   
+		int center_X = rand() % size; 			// Water Grid (x) midpoint of circle                      
+	    int center_Z = rand() % size;			// Water Grid (z) midpoint of circle
+	    float terrainCircleSize = 35; 				// Random radius of circle
+	    int randomHeight = (rand() % 1) + 1;		// Random height for slope   
 	    
-	    //will run for every vertex in the grid.
+	    // Will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
             for(int z = 0; z < size; z++){
-
+            	// Performs the circles algorithm
 				float distanceFromX = x - center_X;
                 float distanceFromZ = z - center_Z;
                 float totalDistance = sqrtf((distanceFromX * distanceFromX) + (distanceFromZ * distanceFromZ));
                 float pd = (totalDistance * 2) / terrainCircleSize;
 
                 if (fabs(pd) <= 1.0){
-             	
                 	waterHeightMap[x][z] += (randomHeight / 2.0 + cos(pd * 3.14) * randomHeight / 2.0);
                 }
             }
         } 
 	}
-	//create normals for each plane.
-	//createNormals();
 }
 
-// slopes for the sand
+/* Sets up slopes for sand */
 void createSlopes(int iterations, int size) {
-	//will run for how many hills was specified by the user. 
+	// Will run for how many hills was specified by the user. 
 	for(int i = 0; i < iterations; i++){
-		int center_X = rand() % size; 				//GRID (x) midpoint of circle (1-gridLength)                      
-	    int center_Z = rand() % size;				//GRID (z) midpoint of circle (1-gridWidth)
-	    float terrainCircleSize = 30; 				//random radius of circle (1-5)
-	    int randomHeight = (rand() % 4) + 1;		//random height for slope (1-5)   
+		int center_X = rand() % size; 				// Sand grid (x) midpoint of circle (1-gridLength)                      
+	    int center_Z = rand() % size;				// Sand grid (z) midpoint of circle (1-gridWidth)
+	    float terrainCircleSize = 30; 				// Random radius of circle (1-5)
+	    int randomHeight = (rand() % 4) + 1;		// Random height for slope (1-5)   
 	    
-	    //will run for every vertex in the grid.
+	    // Will run for every vertex in the grid.
         for(int x = 0; x < size; x++){
             for(int z = 0; z < size; z++){
+            	// Performs the circles algorithm
 				float distanceFromX = x - center_X;
                 float distanceFromZ = z - center_Z;
                 float totalDistance = sqrtf((distanceFromX * distanceFromX) + (distanceFromZ * distanceFromZ));
@@ -100,10 +101,9 @@ void createSlopes(int iterations, int size) {
             }
         } 
 	}
-	//create normals for each plane.
-	//createNormals();
 }
 
+/* Draws in the texture for the wall */
 void drawWall() {
 	glColor4f(1, 1, 1, 1);
 	glScalef(0.112, 0.034, 0);
@@ -119,6 +119,7 @@ void drawWall() {
     glEnd();
 }
 
+/* Draws the wall mesh */
 void drawBorder() {
 	glEnable(GL_TEXTURE_2D); 
 	glDisable(GL_LIGHTING);
@@ -145,26 +146,26 @@ void drawBorder() {
 	trans[4][1] = -13;
 	trans[4][2] = 21.95;
 
-	// right block
+	// Right block
 	glPushMatrix();
 		glColor3ub(194, 117, 87);
 		glTranslatef(trans[0][0], trans[0][1], trans[0][2]);
 		glScalef(0.5, 13, 30.7);
 		glutSolidCube(1);
 	glPopMatrix();
-	// right wall 1
+	// Right texture front
 	glPushMatrix();
 		glTranslatef(trans[1][0], trans[1][1], trans[1][2]);
 		glRotatef(90, 0, 1, 0);
 		drawWall();
 	glPopMatrix();
-	// right wall 2
+	// Right texture back
 	glPushMatrix();
 		glTranslatef(trans[2][0], trans[2][1], trans[2][2]);
 		glRotatef(270, 0, 1, 0);
 		drawWall();
 	glPopMatrix();
-	// infront block
+	// Left block
 	glPushMatrix();
 		glColor3ub(194, 117, 87);
 		glTranslatef(trans[3][0], trans[3][1], trans[3][2]);
@@ -172,7 +173,7 @@ void drawBorder() {
 		glScalef(0.5, 13, 30);
 		glutSolidCube(1);
 	glPopMatrix();
-	// wall infront
+	// Left texture front
 	glPushMatrix();
 		glTranslatef(trans[4][0], trans[4][1], trans[4][2]);
 		glRotatef(180, 0, 1, 0);
@@ -183,21 +184,22 @@ void drawBorder() {
 	glEnable(GL_LIGHTING);
 }
 
+/* Draws the baord that the game takes place on */
 void Environment::drawBoard() {
 	// Ignore lighting
 	glPushAttrib(GL_LIGHTING_BIT);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
-
+	// Material lighting settings
 	float m_specular[] = {0.1, 0.1, 0.1, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
-
+	// Length of the board for the current level
 	int len = Interactivity::getLength();
-	// colours
+	// Colours for the board.
 	unsigned char blue[] = {33, 150, 243};
 	unsigned char yellow[] = {255, 235, 59};
-	Structure::point3D* beenTo = Interactivity::getPlayerBeen();
-
+	Structure::point3D* beenTo = Interactivity::getPlayerBeen(); // If the player visits the block
+	// Checks all block in the current level
 	for(int i = 0; i < len; ++i) {
 		for(int j = 0; j < len - i; ++j) {
 			bool contains = false;
@@ -208,13 +210,13 @@ void Environment::drawBoard() {
 					break;
 				}
 			}
-			// Set block to black if the player has landed on it
+			// Set block to yellow if the player has landed on it
 			glColor3ubv(contains ? yellow : blue);
 			glPushMatrix();
+				// Draws the rows
 				glTranslatef(i * 2, j * 2, j * 2 + i * 2);
 				glutSolidCube(2);
-
-				// Draw column
+				// Draws the columns
 				for (int k=-12; k<j * 2; k+=2) {
 					glTranslatef(0, -2, 0);
 					glutSolidCube(2);
@@ -226,6 +228,7 @@ void Environment::drawBoard() {
 	glPopAttrib();
 }
 
+/* Resets the water array (used to create waves) */
 void resetArray(int size) {
 	for(int x = 0; x < size; x++){
         for(int z = 0; z < size; z++){
@@ -234,22 +237,22 @@ void resetArray(int size) {
 	}
 }
 
+/* Draws the transparent quad strip for the water */
 void drawWater(int step) {
 	glPushMatrix();
-	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
+	glPushAttrib(GL_LIGHTING_BIT);	// Prevents the materials from affecting other stuff
 	glTranslatef(-8, -3, -8);
-
-	if (getSandHeight) {		// Initial load
+	// Initial load of sand
+	if (getSandHeight) {		
 		getSandHeight = !getSandHeight;
 		createWaves(3, 30);
 	}
-
-	if ((step % 40 == 0 && !UserInterface::calculatingScore())) {	// the waves
+	// Initial load of the waves
+	if ((step % 40 == 0 && !UserInterface::calculatingScore())) {	
 		resetArray(30);
 		createWaves(3, 30);
 	}
-
-	//material to make water plane look like water.
+	// Material to make water plane look like water
 	float m_ambient[] = {0, 0.509, 0.501, 0.75};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
 	float m_diff[] = {0, 0.509, 0.501, 0.75};
@@ -259,12 +262,12 @@ void drawWater(int step) {
 	float m_shiny = 0.25f;
 	glMaterialf(GL_FRONT, GL_SHININESS, m_shiny);
 
-	// draws the water plane.
+	// Draws the water plane
 	for(int i = 0; i < 30; i++){
 		for(int j = 0; j < 30; j++){
 			glBegin(GL_QUAD_STRIP);
 			glNormal3f(0, 1, 0);
-
+			//Draws the quad strip
 			glVertex3f(i    , waterHeightMap[i][j + 1]    , j + 1);
 			glVertex3f(i + 1, waterHeightMap[i + 1][j + 1], j + 1);
 			glVertex3f(i    , waterHeightMap[i][j]        , j    );
@@ -276,12 +279,13 @@ void drawWater(int step) {
 	glPopMatrix();
 }
 
+/* Draws the quad strip for the sand */
 void drawSand() {
 	glPushMatrix();
 	glPushAttrib(GL_LIGHTING_BIT);	// So the materials don't affect other stuff
 	glTranslatef(-8, -12, -8);
-
-	if(getSandHeight) {		// Initial load
+	// Initial load of the sand
+	if(getSandHeight) {		
 		getSandHeight = !getSandHeight;
 		createSlopes(2, 30);
 	}
@@ -291,8 +295,7 @@ void drawSand() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
 	float spec[] = {0.6274, 0.3216, 0.1764, 1};
 	glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
-
-	//draws the sand plane.
+	// Draws the sand plane
 	for(int i = 0; i < 30; i++) {
 		for(int j = 0; j < 30; j++) {
 			glBegin(GL_QUAD_STRIP);
@@ -308,85 +311,77 @@ void drawSand() {
 	glPopMatrix();
 }
 
-
-
+/* Initializes where the fish will start */
 void InitFishPosition(void){
-	//srand(time(0));
-	
 	for(int i = 0 ; i < 3 ; i++){
-		
 		Fishes[i][0] = rand() % 5;
 		Fishes[i][4] = rand() % 360 ; 
 	}
-
 	InitFishPosit = 1 ;
-
-
 }
 
+/* Draws the fish to the scene */
 void drawFish(int n) {	
 	int len = Interactivity::getLength()*2;
-	glPushMatrix();
-
-	glRotatef((n == 1 ? 1 : -1) * Fishes[n][4], 0, 1, 0);
-	glTranslatef(Fishes[n][0]+len,Fishes[n][1],0);
-
-	glPushMatrix();
-	glRotatef((n == 1 ? 180 : 0), 0, 1, 0);
-	glScalef(0.5,0.5,0.5);
-	//draw body
-	glColor3f(0,0,1);
-	glScalef(1,1,1.5);
-	glutSolidSphere(1, 100, 100);
 	
-	//right eye
 	glPushMatrix();
-	glScalef(1,1,0.66);
-	glTranslatef(-0.35,0.3,1.1);	
-	glColor3f(1,1,1);
-	glutSolidSphere(0.4, 100, 100);
+		glRotatef((n == 1 ? 1 : -1) * Fishes[n][4], 0, 1, 0);
+		glTranslatef(Fishes[n][0]+len,Fishes[n][1],0);
+			glPushMatrix();
+			glRotatef((n == 1 ? 180 : 0), 0, 1, 0);
+			glScalef(0.5,0.5,0.5);
+			// Draw body
+			glColor3f(0,0,1);
+			glScalef(1,1,1.5);
+			glutSolidSphere(1, 100, 100);
+			// Right eye
+			glPushMatrix();
+				glScalef(1,1,0.66);
+				glTranslatef(-0.35,0.3,1.1);	
+				glColor3f(1,1,1);
+				glutSolidSphere(0.4, 100, 100);
+				// Right pupil
+				glPushMatrix();
+					glTranslatef(0,0,0.3);
+					glColor3f(0,0,0);
+					glutSolidSphere(0.2,100,100);
+				glPopMatrix();
+			glPopMatrix();
+			
+			// Left eye
+			glPushMatrix();
+				glScalef(1,1,0.66);
+				glTranslatef(0.35,0.3,1.1);	
+				glColor3f(1,1,1);
+				glutSolidSphere(0.4, 100, 100);
+				// Left pupil
+				glPushMatrix();
+					glTranslatef(0,0,0.3);
+					glColor3f(0,0,0);
+					glutSolidSphere(0.2,100,100);
+				glPopMatrix();
+			glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(0,0,0.3);
-	glColor3f(0,0,0);
-	glutSolidSphere(0.2,100,100);
-
+			glPushMatrix();
+				glColor3f(0,0,1);
+				glScalef(0.8,0.8,0.8);
+				// Tail
+				glTranslatef(0,0,-2);
+				int flip = rand()%2;
+				glRotatef((flip == 1? 10 : -10),0,1,0);
+				glutSolidCone(1, 1, 100, 100);
+			glPopMatrix();
+		glPopMatrix();
+		
 	glPopMatrix();
-	glPopMatrix();
-	
-	//left eye
-	glPushMatrix();
-	glScalef(1,1,0.66);
-	glTranslatef(0.35,0.3,1.1);	
-	glColor3f(1,1,1);
-	glutSolidSphere(0.4, 100, 100);
-
-	glPushMatrix();
-	glTranslatef(0,0,0.3);
-	glColor3f(0,0,0);
-	glutSolidSphere(0.2,100,100);
-	glPopMatrix();
-	glPopMatrix();
-
-	glPushMatrix();
-	glColor3f(0,0,1);
-	glScalef(0.8,0.8,0.8);
-	
-	// tail
-	glTranslatef(0,0,-2);
-	int flip = rand()%2;
-	glRotatef((flip == 1? 10 : -10),0,1,0);
-	glutSolidCone(1, 1, 100, 100);
-	glPopMatrix();
-	glPopMatrix();
-	
-	glPopMatrix();//body
 }
 
+/* Gives the fish movement during the game */
 void renderFish(int step){
+	// Initialize fish position
 	if(InitFishPosit == 0) {
 		InitFishPosition();		
-	}	
+	}
 	else {
 		int len = Interactivity::getLength();
 		glPushMatrix();
@@ -409,20 +404,18 @@ void renderFish(int step){
 				}
 				drawFish(i);
 				glPopMatrix();
-
 			}
 		}
 		glPopMatrix();
 	}
-
 }
 
-// Draws everything except the player/enemies
+/* Draws everything except for the player and the enemies */
 void Environment::drawEnvironment(int step) {
 	drawSand();
 	Environment::drawBoard();
 	drawBorder();
-	
+	// Sets up lighting accordingly
 	glDisable(GL_LIGHTING);
 	renderFish(step);
 	glEnable(GL_LIGHTING);
