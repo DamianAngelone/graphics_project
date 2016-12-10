@@ -235,6 +235,7 @@ void Interactivity::keyboard(unsigned char key, int x, int y) {
 			if (UserInterface::getGameOverState()) {	// If the game is in Game Over state
 				if(UserInterface::getWinGameState()){	// If the player won only
 					UserInterface::setWinGameState();	// Turns off Game Won state
+					UserInterface::writeHighScore();	// Wrties the high score to the text file (if there is one)
 					UserInterface::decrScore(UserInterface::getScore());	// Reset score to zero
 					Interactivity::setLives(-Interactivity::getLives());	// Reset lives to 3
 				}

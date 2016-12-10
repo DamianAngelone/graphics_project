@@ -21,30 +21,31 @@ using namespace std;
 #include "Interactivity.h"
 #include "Environment.h"
 
-bool gameOverState = false;					//game lost
-bool gameLevelState = false;				//level lost
-bool finishedLevelState = false;			//level won
-bool safeToDecreaseTime = false;
-bool wonGame = false;
-bool intro = true;
-bool initalScore = true;
+bool gameOverState = false;			// Game Over state
+bool gameLevelState = false;		// Level Lost state
+bool finishedLevelState = false;	// Level Won state
+bool safeToDecreaseTime = false;	// Allow the time to decrease
+bool wonGame = false;				// Game Won state
+bool intro = true;					// Intro state
+bool initalScore = true;			// Initialize Score state
 
-int score = 0;
-int highScore = 0;
-int gTime = 50;
+int score = 0;		// Sets starting score
+int highScore = 0;	// Sets high score
+int gTime = 50;		// Sets clock
 
-char filename[50] = "highscore.txt";					// filename
+char filename[50] = "highscore.txt";	// filename
 
-FILE *fp;							// The file to save/load from
+FILE *fp; // The file to save/load from
 
-void UserInterface::readHighScore() {	// set the highscore
+/* Sets high scpre from text file */
+void UserInterface::readHighScore() {	
 	fp = fopen(filename, "r");
 	char buf[4];
 	fscanf(fp, "%s", buf);
 	sscanf(buf, "%d", &highScore);
 	fclose(fp);
 }
-
+/* Writes new high scpre from text file */
 void UserInterface::writeHighScore() {
 	if (score > highScore) {
 		fp = fopen(filename, "w+");
@@ -54,82 +55,97 @@ void UserInterface::writeHighScore() {
 	    fclose(fp);
 	}
 }
-
+/* Increases score */
 void UserInterface::incrScore(){
+
 	score += 1;
 }
-
+/* Decreases score */
 void UserInterface::decrScore(int n){
 	if ((score - n) >= 0)
 		score -= n;
 	else
 		score = 0;
 }
-
+/* Score getter */
 int UserInterface::getScore(){
 
 	return score;
 }
-
+/* Decrease time */
 void UserInterface::decrTime(){
 
 	if (gTime > 0)
 		gTime -= 1;
 }
-
+/* Time getter */
 int UserInterface::getTime(){
+
 	return gTime;
 }
-
+/* Time setter */
 void UserInterface::setTime(){
+
 	gTime = 50;
 }
-
+/* Game Over State getter */
 bool UserInterface::getGameOverState(){
+
 	return gameOverState;
 }
-
+/* Game Over State setter */
 void UserInterface::setGameOverState(){
+
 	gameOverState = !gameOverState;
 }
-
+/* Win Game State getter */
 bool UserInterface::getWinGameState(){
+
 	return wonGame;
 }
-
+/* Win Game State setter */
 void UserInterface::setWinGameState(){
+
 	wonGame = !wonGame;
 }
-
+/* Finished Level State getter */
 bool UserInterface::getFinishedLevelState(){
+
 	return finishedLevelState;
 }
-
+/* Finished Level State setter */
 void UserInterface::setFinishedLevelState(){
+
 	finishedLevelState = !finishedLevelState;
 }
-
+/* Lost Level State getter */
 bool UserInterface::getLevelState(){
+
 	return gameLevelState;
 }
-
+/* Lost Level State setter */
 void UserInterface::setLevelState(){
+
 	gameLevelState = !gameLevelState;
 }
-
+/* Intro State getter */
 bool UserInterface::getIntroState(){
+
 	return intro;
 }
-
+/* Intro State getter */
 void UserInterface::setIntroState(){
+
 	intro = !intro;
 }
-
+/* Calculates time bonus */
 bool UserInterface::calculatingScore(){
+
 	return safeToDecreaseTime;
 }
-
+/* Controls Calculate Time Bonus state */
 void UserInterface::setCalculatingScore(bool m){
+
 	safeToDecreaseTime = m;
 }
 
@@ -145,19 +161,8 @@ void drawText(string s) {
     }
 }
 
-// Draws any text passed to it
-void drawText2(string s) {
-	void * font = GLUT_BITMAP_HELVETICA_12;
-	for (string::iterator i = s.begin(); i != s.end(); ++i) {
-	    char c = *i;
-	    if(c == '.')
-	    	break;
-	    glutBitmapCharacter(font, c);
-	    glutPostRedisplay();
-    }
-}
-
-void drawTextTitles(string s) {
+// Draws any text passed to it (high score)
+void drawHighScore(string s) {
 	void * font = GLUT_BITMAP_HELVETICA_18;
 	for (string::iterator i = s.begin(); i != s.end(); ++i) {
 	    char c = *i;
@@ -168,16 +173,40 @@ void drawTextTitles(string s) {
     }
 }
 
+// Draws any text passed to it (intro text)
+void drawText2(string s) {
+	void * font = GLUT_BITMAP_HELVETICA_12;
+	for (string::iterator i = s.begin(); i != s.end(); ++i) {
+	    char c = *i;
+	    if(c == '.')
+	    	break;
+	    glutBitmapCharacter(font, c);
+	    glutPostRedisplay();
+    }
+}
+// Draws any text passed to it (State/UI messages)
+void drawTextTitles(string s) {
+	void * font = GLUT_BITMAP_HELVETICA_18;
+	for (string::iterator i = s.begin(); i != s.end(); ++i) {
+	    char c = *i;
+	    if(c == '.')
+	    	break;
+	    glutBitmapCharacter(font, c);
+	    glutPostRedisplay();
+    }
+}
+/* Calculates tim bonus */
 void calculateScore(){
 
-	usleep(2000);
+	usleep(2000); //added delay to make the animation more fluent
 	UserInterface::setCalculatingScore(true);
 	UserInterface::decrTime();
 	UserInterface::incrScore();
 }
-
+/* Controls Finished Level state */
 void UserInterface::finishedLevel(){
   	
+  	//Calulates score
   	for(int i = 0; i < UserInterface::getTime(); i++){
 
   		calculateScore();	
@@ -211,7 +240,7 @@ void UserInterface::finishedLevel(){
   		drawTextTitles(s[i]);
   	}
 }
-
+/* Controls Game Over state */
 void UserInterface::gameOver(){
 
 	char buf1[5];
@@ -220,16 +249,19 @@ void UserInterface::gameOver(){
 	string finalScore(buf1);
 	string s[3];
 
+	// If player won
 	if(wonGame){
 		
 		for(int i = 0; i < UserInterface::getTime(); i++){
-
+			// Calculates time bonus
   			calculateScore();	
 		}
 
 		s[0] = "Game Complete";
 		s[1] = "Final Score: " + finalScore;
 		s[2] = "Press 'R' to restart game.";
+
+		UserInterface::writeHighScore(); //Writes high score to the text file
 	}
 	else{
 		s[0] = "Game Over";
@@ -243,7 +275,7 @@ void UserInterface::gameOver(){
   		drawTextTitles(s[i]);
   	}
 }
-
+/* Controls Level Lost state */
 void UserInterface::levelLost(){
 
 	char buf1[5];
@@ -262,31 +294,37 @@ void UserInterface::levelLost(){
   		drawTextTitles(s[i]);
   	}
 }
-
+/* Draws left test UI */
 void drawLeft() {
 	char buf1[5];
 	char buf2[5];
 	char buf3[5];
 	char buf4[5];
 	char buf5[5];
+	char buf6[5];
+
+	UserInterface::readHighScore(); // Reads in high score from text file
 
 	double temp1 = Interactivity::getLevel();
 	double temp2 = (Interactivity::getAmountOfBlocks() - Interactivity::getBeenTo());
 	double temp3 = UserInterface::getScore();
 	double temp4 = UserInterface::getTime();
 	double temp5 = Interactivity::getLives();
+	double temp6 = highScore;
 
 	snprintf(buf1, sizeof(buf1), "%f", temp1);
 	snprintf(buf2, sizeof(buf2), "%f", temp2);
 	snprintf(buf3, sizeof(buf3), "%f", temp3);
 	snprintf(buf4, sizeof(buf4), "%f", temp4);
 	snprintf(buf5, sizeof(buf5), "%f", temp5);
+	snprintf(buf6, sizeof(buf6), "%f", temp6);
 
 	string level(buf1);						// char array to float
 	string blocksLeft(buf2);				// char array to float
 	string scoreTot(buf3);					// char array to float
 	string currTime(buf4);					// char array to float
 	string currLives(buf5);					// char array to float
+	string hScore(buf6);					// char array to float
 
 	string s[5];
     s[0] = "Current Level: " + level;
@@ -295,14 +333,18 @@ void drawLeft() {
     s[3] = "Time Left: " + currTime + " s";
     s[4] = "Lives Left: " + currLives;
 
+    string use = "High Score: " + hScore;
+
 	// Render each string
 	int v = sizeof(s)/24; // number of strings to draw
     for(int i = 0; i < 5; i++) {
     	glRasterPos2i(10, ((-i * 20) + 30));
   		drawText(s[i]);
  	}
+    glRasterPos2i(375, 30);
+    drawHighScore(use); //Draws highscore to screen
 }
-
+/* Draws minimap on top right of UI */
 void drawRight() {
 	glPushMatrix();
 	glTranslatef(0, -490, 0);
@@ -350,7 +392,7 @@ void drawRight() {
 	glEnable(GL_LIGHTING);
 	glPopMatrix();
 }
-
+/* Draws the intro screen */
 void drawIntro(){
 
 	string s[10];
