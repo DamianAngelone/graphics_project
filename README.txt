@@ -16,4 +16,6 @@ You must press r/R to start the game.
 
 Please DO NOT delete highscore.txt
 
-Youtube link (much faster on a mac):
+Youtube link (much faster on a mac): https://www.youtube.com/watch?v=lDXrNBlIc9E
+
+Git: https://github.com/PatrickDuncan/project
